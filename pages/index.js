@@ -1,6 +1,7 @@
 // Libraries
 import React, {useEffect, useState} from 'react';
 import {withRouter} from 'next/router';
+import Link from 'next/link';
 import Slider from 'react-slick';
 import remark from 'remark';
 import axios from 'axios';
@@ -158,7 +159,7 @@ function Home(props) {
             setProvinces(newProvinces);
         }
     };
-
+	
     const getMarkDown = async () => {
         let newIntroduces = [];
 
@@ -286,7 +287,6 @@ function Home(props) {
                     <Col xs={{span: 24}} md={{span: 4}}>
                         <div className='d-flex row left'>
                             <strong>Tỉnh thành:</strong>
-                            <h1>{t('Welcome to React')}</h1>
                             <Select 
                                 style={{width: 200}} 
                                 value={filter.province} 

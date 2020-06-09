@@ -6,21 +6,42 @@ import {initReactI18next} from 'react-i18next';
 const resources = {
     en: {
         translation: {
-            'Welcome to React': 'Welcome to Reactdqwdwq and react-i18next'
+            'Welcome to React': 'Welcome to Reactdqwdwq and react-i18next',
+            'vietnamese': 'Vietnamese',
+            'english': 'English'
         }
     },
     vi: {
         translation: {
-            'Welcome to React': 'Hello mọi người'
+            'Welcome to React': 'Hello mọi người',
+            'vietnamese': 'Tiếng Việt',
+            'english': 'Tiếng Anh'
         }
     }
 };
+
+function getLocalStorage () {
+    let defaultLang = 'vi';
+
+    if (process.browser) {
+        let lang = localStorage.getItem('lang');
+
+        if (lang) {
+            defaultLang = lang;
+        } else {
+            localStorage.setItem('lang', 'vi');
+        }
+    }
+
+    return defaultLang;
+
+}
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
     .init({
         resources,
-        lng: 'vi',
+        lng: getLocalStorage(),
 
         keySeparator: false, // we do not use keys in form messages.welcome
 
