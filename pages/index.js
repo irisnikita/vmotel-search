@@ -12,13 +12,15 @@ import {useTranslation} from 'react-i18next';
 // Components
 import Layout from '../components/Layout/Layout';
 import CustomCard from '../components/Card/Card';
+import SliderCus from '../components/SliderCus/SliderCus';
+import FeeCard from '../components/FeeCard/FeeCard';
 
 // Utils
 import {getListMarkDowns} from '../utils';
 import {appConfig} from '../constant';
 
 // Icons
-import {SearchOutlined, CheckCircleOutlined, DownOutlined} from '@ant-design/icons';
+import {SearchOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined} from '@ant-design/icons';
 
 export async function getStaticProps() {
     const allMarkDown = getListMarkDowns();
@@ -33,16 +35,19 @@ export async function getStaticProps() {
 
 function Home(props) {
     const [introduces, setIntroduces] = useState([]);
-    const [provinces, setProvinces] = useState([{id: 0, code: 'ALL', name: 'Tất cả'}]);
-    const [districts, setDistricts] = useState([{id: 'all', name: 'Tất cả'}]);
-    const [streets, setStreets] = useState([{id: 'all', name: 'Tất cả'}]);
+    const [provinces, setProvinces] = useState([{id: 0, code: 'ALL', name: 'all'}]);
+    const [districts, setDistricts] = useState([{id: 'all', name: 'all'}]);
+    const [streets, setStreets] = useState([{id: 'all', name: 'all'}]);
     const [filter, setfilter] = useState({
         optionType: 'all',
         province: 'ALL',
-        district: 'Tất cả',
-        street: 'all'
+        district: 'all',
+        street: 'all',
+        prices: [0, 50],
+        areas: [0, 50]
     });
-    const {t, i18n} = useTranslation();
+    const [isMount, setMount] = useState(false);
+    const {t} = useTranslation();
     const [rooms, setRooms] = useState([
         {
             id: 1,
@@ -89,6 +94,80 @@ function Home(props) {
             images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
         }
     ]);
+    const [feeMotels, setFeeMotels] = useState([
+        {
+            id: 1,
+            price: 3000000,
+            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
+            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
+            district: {id: '12', name: 'Quận 11'},
+            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
+            area: 20,
+            address: '708/19/12 Đường Hồng Bàng, Phường 1, Quận 11, Hồ Chí Minh',
+            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
+            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
+        },
+        {
+            id: 2,
+            price: 2500000,
+            title: 'Phòng cho thuê chính chủ 985/24 Âu Cơ, Quận Tân Phú',
+            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
+            district: {id: '12', name: 'Quận 11'},
+            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
+            area: 20,
+            address: '985/24 Âu Cơ, phường Tân Sơn Nhì, quận Tân Phú, TP.HCM',
+            description: 'Phòng mới xây sạch sẽ, đẹp, thoáng mát, có bếp riêng, thang máy, lối vào cửa tự do, bảo vệ 24/24.',
+            images: ['/images/rooms/phong-tro-4.jpg', '/images/rooms/phong-tro-5.jpg', '/images/rooms/phong-tro-6.jpg']
+        },
+        {
+            id: 3,
+            price: 3000000,
+            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
+            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
+            district: {id: '12', name: 'Quận 11'},
+            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
+            area: 20,
+            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
+            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
+            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
+        },
+        {
+            id: 4,
+            price: 3000000,
+            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
+            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
+            district: {id: '12', name: 'Quận 11'},
+            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
+            area: 20,
+            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
+            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
+            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
+        },
+        {
+            id: 5,
+            price: 3000000,
+            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
+            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
+            district: {id: '12', name: 'Quận 11'},
+            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
+            area: 20,
+            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
+            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
+            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
+        },
+        {
+            id: 6,
+            price: 3000000,
+            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
+            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
+            district: {id: '12', name: 'Quận 11'},
+            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
+            area: 20,
+            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
+            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
+            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
+        }
+    ]);
 
     const settings = {
         infinite: true,
@@ -109,38 +188,61 @@ function Home(props) {
     useEffect(() => {
         if (filter.province === 'ALL') {
             setDistricts([{
-                id: 'all', name: 'Tất cả'
+                id: 'all', name: 'all'
             }]);
         } else {
             const province = provinces.find(province => province.code === filter.province);
 
-            const newDistricts = [{id: 'all', name: 'Tất cả'}].concat(province.districts);
+            if (province) {
+                const newDistricts = [{id: 'all', name: 'all'}].concat(province.districts);
 
-            setDistricts(newDistricts);
+                setDistricts(newDistricts);
+            }
+
         }
 
-        setfilter({
-            ...filter,
-            district: 'Tất cả'
-        });
+        if (!isMount && localStorage.getItem('filter')) {
+            const newFilter = JSON.parse(localStorage.getItem('filter'));
+
+            setfilter({
+                ...filter,
+                district: newFilter.district
+            });
+        } else {
+            setfilter({
+                ...filter,
+                district: 'all'
+            });
+        }
 
     }, [filter.province]);
 
     useEffect(() => {
-        if (filter.district === 'Tất cả') {
-            setStreets([{id: 'all', name: 'Tất cả'}]);
+        if (filter.district === 'all') {
+            setStreets([{id: 'all', name: 'all'}]);
         } else {
             const district = districts.find(district => district.name === filter.district);
 
-            const newStreets = [{id: 'all', name: 'Tất cả'}].concat(district.streets);
+            if (district) {
+                const newStreets = [{id: 'all', name: 'all'}].concat(district.streets);
 
-            setStreets(newStreets);
+                setStreets(newStreets);
+            }
+        }
+        if (!isMount && localStorage.getItem('filter')) {
+            const newFilter = JSON.parse(localStorage.getItem('filter'));
+
+            setfilter({
+                ...filter,
+                street: newFilter.street
+            });
+        } else {
+            setfilter({
+                ...filter,
+                street: 'all'
+            });
         }
 
-        setfilter({
-            ...filter,
-            street: 'all'
-        });
     }, [filter.district]);
 
     useEffect(() => {
@@ -157,9 +259,35 @@ function Home(props) {
             const newProvinces = provinces.concat(getLocal.default);
 
             setProvinces(newProvinces);
+
+            if (localStorage.getItem('filter')) {
+                const newFilter = JSON.parse(localStorage.getItem('filter'));
+
+                setfilter({
+                    ...filter,
+                    province: newFilter.province,
+                    optionType: newFilter.optionType,
+                    prices: newFilter.prices,
+                    areas: newFilter.areas
+                });
+            }
         }
+
+        setMount(true);
     };
-	
+
+    console.log(provinces);
+
+    useEffect(() => {
+        if (process.browser) {
+            if (isMount === true) {
+                setTimeout(() => {
+                    localStorage.setItem('filter', JSON.stringify(filter));
+                });
+            }
+        }
+    }, [filter]);
+
     const getMarkDown = async () => {
         let newIntroduces = [];
 
@@ -180,6 +308,42 @@ function Home(props) {
         }
 
         return newIntroduces;
+    };
+
+    const showRenderSologan = () => {
+        const newProvince = provinces.find(province => province.code === filter.province);
+        const district = districts.find(district => district.name === filter.district);
+        const street = streets.find(street => street.id === filter.street);
+
+        if (newProvince && district && street) {
+            switch (filter.province) {
+                case 'all':
+                    switch (filter.district) {
+                        case 'all':
+                            return (
+                                <>
+                                    <h1>{t('Cho thuê phòng trọ số 1, giá rẻ, tiện nghi, an toàn, uy tín Việt Nam')} {filter.street !== 'all' && ` Đường ${street.name}`}</h1>
+                                    <p>Bạn sợ lừa đảo, an ninh không an toàn, giá bị hớ, với Vmotel bạn có thể an tâm khi chọn phòng.</p>
+                                </>
+                            );
+
+                        default:
+                            return (
+                                <>
+                                    <h1>{t(`Cho thuê phòng trọ số 1, Quận ${district.name}, giá rẻ, tiện nghi, an toàn, uy tín Việt Nam `)} {filter.street !== 'all' && ` Đường ${street.name}`}</h1>
+                                    <p>Bạn sợ lừa đảo, an ninh không an toàn, giá bị hớ, với Vmotel bạn có thể an tâm khi chọn phòng.</p>
+                                </>
+                            );
+                    }
+                default:
+                    return (
+                        <>
+                            <h1>{t(`Cho thuê phòng trọ ${t(newProvince.name)}, ${district.name !== 'all' ? `Quận ${district.name}` : ''}, giá rẻ, tiện nghi, an toàn, uy tín Việt Nam`)}{filter.street !== 'all' && ` Đường ${street.name}`}</h1>
+                            <p>Bạn sợ lừa đảo, an ninh không an toàn, giá bị hớ, với Vmotel bạn có thể an tâm khi chọn phòng.</p>
+                        </>
+                    );
+            }
+        }
     };
 
     const onChangeOptionTypes = (value) => {
@@ -210,6 +374,20 @@ function Home(props) {
         });
     };
 
+    const callbackSliderPrice = (value) => {
+        setfilter({
+            ...filter,
+            prices: value
+        });
+    };
+
+    const callbackSliderArea = (value) => {
+        setfilter({
+            ...filter,
+            areas: value
+        });
+    };
+
     return (
         <Layout>
             <Row style={{padding: '20px 50px'}}>
@@ -218,14 +396,11 @@ function Home(props) {
                         <div style={{fontSize: 60, fontWeight: 600}}>Vmotel-Search </div>
                         <CheckCircleOutlined style={{fontSize: 30, position: 'relative', left: '-5px', top: '-10px', color: '#5cdbd3'}} />
                     </div>
-                    <div style={{fontSize: 20, fontWeight: 500}}>Trang web tìm kiếm nhà trọ, căn hộ, phòng ở.</div>
+                    <div style={{fontSize: 20, fontWeight: 500}}>{t('Website to search motel, apartment')}</div>
                     <section style={{marginTop: 10, width: 400}}>
-                        <p>Bạn lo lắng khi không tìm được nơi ở, chi phí quá cao, an ninh không tốt, phòng xuống cấp trật chội. Với
-						Vmotel-Search, bạn không những có thể tìm được phòng ưng ý, chi phí thấp, an ninh tốt mà còn xem được chất lượng
-						và uy tín của phòng trọ, căn hộ.
-                        </p>
+                        <p>{t('introduce')}</p>
                     </section>
-                    <Button type='ghost' style={{border: '1px solid #13c2c2', color: '#13c2c2'}} shape='round' icon={<SearchOutlined />}>Tìm phòng</Button>
+                    <Button type='ghost' style={{border: '1px solid #13c2c2', color: '#13c2c2'}} shape='round' icon={<SearchOutlined />}>{t('search-room')}</Button>
                     <Row gutter={[16, 16]} style={{marginTop: 20, width: '90%', fontSize: 12}}>
                         <Col xs={{span: 24}} md={{span: 24}}>
                             <Row>
@@ -276,49 +451,75 @@ function Home(props) {
                 <Row style={{width: '100%'}} className={'filter-custom'} gutter={[16, 16]}>
                     <Col xs={{span: 24}} md={{span: 4}}>
                         <div className='d-flex row left'>
-                            <strong>Chọn tin:</strong>
+                            <strong>{t('Select post')}:</strong>
                             <Select style={{width: 200}} value={filter.optionType} onChange={onChangeOptionTypes}>
                                 {appConfig.optionTypes && appConfig.optionTypes.length > 0 && appConfig.optionTypes.map(option => {
-                                    return <Select.Option key={option.id} value={option.id}>{option.value}</Select.Option>;
+                                    return <Select.Option key={option.id} value={option.id}>{t(option.value)}</Select.Option>;
                                 })}
                             </Select>
                         </div>
                     </Col>
                     <Col xs={{span: 24}} md={{span: 4}}>
                         <div className='d-flex row left'>
-                            <strong>Tỉnh thành:</strong>
-                            <Select 
-                                style={{width: 200}} 
-                                value={filter.province} 
+                            <strong>{t('Provinces')}:</strong>
+                            <Select
+                                style={{width: 200}}
+                                value={filter.province}
                                 onChange={onChangeProvinces}
                                 placeholder={'hello'}
                             >
                                 {provinces && provinces.length > 0 && provinces.map(province => {
-                                    return <Select.Option key={province.id} value={province.code}>{province.name}</Select.Option>;
+                                    return <Select.Option key={province.id} value={province.code}>{t(province.name)}</Select.Option>;
                                 })}
                             </Select>
                         </div>
                     </Col>
                     <Col xs={{span: 24}} md={{span: 4}}>
                         <div className='d-flex row left'>
-                            <strong>Quận huyện:</strong>
+                            <strong>{t('District')}:</strong>
                             <Select style={{width: 200}} value={filter.district} onChange={onChangeDistrict}>
                                 {districts && districts.length > 0 && districts.map(district => {
-                                    return <Select.Option key={district.name} value={district.name}>{district.name}</Select.Option>;
+                                    return <Select.Option key={district.name} value={district.name}>{t(district.name)}</Select.Option>;
                                 })}
                             </Select>
                         </div>
                     </Col>
                     <Col xs={{span: 24}} md={{span: 4}}>
                         <div className='d-flex row left'>
-                            <strong>Đường:</strong>
+                            <strong>{t('Street')}:</strong>
                             <Select style={{width: 200}} value={filter.street} onChange={onChangeStrict}>
                                 {streets && streets.length > 0 && streets.map(street => {
-                                    return <Select.Option key={street.id} value={street.id}>{`${street.prefix || ''} ${street.name}`}</Select.Option>;
+                                    return <Select.Option key={street.id} value={street.id}>{`${street.prefix || ''} ${t(street.name)}`}</Select.Option>;
                                 })}
                             </Select>
                         </div>
                     </Col>
+                    <Col xs={{span: 24}} md={{span: 4}}>
+                        <SliderCus defaultValue={filter.prices} wrapperTitle='price' title='Select prices' callback={callbackSliderPrice} />
+                    </Col>
+                    <Col xs={{span: 24}} md={{span: 4}}>
+                        <SliderCus defaultValue={filter.areas} wrapperTitle='area' type='area' min={0} max={50} step={1} title='Select area' callback={callbackSliderArea} />
+                    </Col>
+                </Row>
+                <Row style={{width: '100%', margin: '20px 0px'}}>
+                    <div className='d-flex row left'>
+                        {showRenderSologan()}
+                    </div>
+                </Row>
+                <Row style={{width: '100%', margin: '20px 0px'}}>
+                    <div className='d-flex'>
+                        <strong className='gradient-text'>{t('TIN NỔI BẬT')} - </strong>&nbsp;
+                        <SketchOutlined style={{fontSize: 30, color: '#ff7676'}} />
+                    </div>
+                </Row>
+                <Row style={{width: '100%', margin: '20px 0px'}} gutter={[16,16]}>
+                    {feeMotels.map(feeMotel => {
+                        return (
+                            <Col key={feeMotel.id} xs={{span: 24}} md={{span: 12}}>
+                                <FeeCard />
+                            </Col>
+                        );
+                    })}
                 </Row>
             </Row >
         </Layout >

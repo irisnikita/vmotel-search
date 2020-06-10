@@ -3,13 +3,13 @@ import Head from 'next/head';
 import {Layout as AntdLayout, Menu, Input, Space, Button, Row, Col, Avatar, Dropdown, Select} from 'antd';
 import {useTranslation} from 'react-i18next';
 
-const {Header, Content, Sider} = AntdLayout;
+const {Header, Content} = AntdLayout;
 
 // Styles
 import styles from './styles.module.scss';
 
 // Icons
-import {PlusOutlined, UserOutlined, DownOutlined} from '@ant-design/icons';
+import {PlusOutlined, UserOutlined} from '@ant-design/icons';
 
 export default function Layout(props) {
     const {t, i18n} = useTranslation();
@@ -49,13 +49,13 @@ export default function Layout(props) {
                     <div className='d-flex'>
                         <Space>
                             <img src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
-                            <Input.Search className={`${styles['input-search']} input-focus`} placeholder='Nhập để tìm kiếm ' />
+                            <Input.Search className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
                         </Space>
                     </div>
                     <div className='d-flex'>
                         <Avatar icon={<UserOutlined />} size={32} style={{marginRight: 10}} />
-                        <Button type='primary' shape='round' className='mr-10'>Đăng nhập</Button>
-                        <Button type='ghost' shape='round' className='mr-10' icon={<PlusOutlined />}>Đăng tin</Button>
+                        <Button type='primary' shape='round' className='mr-10'>{t('sign-in')}</Button>
+                        <Button type='ghost' shape='round' className='mr-10' icon={<PlusOutlined />}>{t('post')}</Button>
                         <Dropdown trigger={['click']} overlay={<Menu>
                             {flags && flags.length > 0 && flags.map(flag => {
                                 const isSelected = flag.id === lang.id;

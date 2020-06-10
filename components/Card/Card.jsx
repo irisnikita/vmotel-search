@@ -1,7 +1,8 @@
 import React from 'react'
-import {Card, Carousel, Row, Col, Button, Space} from 'antd';
+import {Card, Row, Col, Button, Space} from 'antd';
 import Slider from "react-slick";
 import numeral from 'numeral';
+import {useTranslation} from 'react-i18next';
 
 import styles from './styles.module.scss';
 
@@ -9,6 +10,7 @@ import {EnvironmentOutlined, CrownOutlined} from '@ant-design/icons';
 
 export default function CustomCard(props) {
     const {images = [], title = '', description = '', square = '', province = '', price = '', district = '', address = ''} = props.room
+    const {t} = useTranslation();
 
     const settings = {
         dots: true,
@@ -50,12 +52,12 @@ export default function CustomCard(props) {
                 <br/>
                 <Row style={{fontSize: 13}}>
                     <Col span={24}>
-                        <strong>Giá:</strong> &nbsp;
-                        <span style={{fontWeight: 500, color: '#1890ff'}}>{numeral(price).format('0,0')}/Tháng</span>
+                        <strong>{t('price')}:</strong> &nbsp;
+                        <span style={{fontWeight: 500, color: '#1890ff'}}>{numeral(price).format('0,0')}/{t('month')}</span>
                     </Col>
                     <Col span={24}>
-                        <strong>Địa chỉ:</strong> &nbsp;
-            <span style={{fontWeight: 500}}>{address}</span>
+                        <strong>{t('address')}:</strong> &nbsp;
+                        <span style={{fontWeight: 500}}>{address}</span>
                     </Col>
                     <Col span={24}>
                         <div className='d-flex space-between'>
