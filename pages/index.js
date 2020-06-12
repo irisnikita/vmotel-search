@@ -184,7 +184,7 @@ function Home(props) {
             {
                 breakpoint: 600,
                 settings: {
-                    centerMode: true,
+                    centerMode: false,
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     infinite: true,
@@ -415,12 +415,12 @@ function Home(props) {
                     <Row gutter={[16, 16]} style={{marginTop: 20, width: '90%', fontSize: 12}}>
                         <Col xs={{span: 24}} md={{span: 24}}>
                             <Row>
-                                <Col span={18}>
+                                <Col xs={{span: 18}} md={{span: 18}}>
                                     <strong>Phòng đẹp, sạch sẽ</strong>
                                     <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái.</p>
                                 </Col>
                                 <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                <Col span={5}>
+                                <Col xs={{span: 5}} md={{span: 5}}>
                                     <div className={'d-flex center'} style={{height: '100%', borderRight: '1px solid f0f0f0'}}>
                                         <img src='/images/bed.svg' style={{width: 50}} />
                                     </div>
@@ -459,59 +459,62 @@ function Home(props) {
                         </Slider>
                     </div>
                 </Col>
-                <Row style={{width: '100%'}} className={'filter-custom'} gutter={[16, 16]}>
-                    <Col xs={{span: 24}} md={{span: 4}}>
-                        <div className='d-flex row left'>
-                            <strong>{t('Select post')}:</strong>
-                            <Select style={{width: 200}} value={filter.optionType} onChange={onChangeOptionTypes}>
-                                {appConfig.optionTypes && appConfig.optionTypes.length > 0 && appConfig.optionTypes.map(option => {
-                                    return <Select.Option key={option.id} value={option.id}>{t(option.value)}</Select.Option>;
-                                })}
-                            </Select>
-                        </div>
-                    </Col>
-                    <Col xs={{span: 24}} md={{span: 4}}>
-                        <div className='d-flex row left'>
-                            <strong>{t('Provinces')}:</strong>
-                            <Select
-                                style={{width: 200}}
-                                value={filter.province}
-                                onChange={onChangeProvinces}
-                                placeholder={'hello'}
-                            >
-                                {provinces && provinces.length > 0 && provinces.map(province => {
-                                    return <Select.Option key={province.id} value={province.code}>{t(province.name)}</Select.Option>;
-                                })}
-                            </Select>
-                        </div>
-                    </Col>
-                    <Col xs={{span: 24}} md={{span: 4}}>
-                        <div className='d-flex row left'>
-                            <strong>{t('District')}:</strong>
-                            <Select style={{width: 200}} value={filter.district} onChange={onChangeDistrict}>
-                                {districts && districts.length > 0 && districts.map(district => {
-                                    return <Select.Option key={district.name} value={district.name}>{t(district.name)}</Select.Option>;
-                                })}
-                            </Select>
-                        </div>
-                    </Col>
-                    <Col xs={{span: 24}} md={{span: 4}}>
-                        <div className='d-flex row left'>
-                            <strong>{t('Street')}:</strong>
-                            <Select style={{width: 200}} value={filter.street} onChange={onChangeStrict}>
-                                {streets && streets.length > 0 && streets.map(street => {
-                                    return <Select.Option key={street.id} value={street.id}>{`${street.prefix || ''} ${t(street.name)}`}</Select.Option>;
-                                })}
-                            </Select>
-                        </div>
-                    </Col>
-                    <Col xs={{span: 24}} md={{span: 4}}>
-                        <SliderCus defaultValue={filter.prices} wrapperTitle='price' title='Select prices' callback={callbackSliderPrice} />
-                    </Col>
-                    <Col xs={{span: 24}} md={{span: 4}}>
-                        <SliderCus defaultValue={filter.areas} wrapperTitle='area' type='area' min={0} max={50} step={1} title='Select area' callback={callbackSliderArea} />
-                    </Col>
-                </Row>
+                <div className='d-flex center filter-custom' style={{width: '100%', marginTop: '20px'}}>
+                    <Row className='inner-filter' gutter={[16, 16]}>
+                        <Col xs={{span: 24}} md={{span: 4}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Select post')}:</strong>
+                                <Select style={{width: 200}} value={filter.optionType} onChange={onChangeOptionTypes}>
+                                    {appConfig.optionTypes && appConfig.optionTypes.length > 0 && appConfig.optionTypes.map(option => {
+                                        return <Select.Option key={option.id} value={option.id}>{t(option.value)}</Select.Option>;
+                                    })}
+                                </Select>
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 4}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Provinces')}:</strong>
+                                <Select
+                                    style={{width: 200}}
+                                    value={filter.province}
+                                    onChange={onChangeProvinces}
+                                    placeholder={'hello'}
+                                >
+                                    {provinces && provinces.length > 0 && provinces.map(province => {
+                                        return <Select.Option key={province.id} value={province.code}>{t(province.name)}</Select.Option>;
+                                    })}
+                                </Select>
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 4}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('District')}:</strong>
+                                <Select style={{width: 200}} value={filter.district} onChange={onChangeDistrict}>
+                                    {districts && districts.length > 0 && districts.map(district => {
+                                        return <Select.Option key={district.name} value={district.name}>{t(district.name)}</Select.Option>;
+                                    })}
+                                </Select>
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 4}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Street')}:</strong>
+                                <Select style={{width: 200}} value={filter.street} onChange={onChangeStrict}>
+                                    {streets && streets.length > 0 && streets.map(street => {
+                                        return <Select.Option key={street.id} value={street.id}>{`${street.prefix || ''} ${t(street.name)}`}</Select.Option>;
+                                    })}
+                                </Select>
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 4}}>
+                            <SliderCus defaultValue={filter.prices} wrapperTitle='price' title='Select prices' callback={callbackSliderPrice} />
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 4}}>
+                            <SliderCus defaultValue={filter.areas} wrapperTitle='area' type='area' min={0} max={50} step={1} title='Select area' callback={callbackSliderArea} />
+                        </Col>
+                    </Row>
+                
+                </div>
                 <Row style={{width: '100%', margin: '20px 0px'}}>
                     <div className='d-flex row left'>
                         {showRenderSologan()}
