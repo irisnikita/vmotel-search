@@ -52,7 +52,7 @@ export default function Layout(props) {
                             <Input.Search className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
                         </Space>
                     </div>
-                    <div className='d-flex'>
+                    <div className='d-flex right-menu'>
                         <Avatar icon={<UserOutlined />} size={32} style={{marginRight: 10}} />
                         <Button type='primary' shape='round' className='mr-10'>{t('sign-in')}</Button>
                         <Button type='ghost' shape='round' className='mr-10' icon={<PlusOutlined />}>{t('post')}</Button>

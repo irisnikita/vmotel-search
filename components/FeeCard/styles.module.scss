@@ -37,14 +37,24 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+
+        .description {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     .background-image {
-        position: relative;
+        position: absolute;
         overflow: hidden;
         border-radius: 10px;
         width: 200px;
         height: 200px;
+        transition: all 300ms;
+        left: 0;
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;

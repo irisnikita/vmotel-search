@@ -20,7 +20,7 @@ import {getListMarkDowns} from '../utils';
 import {appConfig} from '../constant';
 
 // Icons
-import {SearchOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined} from '@ant-design/icons';
+import {SearchOutlined, FileDoneOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined} from '@ant-design/icons';
 
 export async function getStaticProps() {
     const allMarkDown = getListMarkDowns();
@@ -94,6 +94,7 @@ function Home(props) {
             images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
         }
     ]);
+
     const [feeMotels, setFeeMotels] = useState([
         {
             id: 1,
@@ -178,7 +179,19 @@ function Home(props) {
         speed: 1000,
         dots: true,
         autoplaySpeed: 3000,
-        cssEase: 'linear'
+        cssEase: 'linear',
+        responsive: [
+            {
+                breakpoint: 600,
+                settings: {
+                    centerMode: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: true
+                }
+            }
+        ]
     };
 
     useEffect(() => {
@@ -275,8 +288,6 @@ function Home(props) {
 
         setMount(true);
     };
-
-    console.log(provinces);
 
     useEffect(() => {
         if (process.browser) {
@@ -390,14 +401,14 @@ function Home(props) {
 
     return (
         <Layout>
-            <Row style={{padding: '20px 50px'}}>
+            <Row className='wrapper-index'>
                 <Col xs={{span: 24}} md={{span: 10}}>
                     <div className='d-flex'>
                         <div style={{fontSize: 60, fontWeight: 600}}>Vmotel-Search </div>
                         <CheckCircleOutlined style={{fontSize: 30, position: 'relative', left: '-5px', top: '-10px', color: '#5cdbd3'}} />
                     </div>
                     <div style={{fontSize: 20, fontWeight: 500}}>{t('Website to search motel, apartment')}</div>
-                    <section style={{marginTop: 10, width: 400}}>
+                    <section style={{marginTop: 10, maxWidth: 400}}>
                         <p>{t('introduce')}</p>
                     </section>
                     <Button type='ghost' style={{border: '1px solid #13c2c2', color: '#13c2c2'}} shape='round' icon={<SearchOutlined />}>{t('search-room')}</Button>
@@ -520,6 +531,12 @@ function Home(props) {
                             </Col>
                         );
                     })}
+                </Row>
+                <Row style={{width: '100%', margin: '20px 0px'}}>
+                    <div className='d-flex'>
+                        <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
+                        <FileDoneOutlined style={{fontSize: 30, color: '#08979c'}} />
+                    </div>
                 </Row>
             </Row >
         </Layout >
