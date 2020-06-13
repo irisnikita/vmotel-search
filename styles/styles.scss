@@ -19,6 +19,12 @@
     padding: 20px 50px;
 }
 
+@media only screen and (max-width: 500px) { 
+    .logo-title {
+        font-size: 50px !important;
+    }
+}
+
 @media only screen and (max-width: 800px) {
    .filter-custom {
         border: 1px solid rgb(230, 230, 230);

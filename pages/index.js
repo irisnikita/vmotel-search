@@ -404,7 +404,7 @@ function Home(props) {
             <Row className='wrapper-index'>
                 <Col xs={{span: 24}} md={{span: 10}}>
                     <div className='d-flex'>
-                        <div style={{fontSize: 60, fontWeight: 600}}>Vmotel-Search </div>
+                        <div style={{fontSize: 60, fontWeight: 600}} className='logo-title'>Vmotel-Search </div>
                         <CheckCircleOutlined style={{fontSize: 30, position: 'relative', left: '-5px', top: '-10px', color: '#5cdbd3'}} />
                     </div>
                     <div style={{fontSize: 20, fontWeight: 500}}>{t('Website to search motel, apartment')}</div>
@@ -415,7 +415,7 @@ function Home(props) {
                     <Row gutter={[16, 16]} style={{marginTop: 20, width: '90%', fontSize: 12}}>
                         <Col xs={{span: 24}} md={{span: 24}}>
                             <Row>
-                                <Col xs={{span: 18}} md={{span: 18}}>
+                                <Col xs={{span: 17}} md={{span: 18}}>
                                     <strong>Phòng đẹp, sạch sẽ</strong>
                                     <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái.</p>
                                 </Col>
@@ -429,12 +429,12 @@ function Home(props) {
                         </Col>
                         <Col xs={{span: 24}} md={{span: 24}}>
                             <Row>
-                                <Col span={18}>
+                                <Col xs={{span: 17}} md={{span: 18}}>
                                     <strong>Chi phí hợp lý, giá rẻ</strong>
                                     <p>Đối với những sinh viên lên thành phố học, kinh tế hạn hẹp, Vmotel sẽ tìm cho bạn những căn phòng vừa hợp túi tiền</p>
                                 </Col>
                                 <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                <Col span={5}>
+                                <Col sxs={{span: 5}} md={{span: 5}}>
                                     <div className={'d-flex center'} style={{height: '100%', borderRight: '1px solid f0f0f0'}}>
                                         <img src='/images/money.svg' style={{width: 50}} />
                                     </div>
