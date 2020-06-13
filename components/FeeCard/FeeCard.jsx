@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 // Styles
 import styles from './styles.module.scss';
 
-import {EnvironmentOutlined, SketchOutlined, DownOutlined} from '@ant-design/icons';
+import {EnvironmentOutlined, SketchOutlined} from '@ant-design/icons';
 
 function FeeCard(props) {
     const {t} = useTranslation();

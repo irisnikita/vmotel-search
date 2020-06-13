@@ -33,7 +33,8 @@ const resources = {
             'Minimum area': 'Minium area',
             'Maximum area': 'Maximum area',
             'Minimum price': 'Minium price',
-            'Maximum price': 'Maximum price'
+            'Maximum price': 'Maximum price',
+            'Read post': 'Read post'
         }
     },
     vi: {
@@ -65,7 +66,8 @@ const resources = {
             'Minimum area': 'Diện tích tối thiểu',
             'Maximum area': 'Diện tích tối đa',
             'Minimum price': 'Giá tối thiểu',
-            'Maximum price': 'Giá tối đa'
+            'Maximum price': 'Giá tối đa',
+            'Read post': 'Xem tin'
         }
     }
 };

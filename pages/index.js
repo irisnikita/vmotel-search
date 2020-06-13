@@ -6,7 +6,8 @@ import Slider from 'react-slick';
 import remark from 'remark';
 import axios from 'axios';
 import html from 'remark-html';
-import {Row, Col, Button, Divider, Select} from 'antd';
+import {Row, Col, Button, Divider, Select, Pagination} from 'antd';
+import FacebookLogin from 'react-facebook-login';
 import {useTranslation} from 'react-i18next';
 
 // Components
@@ -14,13 +15,14 @@ import Layout from '../components/Layout/Layout';
 import CustomCard from '../components/Card/Card';
 import SliderCus from '../components/SliderCus/SliderCus';
 import FeeCard from '../components/FeeCard/FeeCard';
+import NormalCard from '../components/NormalCard/NormalCard';
 
 // Utils
 import {getListMarkDowns} from '../utils';
 import {appConfig} from '../constant';
 
 // Icons
-import {SearchOutlined, FileDoneOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined} from '@ant-design/icons';
+import {SearchOutlined, FileDoneOutlined, UnorderedListOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined} from '@ant-design/icons';
 
 export async function getStaticProps() {
     const allMarkDown = getListMarkDowns();
@@ -102,6 +104,7 @@ function Home(props) {
             title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
             province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
             district: {id: '12', name: 'Quận 11'},
+            dateCreate: '13/06/2020',
             street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
             area: 20,
             address: '708/19/12 Đường Hồng Bàng, Phường 1, Quận 11, Hồ Chí Minh',
@@ -114,6 +117,7 @@ function Home(props) {
             title: 'Phòng cho thuê chính chủ 985/24 Âu Cơ, Quận Tân Phú',
             province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
             district: {id: '12', name: 'Quận 11'},
+            dateCreate: '13/06/2020',
             street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
             area: 20,
             address: '985/24 Âu Cơ, phường Tân Sơn Nhì, quận Tân Phú, TP.HCM',
@@ -126,6 +130,7 @@ function Home(props) {
             title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
             province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
             district: {id: '12', name: 'Quận 11'},
+            dateCreate: '13/06/2020',
             street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
             area: 20,
             address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
@@ -137,6 +142,7 @@ function Home(props) {
             price: 3000000,
             title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
             province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
+            dateCreate: '13/06/2020',
             district: {id: '12', name: 'Quận 11'},
             street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
             area: 20,
@@ -150,6 +156,7 @@ function Home(props) {
             title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
             province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
             district: {id: '12', name: 'Quận 11'},
+            dateCreate: '13/06/2020',
             street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
             area: 20,
             address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
@@ -162,6 +169,7 @@ function Home(props) {
             title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
             province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
             district: {id: '12', name: 'Quận 11'},
+            dateCreate: '13/06/2020',
             street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
             area: 20,
             address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
@@ -399,8 +407,22 @@ function Home(props) {
         });
     };
 
+    const componentClicked = () => {
+
+    };
+
+    const responseFacebook = (value) => {
+        console.log(value);
+    };
+
     return (
         <Layout>
+            <FacebookLogin
+                appId="2851202741650860"
+                autoLoad={true}
+                fields="name,email,picture"
+                onClick={componentClicked}
+                callback={responseFacebook} />
             <Row className='wrapper-index'>
                 <Col xs={{span: 24}} md={{span: 10}}>
                     <div className='d-flex'>
@@ -415,13 +437,13 @@ function Home(props) {
                     <Row gutter={[16, 16]} style={{marginTop: 20, width: '90%', fontSize: 12}}>
                         <Col xs={{span: 24}} md={{span: 24}}>
                             <Row>
-                                <Col xs={{span: 17}} md={{span: 18}}>
+                                <Col xs={{span: 18}} md={{span: 18}}>
                                     <strong>Phòng đẹp, sạch sẽ</strong>
                                     <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái.</p>
                                 </Col>
                                 <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                <Col xs={{span: 5}} md={{span: 5}}>
-                                    <div className={'d-flex center'} style={{height: '100%', borderRight: '1px solid f0f0f0'}}>
+                                <Col xs={{span: 4}} md={{span: 5}}>
+                                    <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
                                         <img src='/images/bed.svg' style={{width: 50}} />
                                     </div>
                                 </Col>
@@ -429,13 +451,13 @@ function Home(props) {
                         </Col>
                         <Col xs={{span: 24}} md={{span: 24}}>
                             <Row>
-                                <Col xs={{span: 17}} md={{span: 18}}>
+                                <Col xs={{span: 18}} md={{span: 18}}>
                                     <strong>Chi phí hợp lý, giá rẻ</strong>
                                     <p>Đối với những sinh viên lên thành phố học, kinh tế hạn hẹp, Vmotel sẽ tìm cho bạn những căn phòng vừa hợp túi tiền</p>
                                 </Col>
                                 <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                <Col sxs={{span: 5}} md={{span: 5}}>
-                                    <div className={'d-flex center'} style={{height: '100%', borderRight: '1px solid f0f0f0'}}>
+                                <Col sxs={{span: 4}} md={{span: 5}}>
+                                    <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
                                         <img src='/images/money.svg' style={{width: 50}} />
                                     </div>
                                 </Col>
@@ -535,13 +557,35 @@ function Home(props) {
                         );
                     })}
                 </Row>
-                <Row style={{width: '100%', margin: '20px 0px'}}>
-                    <div className='d-flex'>
-                        <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
-                        <FileDoneOutlined style={{fontSize: 30, color: '#08979c'}} />
-                    </div>
+                <Row style={{width: '100%'}}>
+                    <Col xs={{span: 24}} md={{span: 17}}>
+                        <div className='d-flex' style={{marginBottom: '20px'}}>
+                            <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
+                            <FileDoneOutlined style={{fontSize: 30, color: '#08979c'}} />
+                        </div>
+                        <Row gutter={[16, 16]}>
+                            {
+                                feeMotels && feeMotels.length > 0 ? feeMotels.map(motel => {
+                                    return (
+                                        <Col key={motel.id} xs={{span: 24}} md={{span: 8}}>
+                                            <NormalCard room={motel} />
+                                        </Col>
+                                    );
+                                }) : null
+                            }
+                        </Row>
+                        <div className='d-flex center' style={{width: '100%'}}>
+                            <Pagination total={500} defaultCurrent={1} />
+                        </div>
+                    </Col>
+                    <Col xs={{span: 24}} md={{span: 7}}>
+                        <div className='d-flex' style={{marginBottom: '20px'}}>
+                            <strong style={{color: '#f5222d', fontSize: '25px'}}>{t('DANH MỤC')} - </strong>&nbsp;
+                            <UnorderedListOutlined style={{fontSize: 30, color: '#f5222d'}} />
+                        </div>
+                    </Col>
                 </Row>
-            </Row >
+            </Row>
         </Layout >
     );
 }
