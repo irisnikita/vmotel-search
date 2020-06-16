@@ -102,7 +102,7 @@ function SliderCus(props) {
                     </Menu>
                 }
             >
-                <Button style={{width: 200}} onClick={() => setOpen(!isOpen)}>{t(title)}</Button>
+                <Button style={{width: props.width ? props.width : 200}} onClick={() => setOpen(!isOpen)}>{t(title)}</Button>
             </Dropdown>
         </div>
     );

@@ -34,7 +34,14 @@ const resources = {
             'Maximum area': 'Maximum area',
             'Minimum price': 'Minium price',
             'Maximum price': 'Maximum price',
-            'Read post': 'Read post'
+            'Read post': 'Read post',
+            'Address detail': 'Address detail',
+            'Input address': 'Input address',
+            'Address': 'Address',
+            'Information': 'Information',
+            'Type post': 'Type post',
+            'Title': 'Title',
+            'Images': 'Images'
         }
     },
     vi: {
@@ -67,7 +74,14 @@ const resources = {
             'Maximum area': 'Diện tích tối đa',
             'Minimum price': 'Giá tối thiểu',
             'Maximum price': 'Giá tối đa',
-            'Read post': 'Xem tin'
+            'Read post': 'Xem tin',
+            'Address detail': 'Địa chỉ chính xác',
+            'Input address': 'Nhập địa chỉ',
+            'Address': 'Địa chỉ',
+            'Information': 'Thông tin',
+            'Type post': 'Loại bài đăng',
+            'Title': 'Tiêu đề',
+            'Images': 'Hình ảnh'
         }
     }
 };

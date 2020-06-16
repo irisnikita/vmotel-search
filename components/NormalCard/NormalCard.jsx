@@ -13,8 +13,6 @@ function NormalCard(props) {
     const {room = {}} = props;
     const {t} = useTranslation();
     
-    console.log(room);
-
     return (
         <Card
             bodyStyle={{padding: 10}}

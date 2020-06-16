@@ -111,6 +111,42 @@
     }
   }
 
+  .background-login {
+      width: 100%;
+      background-image: url('../public/images/background-login.jpg');
+      height: 100vh;
+      background-position: center;
+      background-size: cover;
+
+      .menu-login {
+          position: absolute;
+          right: 0;
+          div {
+              &.active {
+                background-color: #fff;
+                color: black;
+                border-radius: 10px 0px 0px 10px;
+                box-shadow: -7px 5px 8px -5px rgba(0,0,0,0.75);
+              }
+              transition: all 500ms;
+              width: 100%;
+              padding: 10px 20px;
+              background-color: transparent;
+              cursor: pointer;
+              font-weight: 500;
+              color: #fff;
+          }
+      }
+
+      .content-login {
+          padding-left: 100px;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+      }
+  }
+
   .mr-10 {
       margin-right: 10px;
   }
@@ -120,4 +156,17 @@
     background: -webkit-linear-gradient(#f54ea2, #ff7676);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .scroll-bar-hide {
+      &::-webkit-scrollbar {
+          display: none;
+      }
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0px 1000px white inset !important;
   }

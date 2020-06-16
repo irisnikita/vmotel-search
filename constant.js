@@ -1,4 +1,8 @@
 export const appConfig = {
+    API: 'http://127.0.0.1:8000',
+    API_VMOTEL: 'http://127.0.0.1:8079',
+    ACCESS_TOKEN_SECERET: 'access-token-secret-nltruongvi',
+    SEXS: [{id: 'male', value: 'Nam'}, {id: 'female', value: 'Nữ'}, {id: 'other', value: 'Khác'}],
     introduces: [
         {
             id: 'page-1',
@@ -11,5 +15,10 @@ export const appConfig = {
         {id: 'phong-tro', value: 'Phòng trọ, nhà trọ'},
         {id: 'nguyen-can', value: 'Nhà thuê nguyên căn'},
         {id: 'can-ho', value: 'Căn hộ'}
+    ],
+    levelPost: [
+        {id: 'normal', label: 'Normal post'},
+        {id: 'hot', label: 'Hot-new'},
+        {id: 'vip', label: 'Vip'}
     ]
 };

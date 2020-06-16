@@ -5,8 +5,11 @@ import 'highlight.js/styles/tomorrow.css';
 import 'antd/dist/antd.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'react-quill/dist/quill.snow.css';
 import i18n from '../i18n';
 import {I18nextProvider} from 'react-i18next';
+import {Provider} from 'react-redux';
+import store from '../Redux/store';
 
 export default function App({Component, pageProps}) {
     useEffect(() => {
@@ -20,8 +23,10 @@ export default function App({Component, pageProps}) {
     };
 
     return (
-        <I18nextProvider i18n={i18n} >
-            <Component {...pageProps} />
-        </I18nextProvider>
+        <Provider store={store}>
+            <I18nextProvider i18n={i18n} >
+                <Component {...pageProps} />
+            </I18nextProvider>
+        </Provider>
     );
 }

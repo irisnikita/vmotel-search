@@ -1,22 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
+import {useRouter} from 'next/router';
 import {Layout as AntdLayout, Menu, Input, Space, Button, Row, Col, Avatar, Dropdown, Select} from 'antd';
 import {useTranslation} from 'react-i18next';
+import {connect} from 'react-redux';
+import _ from 'lodash';
 
-const {Header, Content} = AntdLayout;
+// Actions
+import {userLogin} from '../../Redux/actions/layout';
+
+// Components
+import DashBoard from '../DashBoard/DashBoard';
 
 // Styles
 import styles from './styles.module.scss';
 
+// Services
+import * as userServices from '../../services/User/index';
+
 // Icons
 import {PlusOutlined, UserOutlined} from '@ant-design/icons';
 
-export default function Layout(props) {
+const {Header, Content} = AntdLayout;
+
+function Layout(props) {
     const {t, i18n} = useTranslation();
     const defaultTitle = 'Tìm nhà trọ, khu trọ, giá rẻ, đẹp, gần trung tâm';
     const {children = '', title = defaultTitle} = props;
     const flags = [{id: 'vi', label: 'vietnamese'}, {id: 'en', label: 'english'}];
     const [lang, setLang] = useState({id: 'vi', label: 'vietnamese'});
+    const router = useRouter();
 
     useEffect(() => {
         if (process.browser) {
@@ -25,8 +39,25 @@ export default function Layout(props) {
 
                 setLang(newLang);
             } 
+            if (localStorage.getItem('userInfo')) {
+                validateUser();
+            }
         }
     }, []);
+    
+    const validateUser = async () => {
+        const validate = await userServices.validate();
+
+        if (validate) {
+            if (validate.data && validate.data.data) {
+                const {user} = JSON.parse(localStorage.getItem('userInfo'));
+
+                props.userLogin({
+                    userLogin: user
+                });
+            }
+        }
+    };
 
     const onClickFlag = (lang) => {
         setLang(lang);
@@ -38,24 +69,40 @@ export default function Layout(props) {
         }
     };
 
+    const onClickPost = () => {
+        if (_.isEmpty(props.user)) {
+            router.push('/login?linkPage=post');
+        }
+    };
+
     return (
         <div>
             <Head>
                 <title>{title}</title>
                 <link rel="icon" href="/favicon.ico" />
+                <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js" />
+                <script charSet="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/go.min.js" />
+                <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript" />
             </Head>
             <AntdLayout>
-                <Header className={`${styles['default-header']} d-flex space-between`}>
+                {props.isLoginPage ? null :  <Header className={`${styles['default-header']} d-flex space-between`}>
                     <div className='d-flex'>
                         <Space>
-                            <img src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
+                            <Link href='/'>
+                                <img style={{cursor: 'pointer'}} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
+                            </Link>
                             <Input.Search className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
                         </Space>
                     </div>
                     <div className='d-flex right-menu'>
-                        <Avatar icon={<UserOutlined />} size={32} style={{marginRight: 10}} />
-                        <Button type='primary' shape='round' className='mr-10'>{t('sign-in')}</Button>
-                        <Button type='ghost' shape='round' className='mr-10' icon={<PlusOutlined />}>{t('post')}</Button>
+                        
+                        <Avatar src={props.user.avatar} icon={<UserOutlined />} size={32} style={{marginRight: 10}} />
+                        {
+                            _.isEmpty(props.user) ? <Link href='/login'>
+                                <Button type='primary' shape='round' className='mr-10'>{t('sign-in')}</Button>
+                            </Link> : <strong className='mr-10'>{props.user.fullName}</strong> 
+                        }
+                        <Button type='ghost' shape='round' onClick={onClickPost} className='mr-10' icon={<PlusOutlined />}>{t('post')}</Button>
                         <Dropdown trigger={['click']} overlay={<Menu>
                             {flags && flags.length > 0 && flags.map(flag => {
                                 const isSelected = flag.id === lang.id;
@@ -79,10 +126,25 @@ export default function Layout(props) {
                         </Dropdown>
                     </div>
                 </Header>
-                <Content className={styles['content']}>
-                    {children}
-                </Content>
+                } 
+               
+                {props.dashBoard ? 
+                    <DashBoard userLogin={props.user}>{children}</DashBoard> :  <Content className={styles['content']}>
+                        {children}
+                    </Content>}
             </AntdLayout>
         </div>
     );
 }
+
+const mapDispatchToProps = {
+    userLogin
+};
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.layout.userLogin
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

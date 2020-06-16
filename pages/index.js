@@ -7,7 +7,6 @@ import remark from 'remark';
 import axios from 'axios';
 import html from 'remark-html';
 import {Row, Col, Button, Divider, Select, Pagination} from 'antd';
-import FacebookLogin from 'react-facebook-login';
 import {useTranslation} from 'react-i18next';
 
 // Components
@@ -417,12 +416,6 @@ function Home(props) {
 
     return (
         <Layout>
-            <FacebookLogin
-                appId="2851202741650860"
-                autoLoad={true}
-                fields="name,email,picture"
-                onClick={componentClicked}
-                callback={responseFacebook} />
             <Row className='wrapper-index'>
                 <Col xs={{span: 24}} md={{span: 10}}>
                     <div className='d-flex'>
