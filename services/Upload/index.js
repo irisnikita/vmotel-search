@@ -1,11 +1,14 @@
 import {services} from '../services';
-import {appConfig} from 'Src/constant';
+import {appConfig} from '../../constant';
 
 export function uploadAvatar(params) {
     return services.upload({...params, API: appConfig.API + '/upload/userAvatar'});
 }
 export function uploadPosts(params) {
     return services.upload({...params, API: appConfig.API_VMOTEL + '/upload/posts'});
+}
+export function uploadImgbb(params) {
+    return services.upload({...params, API: appConfig.API_UPLOAD});
 }
 export function getList(params) {
     return services.getList({...params, API: appConfig.API + '/upload/get-uploads'});

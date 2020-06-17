@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Card, Button} from 'antd';
 import {useTranslation} from 'react-i18next';
 import numeral from 'numeral';
+import moment from 'moment';
 
 import styles from './styles.module.scss';
 import stylesFeeCard from '../FeeCard/styles.module.scss';
@@ -28,19 +29,21 @@ function NormalCard(props) {
                 </div>
                 <div className='d-flex'>
                     <strong>{t('address')}:</strong> &nbsp;
-                    <span style={{fontWeight: 500}}>66/9 Bình lợi, P.13, Quận.Bình Thạnh</span>
+                    <div className={styles['address']} style={{fontWeight: 500}}>{room.address}</div>
                 </div>
                 <div className='d-flex'>
                     <strong>{t('area')}:</strong> &nbsp;
-                    <span style={{fontWeight: 500}}>20m<sup>2</sup></span>
+                    <span style={{fontWeight: 500}}>{room.area}m<sup>2</sup></span>
                 </div>
                 <div className='d-flex'>
-                    <a style={{color: '#531dab', fontWeight: 600}} className={styles['link-address']}><EnvironmentOutlined />{`${room.province.name}, ${room.district.name}`}</a>
+                    <a style={{color: '#531dab', fontWeight: 600}} className={styles['link-address']}><EnvironmentOutlined />{`${room.filter.province.name}, ${room.filter.district.name}`}</a>
                 </div>
-                <p className={styles['description']}>{room.description}</p>
+                <div className={styles['description']}>
+                    <div dangerouslySetInnerHTML={{__html: room.description}}></div>
+                </div>
             </div>
-            <div className='d-flex space-between'>
-                <div style={{color: '#bfbfbf', fontSize: '15px'}}>{room.dateCreate}</div>
+            <div className='d-flex space-between' style={{marginTop: 10}}>
+                <div style={{color: '#bfbfbf', fontSize: '15px'}}>{moment(room.startTime).fromNow()}</div>
                 <Button className={styles['btn-view']} shape='round' >
                     <div className='d-flex center'><RightCircleOutlined /></div> &nbsp;
                     <div>{t('Read post')}</div>

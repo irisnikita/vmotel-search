@@ -164,6 +164,46 @@
       }
   }
 
+  .box-room {
+    cursor: pointer;
+    .status-room {
+      color: #fff;
+      position: relative;
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      border-radius: 5px;
+      background-color: #13c2c2;
+      transition: all 300ms, border-radius 200ms;
+      .name-room {
+        font-size: 12px;
+        position: absolute;
+        top: 10px
+      }
+      .desc-room {
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.452);
+        padding: 0px 10px;
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+      }
+    }
+  
+    &:hover .status-room {
+      box-shadow: 0px 0px 10px gray;
+        transform: scale(1.1);
+    }
+    &:active .status-room {
+      transform: scale(0.9);
+      filter: blur(2px);
+    }
+  }
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,

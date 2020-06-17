@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-quill/dist/quill.snow.css';
+import '../styles/icon.scss';
 import i18n from '../i18n';
 import {I18nextProvider} from 'react-i18next';
 import {Provider} from 'react-redux';

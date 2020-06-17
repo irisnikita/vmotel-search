@@ -31,7 +31,7 @@ function Upload(props) {
         for (let file of files) {
             let data = new FormData();
 
-            data.append('file', files[file]);
+            data.append('image', file);
 
             const getBase = await getBase64(file);
 
@@ -39,6 +39,10 @@ function Upload(props) {
                 data: data,
                 src: getBase
             });
+        }
+
+        if(props.callback) {
+            props.callback(newImages)
         }
 
         setImages(newImages);
@@ -63,7 +67,7 @@ function Upload(props) {
                     <ToTopOutlined /> &nbsp;
                     <div>Upload</div>
                 </div>
-                <input type='file' id='file' name='file' multiple onChange={onChangeUpload} />
+                <input type='file' id='file' name='image' multiple onChange={onChangeUpload} />
             </div>
             <Row gutter={[16, 16]} style={{marginTop: 20}}>
                 {

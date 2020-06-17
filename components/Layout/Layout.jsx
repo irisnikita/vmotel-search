@@ -72,6 +72,8 @@ function Layout(props) {
     const onClickPost = () => {
         if (_.isEmpty(props.user)) {
             router.push('/login?linkPage=post');
+        } else {
+            router.push('/quan-ly/tao-tin');
         }
     };
 

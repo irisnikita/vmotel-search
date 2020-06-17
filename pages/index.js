@@ -6,7 +6,7 @@ import Slider from 'react-slick';
 import remark from 'remark';
 import axios from 'axios';
 import html from 'remark-html';
-import {Row, Col, Button, Divider, Select, Pagination} from 'antd';
+import {Row, Col, Button, Divider, Select, Pagination, Card, Empty} from 'antd';
 import {useTranslation} from 'react-i18next';
 
 // Components
@@ -19,6 +19,9 @@ import NormalCard from '../components/NormalCard/NormalCard';
 // Utils
 import {getListMarkDowns} from '../utils';
 import {appConfig} from '../constant';
+
+// Services
+import * as postServices from '../services/post/index';
 
 // Icons
 import {SearchOutlined, FileDoneOutlined, UnorderedListOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined} from '@ant-design/icons';
@@ -45,8 +48,11 @@ function Home(props) {
         district: 'all',
         street: 'all',
         prices: [0, 50],
-        areas: [0, 50]
+        areas: [0, 50],
+        page: 1,
+        limit: 20
     });
+    const [total, setTotal] = useState(20);
     const [isMount, setMount] = useState(false);
     const {t} = useTranslation();
     const [rooms, setRooms] = useState([
@@ -95,6 +101,7 @@ function Home(props) {
             images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
         }
     ]);
+    const [isLoading, setLoading] = useState(false);
 
     const [feeMotels, setFeeMotels] = useState([
         {
@@ -177,6 +184,9 @@ function Home(props) {
         }
     ]);
 
+    const [normalPosts, setNormalPosts] = useState([]);
+    const [hotPosts, setHotPosts] = useState([]);
+
     const settings = {
         infinite: true,
         centerMode: true,
@@ -203,6 +213,8 @@ function Home(props) {
 
     useEffect(() => {
         getLocal();
+
+        getHotPosts();
     }, []);
 
     useEffect(() => {
@@ -297,15 +309,58 @@ function Home(props) {
     };
 
     useEffect(() => {
-        if (process.browser) {
-            if (isMount === true) {
-                setTimeout(() => {
-                    localStorage.setItem('filter', JSON.stringify(filter));
-                });
-            }
-        }
+        getPostNormal();
     }, [filter]);
 
+    const getHotPosts = async () => {
+        const getHotPosts = await postServices.getList({
+            limit: 6,
+            levelId: 'hot'
+        });
+
+        if (getHotPosts) {
+            if (getHotPosts.data && getHotPosts.data.data) {
+                const {posts} = getHotPosts.data.data;
+
+                setHotPosts(posts || []);
+            }
+        }
+    };
+
+    const getPostNormal = async () => {
+        setLoading(true);
+
+        const getPostNormal = await postServices.getList({
+            page: filter.page - 1,
+            limit: filter.limit,
+            areaStart: filter.areas[0],
+            areaEnd: filter.areas[1],
+            optionTypeId: filter.optionType,
+            provinceCode: filter.province,
+            districtName: filter.district,
+            streetId: filter.street,
+            priceStart: filter.prices[0] * 1000000,
+            priceEnd: filter.prices[1] * 1000000,
+            levelId: 'normal'
+        });
+
+        if (getPostNormal) {
+            if (getPostNormal.data && getPostNormal.data.data) {
+                const {posts, total} = getPostNormal.data.data;
+
+                setNormalPosts(posts || []);
+               
+                setTotal(total);
+            }
+        }
+
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        console.log('hot posts', hotPosts);
+    }, [hotPosts]);
+   
     const getMarkDown = async () => {
         let newIntroduces = [];
 
@@ -406,12 +461,38 @@ function Home(props) {
         });
     };
 
-    const componentClicked = () => {
-
+    const onShowSizeChange = (current, pageSize) => {
+        setfilter({
+            ...filter,
+            limit: pageSize
+        });
     };
 
-    const responseFacebook = (value) => {
-        console.log(value);
+    const onChangePagination = (page) => {
+        setfilter({
+            ...filter,
+            page
+        });
+    };
+
+    const showRenderNormalPosts = () => {
+        if (isLoading) {
+            const cols = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+            return cols.map(col => {
+                return <Col key={col} xs={{span: 24}} md={{span: 8}}>
+                    <Card style={{width: '100%'}} loading={isLoading} />
+                </Col>;
+            }); 
+        } else {
+            return normalPosts && normalPosts.length > 0 ? normalPosts.map(motel => {
+                return (
+                    <Col key={motel._id} xs={{span: 24}} md={{span: 8}}>
+                        <NormalCard room={motel} />
+                    </Col>
+                );
+            }) : <Empty style={{width: '100%', height: '200px'}} />;
+        }
     };
 
     return (
@@ -542,36 +623,28 @@ function Home(props) {
                     </div>
                 </Row>
                 <Row style={{width: '100%', margin: '20px 0px'}} gutter={[16,16]}>
-                    {feeMotels.map(feeMotel => {
+                    {hotPosts && hotPosts.length > 0 ? hotPosts.map(post => {
                         return (
-                            <Col key={feeMotel.id} xs={{span: 24}} md={{span: 12}}>
-                                <FeeCard />
+                            <Col key={post._id} xs={{span: 24}} md={{span: 12}}>
+                                <FeeCard post={post} />
                             </Col>
                         );
-                    })}
+                    }) : null}
                 </Row>
                 <Row style={{width: '100%'}}>
-                    <Col xs={{span: 24}} md={{span: 17}}>
+                    <Col xs={{span: 24}} md={{span: 16}}>
                         <div className='d-flex' style={{marginBottom: '20px'}}>
                             <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
                             <FileDoneOutlined style={{fontSize: 30, color: '#08979c'}} />
                         </div>
                         <Row gutter={[16, 16]}>
-                            {
-                                feeMotels && feeMotels.length > 0 ? feeMotels.map(motel => {
-                                    return (
-                                        <Col key={motel.id} xs={{span: 24}} md={{span: 8}}>
-                                            <NormalCard room={motel} />
-                                        </Col>
-                                    );
-                                }) : null
-                            }
+                            {showRenderNormalPosts()}
                         </Row>
                         <div className='d-flex center' style={{width: '100%'}}>
-                            <Pagination total={500} defaultCurrent={1} />
+                            <Pagination total={total} onChange={onChangePagination} showSizeChanger defaultCurrent={1} pageSize={filter.limit} onShowSizeChange={onShowSizeChange} />
                         </div>
                     </Col>
-                    <Col xs={{span: 24}} md={{span: 7}}>
+                    <Col xs={{span: 24}} md={{span: 8}}>
                         <div className='d-flex' style={{marginBottom: '20px'}}>
                             <strong style={{color: '#f5222d', fontSize: '25px'}}>{t('DANH MỤC')} - </strong>&nbsp;
                             <UnorderedListOutlined style={{fontSize: 30, color: '#f5222d'}} />
