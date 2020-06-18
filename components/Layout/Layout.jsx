@@ -85,6 +85,7 @@ function Layout(props) {
                 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js" />
                 <script charSet="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/go.min.js" />
                 <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             </Head>
             <AntdLayout>
                 {props.isLoginPage ? null :  <Header className={`${styles['default-header']} d-flex space-between`}>
