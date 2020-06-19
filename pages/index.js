@@ -103,87 +103,6 @@ function Home(props) {
     ]);
     const [isLoading, setLoading] = useState(false);
 
-    const [feeMotels, setFeeMotels] = useState([
-        {
-            id: 1,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
-            district: {id: '12', name: 'Quận 11'},
-            dateCreate: '13/06/2020',
-            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
-            area: 20,
-            address: '708/19/12 Đường Hồng Bàng, Phường 1, Quận 11, Hồ Chí Minh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        },
-        {
-            id: 2,
-            price: 2500000,
-            title: 'Phòng cho thuê chính chủ 985/24 Âu Cơ, Quận Tân Phú',
-            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
-            district: {id: '12', name: 'Quận 11'},
-            dateCreate: '13/06/2020',
-            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
-            area: 20,
-            address: '985/24 Âu Cơ, phường Tân Sơn Nhì, quận Tân Phú, TP.HCM',
-            description: 'Phòng mới xây sạch sẽ, đẹp, thoáng mát, có bếp riêng, thang máy, lối vào cửa tự do, bảo vệ 24/24.',
-            images: ['/images/rooms/phong-tro-4.jpg', '/images/rooms/phong-tro-5.jpg', '/images/rooms/phong-tro-6.jpg']
-        },
-        {
-            id: 3,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
-            district: {id: '12', name: 'Quận 11'},
-            dateCreate: '13/06/2020',
-            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
-            area: 20,
-            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        },
-        {
-            id: 4,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
-            dateCreate: '13/06/2020',
-            district: {id: '12', name: 'Quận 11'},
-            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
-            area: 20,
-            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        },
-        {
-            id: 5,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
-            district: {id: '12', name: 'Quận 11'},
-            dateCreate: '13/06/2020',
-            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
-            area: 20,
-            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        },
-        {
-            id: 6,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: {id: '1', code: 'SG', name: 'Hồ Chí Minh'},
-            district: {id: '12', name: 'Quận 11'},
-            dateCreate: '13/06/2020',
-            street: {id: '3371', name: 'Hồng Bàng', prefix: 'Đường'},
-            area: 20,
-            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        }
-    ]);
-
     const [normalPosts, setNormalPosts] = useState([]);
     const [hotPosts, setHotPosts] = useState([]);
 
@@ -567,7 +486,7 @@ function Home(props) {
                         <Col xs={{span: 24}} md={{span: 4}}>
                             <div className='d-flex row left'>
                                 <strong>{t('Select post')}:</strong>
-                                <Select style={{width: 200}} value={filter.optionType} onChange={onChangeOptionTypes}>
+                                <Select style={{width: '100%'}} value={filter.optionType} onChange={onChangeOptionTypes}>
                                     {appConfig.optionTypes && appConfig.optionTypes.length > 0 && appConfig.optionTypes.map(option => {
                                         return <Select.Option key={option.id} value={option.id}>{t(option.value)}</Select.Option>;
                                     })}
@@ -578,7 +497,7 @@ function Home(props) {
                             <div className='d-flex row left'>
                                 <strong>{t('Provinces')}:</strong>
                                 <Select
-                                    style={{width: 200}}
+                                    style={{width: '100%'}}
                                     value={filter.province}
                                     onChange={onChangeProvinces}
                                     placeholder={'hello'}
@@ -592,7 +511,7 @@ function Home(props) {
                         <Col xs={{span: 24}} md={{span: 4}}>
                             <div className='d-flex row left'>
                                 <strong>{t('District')}:</strong>
-                                <Select style={{width: 200}} value={filter.district} onChange={onChangeDistrict}>
+                                <Select style={{width: '100%'}} value={filter.district} onChange={onChangeDistrict}>
                                     {districts && districts.length > 0 && districts.map(district => {
                                         return <Select.Option key={district.name} value={district.name}>{t(district.name)}</Select.Option>;
                                     })}
@@ -602,7 +521,7 @@ function Home(props) {
                         <Col xs={{span: 24}} md={{span: 4}}>
                             <div className='d-flex row left'>
                                 <strong>{t('Street')}:</strong>
-                                <Select style={{width: 200}} value={filter.street} onChange={onChangeStrict}>
+                                <Select style={{width: '100%'}} value={filter.street} onChange={onChangeStrict}>
                                     {streets && streets.length > 0 && streets.map(street => {
                                         return <Select.Option key={street.id} value={street.id}>{`${street.prefix || ''} ${t(street.name)}`}</Select.Option>;
                                     })}
@@ -610,10 +529,10 @@ function Home(props) {
                             </div>
                         </Col>
                         <Col xs={{span: 24}} md={{span: 4}}>
-                            <SliderCus defaultValue={filter.prices} wrapperTitle='price' title='Select prices' callback={callbackSliderPrice} />
+                            <SliderCus width='100%' defaultValue={filter.prices} wrapperTitle='price' title='Select prices' callback={callbackSliderPrice} />
                         </Col>
                         <Col xs={{span: 24}} md={{span: 4}}>
-                            <SliderCus defaultValue={filter.areas} wrapperTitle='area' type='area' min={0} max={50} step={1} title='Select area' callback={callbackSliderArea} />
+                            <SliderCus width='100%' defaultValue={filter.areas} wrapperTitle='area' type='area' min={0} max={50} step={1} title='Select area' callback={callbackSliderArea} />
                         </Col>
                     </Row>
                 

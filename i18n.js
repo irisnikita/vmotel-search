@@ -81,7 +81,16 @@ const resources = {
             'Information': 'Thông tin',
             'Type post': 'Loại bài đăng',
             'Title': 'Tiêu đề',
-            'Images': 'Hình ảnh'
+            'Images': 'Hình ảnh',
+            'Type of post': 'Loại tin',
+            'Code': 'Mã tin',
+            'Province': 'Tỉnh, Thành phố',
+            'Area': 'Diện tích',
+            'Price': 'Giá',
+            'Status': 'Trạng thái',
+            'Running': 'Đang hoạt động',
+            'Date Submitted': 'Ngày đăng',
+            'End date': 'Ngày kết thúc'
         }
     }
 };
