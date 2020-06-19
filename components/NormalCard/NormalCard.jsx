@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Card, Button} from 'antd';
 import {useTranslation} from 'react-i18next';
 import numeral from 'numeral';
+import Link from 'next/link';
 import moment from 'moment';
+import {useRouter} from 'next/router';
 
 import styles from './styles.module.scss';
 import stylesFeeCard from '../FeeCard/styles.module.scss';
@@ -12,8 +14,38 @@ import {EnvironmentOutlined, RightCircleOutlined} from '@ant-design/icons';
 
 function NormalCard(props) {
     const {room = {}} = props;
+    const [params, setParams] = useState({
+        title: '',
+        province: '',
+        district: ''
+    });
     const {t} = useTranslation();
+    const router = useRouter();
     
+    const convertChar = (string) => {
+        string = string.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D')
+            .replace(/[^\w\s]/g, '')
+            .replace(/\s/g, '-').toLowerCase();
+    
+        return string;
+    };
+
+    useEffect(() => {
+        const title = convertChar(room.title);
+        const province = convertChar(room.filter.province.name)
+        const district = convertChar(room.filter.district.name)
+
+        setParams({
+            title: title + `"${room._id}"`,
+            province,
+            district,
+            id: room._id
+        })
+    }, [room])
+
     return (
         <Card
             bodyStyle={{padding: 10}}
@@ -44,10 +76,14 @@ function NormalCard(props) {
             </div>
             <div className='d-flex space-between' style={{marginTop: 10}}>
                 <div style={{color: '#bfbfbf', fontSize: '15px'}}>{moment(room.startTime).fromNow()}</div>
-                <Button className={styles['btn-view']} shape='round' >
-                    <div className='d-flex center'><RightCircleOutlined /></div> &nbsp;
-                    <div>{t('Read post')}</div>
-                </Button>
+                <Link href="/posts/[province]/[district]/[post]" as={`/posts/${params.province}/${params.district}/${params.title}?id=${params.id}`}>
+                    <a>
+                        <Button className={styles['btn-view']} shape='round' >
+                            <div className='d-flex center'><RightCircleOutlined /></div> &nbsp;
+                            <div>{t('Read post')}</div>
+                        </Button>
+                    </a>
+                </Link>
             </div>
         </Card>
     );

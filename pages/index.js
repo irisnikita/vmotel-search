@@ -312,6 +312,17 @@ function Home(props) {
         getPostNormal();
     }, [filter]);
 
+    const convertChar = (string) => {
+        string = string.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D')
+            .replace(/[^\w\s]/g, '')
+            .replace(/\s/g, '-');
+    
+        return string;
+    };
+
     const getHotPosts = async () => {
         const getHotPosts = await postServices.getList({
             limit: 6,
@@ -333,8 +344,8 @@ function Home(props) {
         const getPostNormal = await postServices.getList({
             page: filter.page - 1,
             limit: filter.limit,
-            areaStart: filter.areas[0],
-            areaEnd: filter.areas[1],
+            areaStart: filter.areas[0] * 10,
+            areaEnd: filter.areas[1] * 10,
             optionTypeId: filter.optionType,
             provinceCode: filter.province,
             districtName: filter.district,
@@ -356,10 +367,6 @@ function Home(props) {
 
         setLoading(false);
     };
-
-    useEffect(() => {
-        console.log('hot posts', hotPosts);
-    }, [hotPosts]);
    
     const getMarkDown = async () => {
         let newIntroduces = [];
@@ -498,6 +505,9 @@ function Home(props) {
     return (
         <Layout>
             <Row className='wrapper-index'>
+                <Link href="/blogs/anh-yeu-em">
+                    <a>dsd</a>
+                </Link>
                 <Col xs={{span: 24}} md={{span: 10}}>
                     <div className='d-flex'>
                         <div style={{fontSize: 60, fontWeight: 600}} className='logo-title'>Vmotel-Search </div>
