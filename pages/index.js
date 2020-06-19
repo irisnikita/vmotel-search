@@ -505,9 +505,6 @@ function Home(props) {
     return (
         <Layout>
             <Row className='wrapper-index'>
-                <Link href="/blogs/anh-yeu-em">
-                    <a>dsd</a>
-                </Link>
                 <Col xs={{span: 24}} md={{span: 10}}>
                     <div className='d-flex'>
                         <div style={{fontSize: 60, fontWeight: 600}} className='logo-title'>Vmotel-Search </div>
