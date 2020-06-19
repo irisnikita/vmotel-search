@@ -7,6 +7,12 @@ export function create(params) {
 export function getList(params) {
     return services.getList({...params, API: appConfig.API_VMOTEL + '/post/get-list'});
 }
+export function getPost(params) {
+    return services.get({...params, API: appConfig.API_VMOTEL + '/post/get-post'});
+}
+export function getPaths(params) {
+    return services.getList({...params, API: appConfig.API_VMOTEL + '/post/get-paths'});
+}
 export function del(params) {
     return services.del({...params, API: appConfig.API_VMOTEL + '/post/delete'});
 }

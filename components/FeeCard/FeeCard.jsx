@@ -25,8 +25,7 @@ function FeeCard(props) {
                         <SketchOutlined style={{fontSize: 20, color: '#fff'}} />
                     </div>
                     <div className={styles['preview']}>
-                        <EyeOutlined /> &nbsp;
-                        {t('View')}
+                        <EyeOutlined /> 
                     </div>
                 </div>
             </Col>

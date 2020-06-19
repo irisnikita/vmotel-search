@@ -3,18 +3,20 @@ import axios from 'axios';
 var CancelToken = axios.CancelToken;
 
 axios.interceptors.request.use(function (config) {
-    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if (process.browser) {
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    if (userInfo) {
-        const {token = '', user = {}} = userInfo;
-
-        config.params = {
-            ...config.params,
-            token: token,
-            userId: user.id
-        };
+        if (userInfo) {
+            const {token = '', user = {}} = userInfo;
+    
+            config.params = {
+                ...config.params,
+                token: token,
+                userId: user.id
+            };
+        }
+        return config;
     }
-    return config;
 });
 
 export const services =  {
@@ -35,18 +37,20 @@ export const services =  {
         }
     },
     getList: function getList(params) {
-        if (typeof(params.API) !== undefined) {
-            const API = params.API;
-            const cancelToken = params.cancelToken ? params.cancelToken : new CancelToken(function () {});
-
-            delete params.API;
-            delete params.cancelToken;
-
-            return axios.get(API, {
-                params: params,
-                cancelToken
-            });
-        } else {return false}
+        if (params) {
+            if (typeof(params.API) !== undefined) {
+                const API = params.API;
+                const cancelToken = params.cancelToken ? params.cancelToken : new CancelToken(function () {});
+    
+                delete params.API;
+                delete params.cancelToken;
+    
+                return axios.get(API, {
+                    params: params,
+                    cancelToken
+                });
+            } else {return false}
+        }
     },
     create: function create(params) {
         if (typeof(params.API) !== undefined) {
