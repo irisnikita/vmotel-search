@@ -297,12 +297,29 @@ function CreatePost(props) {
             },
             option: optionSelected,
             startTime: moment().format(),
+            endTime: endDate(),
             images: newImages
         };
 
         setIsLoading(false);
 
         createPost(newForm);
+    };
+
+    const endDate = () => {
+        switch (optionSelected.typeFee.id) {
+            case 'days':
+                return moment().add(optionSelected.rangeTime, 'days').format();                
+        
+            case 'months':
+                return moment().add(optionSelected.rangeTime, 'months').format();                
+        
+            case 'weeks':
+                return moment().add(optionSelected.rangeTime, 'weeks').format();                
+        
+            default:
+                return moment().add(optionSelected.rangeTime, 'days').format(); 
+        }
     };
 
     const createPost = async (post) => {
