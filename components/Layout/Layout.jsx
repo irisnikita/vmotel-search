@@ -86,6 +86,9 @@ function Layout(props) {
                 <script charSet="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/go.min.js" />
                 <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+                <meta property='og:image' content={props.image} />
+                <meta property='og:title' content={props.title} />
+                <meta property='og:description' content={props.content} />
             </Head>
             <AntdLayout>
                 {props.isLoginPage ? null :  <Header className={`${styles['default-header']} d-flex space-between`}>
@@ -139,6 +142,12 @@ function Layout(props) {
         </div>
     );
 }
+
+Layout.defaultProps = {
+    image: '/images/vmotel-logo.png',
+    title: 'Tìm nhà trọ, khu trọ, giá rẻ, đẹp, gần trung tâm, an ninh, gần chợ, trường học, uy tín!',
+    content: 'Bạn lo lắng khi không tìm được nơi ở, chi phí quá cao, an ninh không tốt, phòng xuống cấp trật chội. Với Vmotel-Search, bạn không những có thể tìm được phòng ưng ý, chi phí thấp, an ninh tốt mà còn xem được chất lượng và uy tín của phòng trọ, căn hộ.'
+};
 
 const mapDispatchToProps = {
     userLogin

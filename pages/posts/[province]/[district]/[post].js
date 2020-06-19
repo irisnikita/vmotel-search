@@ -62,8 +62,13 @@ export async function getStaticProps(props) {
 function Post(props) {
     const { postInfo } = props;
 
+    const meta = {
+        image: postInfo.images[0],
+        title: postInfo.title
+    }
+
     return (
-        <Layout>
+        <Layout {...meta}>
             hello
             {postInfo.title}
         </Layout>
