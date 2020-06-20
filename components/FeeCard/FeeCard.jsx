@@ -1,7 +1,8 @@
 // Libraries
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Row, Col} from 'antd';
+import Link from 'next/link';
 import numeral from 'numeral';
 import {useTranslation} from 'react-i18next';
 
@@ -13,21 +14,54 @@ import {EnvironmentOutlined, SketchOutlined, EyeOutlined} from '@ant-design/icon
 function FeeCard(props) {
     const {post = {}} = props;
     const {images = [], address = '', area, description, filter = {}, price, title} = post;
+    const [params, setParams] = useState({
+        title: '',
+        province: '',
+        district: ''
+    });
     const {district, province} = filter;
     const {t} = useTranslation();
+
+    const convertChar = (string) => {
+        string = string.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D')
+            .replace(/[^\w\s]/g, '')
+            .replace(/\s/g, '-').toLowerCase();
+    
+        return string;
+    };
+
+    useEffect(() => {
+        const title = convertChar(post.title || '');
+        const province = convertChar(post.filter.province.name)
+        const district = convertChar(post.filter.district.name)
+
+        setParams({
+            title: title + `"${post._id}"`,
+            province,
+            district
+        })
+    }, [post])
 
     return (
         <Row className={styles['fee-card']}>
             <Col xs={{span: 24}} md={{span: 8}}>
-                <div className={styles['background-image']} style={{backgroundImage: `url(${images[0]})`}}>
-    <div className={styles['number-image']}>{images.length} {t('images')}</div>
-                    <div className={`${styles['banner-fee']} d-flex center`}>
-                        <SketchOutlined style={{fontSize: 20, color: '#fff'}} />
-                    </div>
-                    <div className={styles['preview']}>
-                        <EyeOutlined /> 
-                    </div>
-                </div>
+                <Link href='/posts/[province]/[district]/[post]' as={`/posts/${params.province}/${params.district}/${params.title}`}>
+                    <a>
+                        <div className={styles['background-image']} style={{backgroundImage: `url(${images[0]})`}}>
+                            <div className={styles['number-image']}>{images.length} {t('images')}</div>
+                            <div className={`${styles['banner-fee']} d-flex center`}>
+                                <SketchOutlined style={{fontSize: 20, color: '#fff'}} />
+                            </div>
+                            <div className={styles['preview']}>
+                                <EyeOutlined /> 
+                            </div>
+                        </div>
+                    </a>
+                </Link>
+                
             </Col>
             <Col xs={{span: 24}} md={{span: 16}}>
                 <div className={styles['content']}>

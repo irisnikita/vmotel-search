@@ -76,7 +76,7 @@ function NormalCard(props) {
             </div>
             <div className='d-flex space-between' style={{marginTop: 10}}>
                 <div style={{color: '#bfbfbf', fontSize: '15px'}}>{moment(room.startTime).fromNow()}</div>
-                <Link href="/posts/[province]/[district]/[post]" as={`/posts/${params.province}/${params.district}/${params.title}?id=${params.id}`}>
+                <Link href="/posts/[province]/[district]/[post]" as={`/posts/${params.province}/${params.district}/${params.title}`}>
                     <a>
                         <Button className={styles['btn-view']} shape='round' >
                             <div className='d-flex center'><RightCircleOutlined /></div> &nbsp;
