@@ -51,7 +51,7 @@ function NormalCard(props) {
             bodyStyle={{padding: 10}}
             className={styles['normal-card']}
             hoverable
-            cover={<div className={styles['image-cover']} style={{backgroundImage: `url(${room.images[0]})`}} />}
+            cover={<div className={styles['image-cover']} style={{backgroundImage: `url(${room.images[0] || '/images/giphy.gif'})`}} />}
         >
             <div className='d-flex row left inner-body' style={{justifyContent: 'space-between', height: '200px'}}>
                 <div className={styles['title']}>{room.title}</div>
