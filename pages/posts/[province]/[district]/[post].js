@@ -27,34 +27,34 @@ const convertChar = (string) => {
     return string;
 };
 
-export async function getStaticPaths() {
-    const res = await fetch(`${appConfig.API_VMOTEL}/post/get-paths`);
-    const posts = await res.json();
-    const { paths = [] } = posts.data;
+// export async function getStaticPaths() {
+//     const res = await fetch(`${appConfig.API_VMOTEL}/post/get-paths`);
+//     const posts = await res.json();
+//     const { paths = [] } = posts.data;
 
-    const newPaths = paths.map(path => {
-        const title = convertChar(path.title);
-        const province = convertChar(path.filter.province.name)
-        const district = convertChar(path.filter.district.name)
-        const id = path._id;
+//     const newPaths = paths.map(path => {
+//         const title = convertChar(path.title);
+//         const province = convertChar(path.filter.province.name)
+//         const district = convertChar(path.filter.district.name)
+//         const id = path._id;
 
-        return {
-            params: {
-                post: title + `"${id}"`,
-                province,
-                district,
-            }
-        }
-    })
+//         return {
+//             params: {
+//                 post: title + `"${id}"`,
+//                 province,
+//                 district,
+//             }
+//         }
+//     })
 
-    return {
-        paths: newPaths,
-        fallback: false // See the "fallback" section below
-    };
-}
+//     return {
+//         paths: newPaths,
+//         fallback: false // See the "fallback" section below
+//     };
+// }
 
 // This also gets called at build time
-export async function getStaticProps(props) {
+export async function getServerSideProps(props) {
     const { params = {} } = props;
 
     const id = params.post.match(/"([^"]*)"/g)[0].replace(/"/g, '');
