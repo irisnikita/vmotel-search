@@ -6,12 +6,16 @@ import { useRouter } from 'next/router';
 import Slider from 'react-slick';
 import numeral from 'numeral';
 import moment from 'moment';
-import { Row, Col, Descriptions, Button, Badge, Typography, Divider, Tag } from 'antd';
-import axios from 'axios';
+import { Row, Col, Descriptions, Button, Badge, Typography, Divider, Tag, Empty } from 'antd';
+
+// Services
 import * as postServices from '../../../../services/post/index';
 
+// Components
 import Layout from '../../../../components/Layout/Layout';
+import NormalCard from '../../../../components/NormalCard/NormalCard';
 
+// Icons
 import { FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, LeftOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -27,32 +31,6 @@ const convertChar = (string) => {
     return string;
 };
 
-// export async function getStaticPaths() {
-//     const res = await fetch(`${appConfig.API_VMOTEL}/post/get-paths`);
-//     const posts = await res.json();
-//     const { paths = [] } = posts.data;
-
-//     const newPaths = paths.map(path => {
-//         const title = convertChar(path.title);
-//         const province = convertChar(path.filter.province.name)
-//         const district = convertChar(path.filter.district.name)
-//         const id = path._id;
-
-//         return {
-//             params: {
-//                 post: title + `"${id}"`,
-//                 province,
-//                 district,
-//             }
-//         }
-//     })
-
-//     return {
-//         paths: newPaths,
-//         fallback: false // See the "fallback" section below
-//     };
-// }
-
 // This also gets called at build time
 export async function getServerSideProps(props) {
     const { params = {} } = props;
@@ -61,9 +39,9 @@ export async function getServerSideProps(props) {
 
     const res = await fetch(`${appConfig.API_VMOTEL}/post/get-post/${id}`)
     const data = await res.json();
-
+    const { post = {} } = data.data;
     // Pass post data to the page via props
-    return { props: { postInfo: data.data.post } }
+    return { props: { postInfo: post } }
 }
 
 function Post(props) {
@@ -72,6 +50,27 @@ function Post(props) {
     const meta = {
         image: postInfo.images[0],
         title: postInfo.title + `,${postInfo.filter.province.name}, ${postInfo.filter.district.name}`
+    }
+    const [postRelatives, setPostRelatives] = useState([]);
+
+    useEffect(() => {
+        getPostsRelative()
+    }, [])
+
+    const getPostsRelative = async () => {
+        const getPosts = await postServices.getList({
+            limit: 10,
+            provinceCode: postInfo.filter.province.code,
+            districtName: postInfo.filter.district.name
+        })
+
+        if (getPosts) {
+            if (getPosts.data && getPosts.data.data) {
+                const { posts = {} } = getPosts.data.data;
+
+                setPostRelatives(posts)
+            }
+        }
     }
 
     function SampleNextArrow(props) {
@@ -100,6 +99,17 @@ function Post(props) {
         );
     }
 
+    const showRenderNormalPosts = () => {
+        return postRelatives && postRelatives.length > 0 ? postRelatives.map(motel => {
+            if (motel._id !== postInfo._id)
+                return (
+                    <Col key={motel._id} xs={{ span: 24 }} md={{ span: 8 }}>
+                        <NormalCard room={motel} />
+                    </Col>
+                );
+        }) : <Empty style={{ width: '100%', height: '200px' }} />;
+    };
+
     const settings = {
         infinite: true,
         slidesToShow: 1,
@@ -112,7 +122,6 @@ function Post(props) {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />
     };
-
 
     const showRenderPackage = () => {
         switch (postInfo.option.level.id) {
@@ -176,7 +185,7 @@ function Post(props) {
                             <Tag color="volcano">{postInfo.filter.street.name}</Tag>
                         </div>
                     </div>
-                    <div>
+                    <div style={{ marginBottom: 30 }}>
                         <Title level={4}>{t('Images')}</Title>
                         <Slider {...settings}>
                             {
@@ -194,6 +203,10 @@ function Post(props) {
                             postInfo.images && postInfo.images.length <= 0 ? <div className='image-default' style={{ backgroundImage: 'url(/images/background-login.jpg)' }}><div style={{ height: 'max-content' }}>No Images</div></div> : null
                         }
                     </div>
+                    <Title level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
+                    <Row gutter={[16, 16]}>
+                        {showRenderNormalPosts()}
+                    </Row>
                 </Col>
                 <Col xs={{ span: 24 }} md={{ span: 8 }}></Col>
             </Row>
