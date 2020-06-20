@@ -71,9 +71,18 @@
     }
 }
 
+.list-menu-btn {
+    border: 1px solid #f0f0f0;
+    border-bottom: none;
+    padding: 10px 0px;
+}
+
 @media only screen and (max-width: 500px) { 
     .logo-title {
         font-size: 50px !important;
+    }
+    .wrapper-image {
+        height: 250px !important;
     }
 }
 
@@ -96,6 +105,10 @@
 
     .right-menu {
         display: none;
+    }
+
+    .slick-custom {
+        background-size: 700px !important;
     }
 }
 

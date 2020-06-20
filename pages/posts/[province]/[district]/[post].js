@@ -146,7 +146,7 @@ function Post(props) {
             <Row style={{ padding: 20 }}>
                 <div style={{ width: '100%' }}>{showRenderTitle()}</div>
                 <Col xs={{ span: 24 }} md={{ span: 16 }}>
-                    <div className='d-flex' >
+                    <div className='d-flex list-menu-btn' >
                         <Button type='link' style={{ fontWeight: 500 }}>{t('GENERAL INFO')}</Button>
                         <Button type='link' style={{ fontWeight: 500 }}>{t('DETAILS')}</Button>
                         <Button type='link' style={{ fontWeight: 500 }}>{t('MAP')}</Button>
