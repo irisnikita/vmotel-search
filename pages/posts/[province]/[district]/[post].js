@@ -28,8 +28,6 @@ const convertChar = (string) => {
 };
 
 export async function getStaticPaths() {
-    let params = [];
-
     const res = await fetch(`${appConfig.API_VMOTEL}/post/get-paths`);
     const posts = await res.json();
     const { paths = [] } = posts.data;
@@ -146,7 +144,7 @@ function Post(props) {
     return (
         <Layout {...meta}>
             <Row style={{ padding: 20 }}>
-                {showRenderTitle()}
+                <div style={{ width: '100%' }}>{showRenderTitle()}</div>
                 <Col xs={{ span: 24 }} md={{ span: 16 }}>
                     <div className='d-flex' >
                         <Button type='link' style={{ fontWeight: 500 }}>{t('GENERAL INFO')}</Button>
@@ -192,6 +190,9 @@ function Post(props) {
                                     }) : null
                             }
                         </Slider>
+                        {
+                            postInfo.images && postInfo.images.length <= 0 ? <div className='image-default' style={{ backgroundImage: 'url(/images/background-login.jpg)' }}><div style={{ height: 'max-content' }}>No Images</div></div> : null
+                        }
                     </div>
                 </Col>
                 <Col xs={{ span: 24 }} md={{ span: 8 }}></Col>
