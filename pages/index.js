@@ -424,63 +424,66 @@ function Home(props) {
     return (
         <Layout>
             <Row className='wrapper-index'>
-                <Col xs={{span: 24}} md={{span: 10}}>
-                    <div className='d-flex'>
-                        <div style={{fontSize: 60, fontWeight: 600}} className='logo-title'>Vmotel-Search </div>
-                        <CheckCircleOutlined style={{fontSize: 30, position: 'relative', left: '-5px', top: '-10px', color: '#5cdbd3'}} />
-                    </div>
-                    <div style={{fontSize: 20, fontWeight: 500}}>{t('Website to search motel, apartment')}</div>
-                    <section style={{marginTop: 10, maxWidth: 400}}>
-                        <p>{t('introduce')}</p>
-                    </section>
-                    <Button type='ghost' style={{border: '1px solid #13c2c2', color: '#13c2c2'}} shape='round' icon={<SearchOutlined />}>{t('search-room')}</Button>
-                    <Row gutter={[16, 16]} style={{marginTop: 20, width: '90%', fontSize: 12}}>
-                        <Col xs={{span: 24}} md={{span: 24}}>
-                            <Row>
-                                <Col xs={{span: 18}} md={{span: 18}}>
-                                    <strong>Phòng đẹp, sạch sẽ</strong>
-                                    <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái.</p>
-                                </Col>
-                                <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                <Col xs={{span: 4}} md={{span: 5}}>
-                                    <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
-                                        <img src='/images/bed.svg' style={{width: 50}} />
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col xs={{span: 24}} md={{span: 24}}>
-                            <Row>
-                                <Col xs={{span: 18}} md={{span: 18}}>
-                                    <strong>Chi phí hợp lý, giá rẻ</strong>
-                                    <p>Đối với những sinh viên lên thành phố học, kinh tế hạn hẹp, Vmotel sẽ tìm cho bạn những căn phòng vừa hợp túi tiền</p>
-                                </Col>
-                                <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                <Col sxs={{span: 4}} md={{span: 5}}>
-                                    <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
-                                        <img src='/images/money.svg' style={{width: 50}} />
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <div className='d-flex center' style={{width: '100%'}}>
-                            <Button type='link' icon={<DownOutlined />}>Xem thêm</Button>
+                <Row style={{width: '100%'}}>
+                    <Col xs={{span: 24}} md={{span: 10}}>
+                        <div className='d-flex'>
+                            <div style={{fontSize: 60, fontWeight: 600}} className='logo-title'>Vmotel-Search </div>
+                            <CheckCircleOutlined style={{fontSize: 30, position: 'relative', left: '-5px', top: '-10px', color: '#5cdbd3'}} />
                         </div>
-                    </Row>
-                </Col>
-                <Col xs={{span: 24}} md={{span: 14}}>
-                    <div className='d-flex center slick-custom' style={{height: '100%'}}>
-                        <Slider {...settings} className='react-slick'>
-                            {rooms.length > 0 && rooms.map(room => (
-                                <div key={room.id} className='item-slick'>
-                                    <CustomCard
-                                        room={room}
-                                    />
-                                </div>
-                            ))}
-                        </Slider>
-                    </div>
-                </Col>
+                        <div style={{fontSize: 20, fontWeight: 500}}>{t('Website to search motel, apartment')}</div>
+                        <section style={{marginTop: 10, maxWidth: 400}}>
+                            <p>{t('introduce')}</p>
+                        </section>
+                        <Button type='ghost' style={{border: '1px solid #13c2c2', color: '#13c2c2'}} shape='round' icon={<SearchOutlined />}>{t('search-room')}</Button>
+                        <Row gutter={[16, 16]} style={{marginTop: 20, width: '90%', fontSize: 12}}>
+                            <Col xs={{span: 24}} md={{span: 24}}>
+                                <Row>
+                                    <Col xs={{span: 18}} md={{span: 18}}>
+                                        <strong>Phòng đẹp, sạch sẽ</strong>
+                                        <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái.</p>
+                                    </Col>
+                                    <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
+                                    <Col xs={{span: 4}} md={{span: 5}}>
+                                        <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
+                                            <img src='/images/bed.svg' style={{width: 50}} />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col xs={{span: 24}} md={{span: 24}}>
+                                <Row>
+                                    <Col xs={{span: 18}} md={{span: 18}}>
+                                        <strong>Chi phí hợp lý, giá rẻ</strong>
+                                        <p>Đối với những sinh viên lên thành phố học, kinh tế hạn hẹp, Vmotel sẽ tìm cho bạn những căn phòng vừa hợp túi tiền</p>
+                                    </Col>
+                                    <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
+                                    <Col sxs={{span: 4}} md={{span: 5}}>
+                                        <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
+                                            <img src='/images/money.svg' style={{width: 50}} />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <div className='d-flex center' style={{width: '100%'}}>
+                                <Button type='link' icon={<DownOutlined />}>Xem thêm</Button>
+                            </div>
+                        </Row>
+                    </Col>
+                    <Col xs={{span: 24}} md={{span: 14}}>
+                        <div className='d-flex center slick-custom' style={{height: '100%'}}>
+                            <Slider {...settings} className='react-slick'>
+                                {rooms.length > 0 && rooms.map(room => (
+                                    <div key={room.id} className='item-slick'>
+                                        <CustomCard
+                                            room={room}
+                                        />
+                                    </div>
+                                ))}
+                            </Slider>
+                        </div>
+                    </Col>
+                
+                </Row>
                 <div className='d-flex center filter-custom' style={{width: '100%', marginTop: '20px'}}>
                     <Row className='inner-filter' gutter={[16, 16]}>
                         <Col xs={{span: 24}} md={{span: 4}}>
