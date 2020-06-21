@@ -6,17 +6,18 @@ import { useRouter } from 'next/router';
 import Slider from 'react-slick';
 import numeral from 'numeral';
 import moment from 'moment';
-import { Row, Col, Descriptions, Button, Badge, Typography, Divider, Tag, Empty } from 'antd';
+import { Row, Col, Descriptions, Button, Badge, Typography, Divider, Tag, Empty, Card, Avatar } from 'antd';
 
 // Services
 import * as postServices from '../../../../services/post/index';
+import * as userServices from '../../../../services/User/index';
 
 // Components
 import Layout from '../../../../components/Layout/Layout';
 import NormalCard from '../../../../components/NormalCard/NormalCard';
 
 // Icons
-import { FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, LeftOutlined } from '@ant-design/icons';
+import { FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, LeftOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -45,24 +46,48 @@ export async function getServerSideProps(props) {
 }
 
 function Post(props) {
-    const { postInfo } = props;
+    const { postInfo = {} } = props;
     const { t } = useTranslation();
     const meta = {
         image: postInfo.images[0],
         title: postInfo.title + `,${postInfo.filter.province.name}, ${postInfo.filter.district.name}`
     }
     const [postRelatives, setPostRelatives] = useState([]);
+    const [isLoading, setLoading] = useState(false);
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         getPostsRelative()
     }, [])
 
+    useEffect(() => {
+        getUser()
+    }, [postInfo])
+
+    const getUser = async () => {
+        const getUser = await userServices.getUser({
+            id: postInfo.contact.id
+        })
+
+        if (getUser) {
+            if (getUser.data && getUser.data.data) {
+                const { user = {} } = getUser.data.data;
+
+                setUser(user)
+            }
+        }
+    }
+
     const getPostsRelative = async () => {
+        setLoading(true);
+
         const getPosts = await postServices.getList({
             limit: 10,
             provinceCode: postInfo.filter.province.code,
             districtName: postInfo.filter.district.name
         })
+
+        setLoading(false)
 
         if (getPosts) {
             if (getPosts.data && getPosts.data.data) {
@@ -71,6 +96,7 @@ function Post(props) {
                 setPostRelatives(posts)
             }
         }
+
     }
 
     function SampleNextArrow(props) {
@@ -100,14 +126,24 @@ function Post(props) {
     }
 
     const showRenderNormalPosts = () => {
-        return postRelatives && postRelatives.length > 0 ? postRelatives.map(motel => {
-            if (motel._id !== postInfo._id)
-                return (
-                    <Col key={motel._id} xs={{ span: 24 }} md={{ span: 8 }}>
-                        <NormalCard room={motel} />
-                    </Col>
-                );
-        }) : <Empty style={{ width: '100%', height: '200px' }} />;
+        if (isLoading) {
+            const cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+            return cols.map(col => {
+                return <Col key={col} xs={{ span: 24 }} md={{ span: 8 }}>
+                    <Card style={{ width: '100%' }} loading={isLoading} />
+                </Col>;
+            });
+        } else {
+            return postRelatives && postRelatives.length > 1 ? postRelatives.map(motel => {
+                if (motel._id !== postInfo._id)
+                    return (
+                        <Col key={motel._id} xs={{ span: 24 }} md={{ span: 8 }}>
+                            <NormalCard room={motel} />
+                        </Col>
+                    );
+            }) : <Empty style={{ width: '100%', height: 200, marginTop: 20 }} />;
+        }
     };
 
     const settings = {
@@ -148,6 +184,20 @@ function Post(props) {
                 break;
         }
 
+    }
+
+    const onClickPhone = (phone) => {
+        const element = document.createElement('textarea');
+
+        element.value = phone;
+
+        document.body.appendChild(element);
+
+        element.select();
+
+        document.execCommand('copy');
+
+        document.body.removeChild(element)
     }
 
     return (
@@ -208,7 +258,22 @@ function Post(props) {
                         {showRenderNormalPosts()}
                     </Row>
                 </Col>
-                <Col xs={{ span: 24 }} md={{ span: 8 }}></Col>
+                <Col xs={{ span: 24 }} md={{ span: 8 }}>
+                    <div className='info-user'>
+                        <Row>
+                            <Col span={5}>
+                                <Avatar size={70} icon={<UserOutlined />} src={user.image} />
+                            </Col>
+                            <Col span={19}>
+                                <h1>{user.fullName}</h1>
+                                <p>{user.email}</p>
+                            </Col>
+                        </Row>
+                        <Button type='primary' onClick={() => onClickPhone(user.phoneNumber)} style={{ width: '100%' }} icon={<PhoneOutlined style={{ fontSize: 15 }} />}>
+                            <a style={{ color: '#fff', marginLeft: 5, fontSize: 15 }}>{user.phoneNumber}</a>
+                        </Button>
+                    </div>
+                </Col>
             </Row>
         </Layout>
     )

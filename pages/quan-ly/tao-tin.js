@@ -151,13 +151,15 @@ function CreatePost(props) {
                 const {blocks = []} = getBlocks.data.data;
 
                 setBlocks(blocks);
-            
-                const newBlock = {
-                    id: blocks[0].id,
-                    nameBlock: blocks[0].nameBlock
-                };
 
-                setBlockSelected(newBlock);
+                if (blocks.length > 0) {
+                    const newBlock = {
+                        id: blocks[0].id,
+                        nameBlock: blocks[0].nameBlock
+                    };
+    
+                    setBlockSelected(newBlock);
+                }
             }
         }
     };

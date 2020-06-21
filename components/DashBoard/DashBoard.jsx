@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Head from 'next/head';
+import _ from 'lodash';
 import {useTranslation} from 'react-i18next';
 import {Layout, Menu, Breadcrumb, Slider, Avatar, Row, Col, Button} from 'antd';
 
@@ -16,7 +16,6 @@ function DashBoard(props) {
 
     return (
         <Layout style={{maxHeight: '90vh', overflow: 'hidden'}}>
-            
             <Sider width={250} style={{height: '90vh', overflow: 'hidden', backgroundColor: '#fff'}}>
                 <div style={{padding: '10px'}}>
                     <div className='d-flex center'>

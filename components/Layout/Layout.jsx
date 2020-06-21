@@ -38,9 +38,14 @@ function Layout(props) {
                 const newLang = flags.find(flag => flag.id === localStorage.getItem('lang'));
 
                 setLang(newLang);
-            } 
+            }
+
             if (localStorage.getItem('userInfo')) {
                 validateUser();
+            } else {
+                if (props.dashBoard) {
+                    router.push('/');
+                }
             }
         }
     }, []);
@@ -50,11 +55,15 @@ function Layout(props) {
 
         if (validate) {
             if (validate.data && validate.data.data) {
-                const {user} = JSON.parse(localStorage.getItem('userInfo'));
+                const {user} = validate.data.data;
 
                 props.userLogin({
                     userLogin: user
                 });
+            } else {
+                if (props.dashBoard) {
+                    router.push('/');
+                }
             }
         }
     };
