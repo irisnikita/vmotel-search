@@ -262,7 +262,7 @@ function Post(props) {
                     <div className='info-user'>
                         <Row>
                             <Col span={5}>
-                                <Avatar size={70} icon={<UserOutlined />} src={user.image} />
+                                <Avatar size={70} icon={<UserOutlined />} src={user.avatar} />
                             </Col>
                             <Col span={19}>
                                 <h1>{user.fullName}</h1>
@@ -270,7 +270,7 @@ function Post(props) {
                             </Col>
                         </Row>
                         <Button type='primary' onClick={() => onClickPhone(user.phoneNumber)} style={{ width: '100%' }} icon={<PhoneOutlined style={{ fontSize: 15 }} />}>
-                            <a style={{ color: '#fff', marginLeft: 5, fontSize: 15 }}>{user.phoneNumber}</a>
+                            <a href={`tel:${user.phoneNumber}`} style={{ color: '#fff', marginLeft: 5, fontSize: 15 }}>{user.phoneNumber}</a>
                         </Button>
                     </div>
                 </Col>
