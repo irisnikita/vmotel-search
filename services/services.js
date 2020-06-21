@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 var CancelToken = axios.CancelToken;
 
@@ -7,12 +8,12 @@ axios.interceptors.request.use(function (config) {
         let userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
         if (userInfo) {
-            const {token = '', user = {}} = userInfo;
+            const {token = ''} = userInfo;
     
             config.params = {
                 ...config.params,
                 token: token,
-                userId: user.id
+                userId: jwt_decode(token).data.id || ''
             };
         }
         return config;

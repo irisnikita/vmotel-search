@@ -64,7 +64,7 @@ function Login(props) {
                 if (login.data && login.data.data) {
                     const {token = '', user = {}} = login.data.data;
 
-                    localStorage.setItem('userInfo', JSON.stringify({token, user}));
+                    localStorage.setItem('userInfo', JSON.stringify({token}));
 
                     props.userLogin({
                         userLogin: user

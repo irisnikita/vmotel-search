@@ -77,6 +77,14 @@
     padding: 10px 0px;
 }
 
+.info-user {
+    border: 1px solid rgb(230, 230, 230);
+    margin-left: 10px;
+    padding: 10px;
+    position: sticky;
+    top: 70px;
+}
+
 @media only screen and (max-width: 500px) { 
     .logo-title {
         font-size: 50px !important;
