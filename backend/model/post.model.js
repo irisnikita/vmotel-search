@@ -1,4 +1,4 @@
-const {ObjectID} = require('mongodb');
+const { ObjectID } = require('mongodb');
 
 // Libraries
 const mongoose = require('mongoose'),
@@ -18,6 +18,7 @@ let PostSchema = new Schema({
     option: Object,
     price: Number,
     startTime: Date,
+    endTime: Date,
     title: String,
     typePost: String
 });
