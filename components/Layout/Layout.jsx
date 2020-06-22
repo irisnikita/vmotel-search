@@ -19,6 +19,9 @@ import styles from './styles.module.scss';
 // Services
 import * as userServices from '../../services/User/index';
 
+// Utils
+import {appConfig} from '../../constant';
+
 // Icons
 import {PlusOutlined, UserOutlined} from '@ant-design/icons';
 
@@ -86,6 +89,22 @@ function Layout(props) {
         }
     };
 
+    const onClickOption = (id) => {
+        switch (id) {
+            case 'log-out':
+                localStorage.removeItem('userInfo');
+                
+                router.push('/');
+
+                props.userLogin({});
+                break;
+        
+            default:
+                router.push(`/quan-ly/${id}`);
+                break;
+        }
+    };
+
     return (
         <div>
             <Head>
@@ -110,12 +129,30 @@ function Layout(props) {
                         </Space>
                     </div>
                     <div className='d-flex right-menu'>
-                        
-                        <Avatar src={props.user.avatar} icon={<UserOutlined />} size={32} style={{marginRight: 10}} />
                         {
                             _.isEmpty(props.user) ? <Link href='/login'>
                                 <Button type='primary' shape='round' className='mr-10'>{t('sign-in')}</Button>
-                            </Link> : <strong className='mr-10'>{props.user.fullName}</strong> 
+                            </Link> : 
+                                <Dropdown 
+                                    overlay={
+                                        <Menu>
+                                            {appConfig.userMenus ? appConfig.userMenus.map((option) => {
+                                                return (
+                                                    <Menu.Item key={option.id} onClick={() => onClickOption(option.id)} className={styles['menu-user']} danger={option.danger}>
+                                                        <i className={option.icon} /> &nbsp;
+                                                        <div>{option.value}</div>
+                                                    </Menu.Item>
+                                                );
+                                            }) : null}
+                                        </Menu>
+                                    }
+                                    trigger={['click']}
+                                >
+                                    <div style={{cursor: 'pointer'}}>
+                                        <Avatar src={props.user.avatar} icon={<UserOutlined />} size={32} style={{marginRight: 10}} /> 
+                                        <strong className='mr-10'>{props.user.fullName}</strong> 
+                                    </div>
+                                </Dropdown>
                         }
                         <Button type='ghost' shape='round' onClick={onClickPost} className='mr-10' icon={<PlusOutlined />}>{t('post')}</Button>
                         <Dropdown trigger={['click']} overlay={<Menu>

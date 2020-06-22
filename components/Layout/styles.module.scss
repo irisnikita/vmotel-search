@@ -11,6 +11,13 @@
     }
 }
 
+.menu-user {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 15px;
+}
+
 .content {
     z-index: 0;
     background-color: #fff;
