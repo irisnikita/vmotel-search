@@ -21,5 +21,11 @@ export const appConfig = {
         {id: 'normal', label: 'Normal post'},
         {id: 'hot', label: 'Hot-new'},
         {id: 'vip', label: 'Vip'}
+    ],
+    userMenus: [
+        {id: 'tao-tin', value: 'Add new post', icon: 'icon-post_add'},
+        {id: 'quan-ly-tin', value: 'Manage posts', icon: 'icon-library_books'},
+        {id: 'thong-tin-ca-nhan', value: 'User information', icon: 'icon-person'},
+        {id: 'log-out', value: 'Log out', icon: 'icon-logout', danger: true}
     ]
 };

@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {useRouter} from 'next/router';
 import _ from 'lodash';
 import {useTranslation} from 'react-i18next';
 import {Layout, Menu, Breadcrumb, Slider, Avatar, Row, Col, Button} from 'antd';
@@ -12,7 +13,21 @@ const {Header, Content, Sider} = Layout;
 
 function DashBoard(props) {
     const {userLogin = {}} = props;
+    const router = useRouter();
     const {t} = useTranslation();
+    const [path, setPath] = useState('/');
+
+    const userMenus = [
+        {id: 'quan-ly-tin', value: 'Manage posts', icon: 'icon-library_books'},
+        {id: 'thong-tin-ca-nhan', value: 'User information', icon: 'icon-person'}
+    ];
+
+    useEffect(() => {
+        const newPath = router.pathname.replace(/\/quan-ly\//g, '');
+
+        setPath(newPath);
+
+    }, [router.pathname]);
 
     return (
         <Layout style={{maxHeight: '90vh', overflow: 'hidden'}}>
@@ -33,28 +48,19 @@ function DashBoard(props) {
                 </div>
                 <Menu
                     mode="inline"
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
+                    selectedKeys={path}
                     style={{height: '100%', borderRight: 0}}
                 >
-                    <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                        <Menu.Item key="1">option1</Menu.Item>
-                        <Menu.Item key="2">option2</Menu.Item>
-                        <Menu.Item key="3">option3</Menu.Item>
-                        <Menu.Item key="4">option4</Menu.Item>
-                    </SubMenu>
-                    <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                        <Menu.Item key="5">option5</Menu.Item>
-                        <Menu.Item key="6">option6</Menu.Item>
-                        <Menu.Item key="7">option7</Menu.Item>
-                        <Menu.Item key="8">option8</Menu.Item>
-                    </SubMenu>
-                    <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-                        <Menu.Item key="9">option9</Menu.Item>
-                        <Menu.Item key="10">option10</Menu.Item>
-                        <Menu.Item key="11">option11</Menu.Item>
-                        <Menu.Item key="12">option12</Menu.Item>
-                    </SubMenu>
+                    {userMenus.map(menu => {
+                        return (
+                            <Menu.Item key={menu.id} onClick={() => {router.push(`/quan-ly/${menu.id}`)}}>
+                                <div className='d-flex' style={{fontWeight: 500}}>
+                                    <i className={menu.icon} /> &nbsp;
+                                    <div>{menu.value}</div>
+                                </div>
+                            </Menu.Item>
+                        );
+                    })}
                 </Menu>
             </Sider>
             <Layout style={{padding: 10}}>

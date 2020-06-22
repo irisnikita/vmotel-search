@@ -7,6 +7,9 @@ export function create(params) {
 export function getList(params) {
     return services.getList({...params, API: appConfig.API_VMOTEL + '/post/get-list'});
 }
+export function getPostByUser(params) {
+    return services.getList({...params, API: appConfig.API_VMOTEL + '/post/get-post-user'});
+}
 export function getPost(params) {
     return services.get({...params, API: appConfig.API_VMOTEL + '/post/get-post'});
 }
