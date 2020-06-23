@@ -4,7 +4,7 @@ const postRouters = express.Router();
 const authMiddleware = require('../Middleware/AuthMiddleware');
 
 // Controler
-const { createPost, listPost, getPaths, findPost, findByUser } = require('../controllers/Posts');
+const {createPost, listPost, getPaths, findPost, findByUser, deletePost} = require('../controllers/Posts');
 
 const postRouter = (app) => {
 
@@ -19,6 +19,8 @@ const postRouter = (app) => {
     postRouters.get('/get-post-user', authMiddleware.isAuth, findByUser);
 
     postRouters.get('/get-post/:id?', findPost);
+
+    postRouters.delete('/delete/:id?', deletePost);
 
     app.use('/post', postRouters);
 };
