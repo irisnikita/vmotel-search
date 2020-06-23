@@ -1,6 +1,6 @@
 export const appConfig = {
     API: 'https://safe-scrubland-43876.herokuapp.com',
-    API_VMOTEL: 'https://mighty-wildwood-56071.herokuapp.com',
+    API_VMOTEL: 'https://api-v1.vinlt.wtf',
     API_UPLOAD: 'https://api.imgbb.com/1/upload?key=fb8a3978bba3f76129ef55ed7f87843e',
     ACCESS_TOKEN_SECERET: 'access-token-secret-nltruongvi',
     SEXS: [{id: 'male', value: 'Nam'}, {id: 'female', value: 'Nữ'}, {id: 'other', value: 'Khác'}],
