@@ -96,7 +96,9 @@ function Layout(props) {
                 
                 router.push('/');
 
-                props.userLogin({});
+                props.userLogin({
+                    userLogin: {}
+                });
                 break;
         
             default:
