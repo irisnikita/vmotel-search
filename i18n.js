@@ -91,7 +91,9 @@ const resources = {
             'Running': 'Đang hoạt động',
             'Date Submitted': 'Ngày đăng',
             'End date': 'Ngày kết thúc',
-            'Actions': 'Hành động'
+            'Actions': 'Hành động',
+            'Package': 'Gói tin',
+            'Manage posts': 'Quản lý tin'
         }
     }
 };
