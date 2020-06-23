@@ -1,5 +1,5 @@
 export const appConfig = {
-    API: 'https://safe-scrubland-43876.herokuapp.com',
+    API: 'https://api-v2.vinlt.wtf',
     API_VMOTEL: 'https://api-v1.vinlt.wtf',
     API_UPLOAD: 'https://api.imgbb.com/1/upload?key=fb8a3978bba3f76129ef55ed7f87843e',
     ACCESS_TOKEN_SECERET: 'access-token-secret-nltruongvi',
