@@ -90,7 +90,8 @@ const resources = {
             'Status': 'Trạng thái',
             'Running': 'Đang hoạt động',
             'Date Submitted': 'Ngày đăng',
-            'End date': 'Ngày kết thúc'
+            'End date': 'Ngày kết thúc',
+            'Actions': 'Hành động'
         }
     }
 };
