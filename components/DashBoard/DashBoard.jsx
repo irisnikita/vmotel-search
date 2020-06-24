@@ -40,10 +40,14 @@ function DashBoard(props) {
                         <div style={{color: '#08979c', fontWeight: 500, fontSize: 17}}>{userLogin.fullName}</div>
                         <div><strong>{t('Email')}:</strong> {userLogin.email}</div>
                         <div><strong>{t('Phone')}:</strong> {userLogin.phoneNumber}</div>
-                        <div className='d-flex space-between' style={{width: '100%'}}>
-                            <Button icon={<ImportOutlined />} style={{width: '100px'}} shape='round' danger>{t('Log out')}</Button>
-                            <Button icon={<PlusOutlined />} type='primary' style={{width: '100px'}} shape='round'>{t('Post')}</Button>
-                        </div>
+                        <Row className='d-flex space-between' gutter={[0, 10]} style={{width: '100%', marginTop: 20}}>
+                            <Col span={24}>
+                                <Button icon={<PlusOutlined />} style={{width: '100%'}} type='primary'shape='round'>{t('Add post')}</Button>
+                            </Col>
+                            <Col span={24}>
+                                <Button icon={<ImportOutlined />} shape='round' style={{width: '100%'}} danger>{t('Log out')}</Button>
+                            </Col>
+                        </Row>
                     </div>
                 </div>
                 <Menu
@@ -56,7 +60,7 @@ function DashBoard(props) {
                             <Menu.Item key={menu.id} onClick={() => {router.push(`/quan-ly/${menu.id}`)}}>
                                 <div className='d-flex' style={{fontWeight: 500}}>
                                     <i className={menu.icon} /> &nbsp;
-                                    <div>{menu.value}</div>
+                                    <div>{t(menu.value)}</div>
                                 </div>
                             </Menu.Item>
                         );

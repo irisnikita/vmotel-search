@@ -52,7 +52,7 @@ class Editor extends React.Component {
         );
     }
 }
-  
+
 /* 
    * Quill modules to attach to editor
    * See https://quilljs.com/docs/modules/ for complete options

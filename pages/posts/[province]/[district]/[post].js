@@ -17,20 +17,10 @@ import Layout from '../../../../components/Layout/Layout';
 import NormalCard from '../../../../components/NormalCard/NormalCard';
 
 // Icons
-import { FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, LeftOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
+import { FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, EditOutlined, LeftOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
 
 const { Title } = Typography;
-
-const convertChar = (string) => {
-    string = string.normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd')
-        .replace(/Đ/g, 'D')
-        .replace(/[^\w\s]/g, '')
-        .replace(/\s/g, '-').toLowerCase();
-
-    return string;
-};
 
 // This also gets called at build time
 export async function getServerSideProps(props) {
@@ -54,29 +44,11 @@ function Post(props) {
     }
     const [postRelatives, setPostRelatives] = useState([]);
     const [isLoading, setLoading] = useState(false);
-    const [user, setUser] = useState({})
+    const router = useRouter();
 
     useEffect(() => {
         getPostsRelative()
     }, [])
-
-    useEffect(() => {
-        getUser()
-    }, [postInfo])
-
-    const getUser = async () => {
-        const getUser = await userServices.getUser({
-            id: postInfo.contact.id
-        })
-
-        if (getUser) {
-            if (getUser.data && getUser.data.data) {
-                const { user = {} } = getUser.data.data;
-
-                setUser(user)
-            }
-        }
-    }
 
     const getPostsRelative = async () => {
         setLoading(true);
@@ -200,16 +172,23 @@ function Post(props) {
         document.body.removeChild(element)
     }
 
+    const onClickEdit = () => {
+        router.push('/posts/sua-tin/[id]', `/posts/sua-tin/${postInfo._id}`)
+    }
+
     return (
         <Layout {...meta}>
             <Row style={{ padding: 20 }}>
                 <div style={{ width: '100%' }}>{showRenderTitle()}</div>
                 <Col xs={{ span: 24 }} md={{ span: 16 }}>
-                    <div className='d-flex list-menu-btn' >
-                        <Button type='link' style={{ fontWeight: 500 }}>{t('GENERAL INFO')}</Button>
-                        <Button type='link' style={{ fontWeight: 500 }}>{t('DETAILS')}</Button>
-                        <Button type='link' style={{ fontWeight: 500 }}>{t('MAP')}</Button>
-                        <Button type='link' style={{ fontWeight: 500 }}>{t('IMAGES')}</Button>
+                    <div className='d-flex list-menu-btn space-between' >
+                        <div className='d-flex'>
+                            <Button type='link' style={{ fontWeight: 500 }}>{t('GENERAL INFO')}</Button>
+                            <Button type='link' style={{ fontWeight: 500 }}>{t('DETAILS')}</Button>
+                            <Button type='link' style={{ fontWeight: 500 }}>{t('MAP')}</Button>
+                            <Button type='link' style={{ fontWeight: 500 }}>{t('IMAGES')}</Button>
+                        </div>
+                        {postInfo.contact._id === props.userLogin.id ? <Button icon={<EditOutlined />} onClick={onClickEdit}>{t('Edit')}</Button> : null}
                     </div>
                     <Descriptions bordered>
                         <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address}</Descriptions.Item>
@@ -262,15 +241,15 @@ function Post(props) {
                     <div className='info-user'>
                         <Row>
                             <Col span={5}>
-                                <Avatar size={70} icon={<UserOutlined />} src={user.avatar} />
+                                <Avatar size={70} icon={<UserOutlined />} src={postInfo.contact.avatar} />
                             </Col>
                             <Col span={19}>
-                                <h1>{user.fullName}</h1>
-                                <p>{user.email}</p>
+                                <h1>{postInfo.contact.fullName}</h1>
+                                <p>{postInfo.contact.email}</p>
                             </Col>
                         </Row>
-                        <Button type='primary' onClick={() => onClickPhone(user.phoneNumber)} style={{ width: '100%' }} icon={<PhoneOutlined style={{ fontSize: 15 }} />}>
-                            <a href={`tel:${user.phoneNumber}`} style={{ color: '#fff', marginLeft: 5, fontSize: 15 }}>{user.phoneNumber}</a>
+                        <Button type='primary' onClick={() => onClickPhone(postInfo.contact.phoneNumber)} style={{ width: '100%' }} icon={<PhoneOutlined style={{ fontSize: 15 }} />}>
+                            <a href={`tel:${postInfo.contact.phoneNumber}`} style={{ color: '#fff', marginLeft: 5, fontSize: 15 }}>{postInfo.contact.phoneNumber}</a>
                         </Button>
                     </div>
                 </Col>
@@ -283,5 +262,11 @@ Post.propTypes = {
 
 }
 
-export default Post
+const mapStateToProps = (state) => {
+    return {
+        userLogin: state.layout.userLogin
+    }
+}
+
+export default connect(mapStateToProps, null)(Post)
 

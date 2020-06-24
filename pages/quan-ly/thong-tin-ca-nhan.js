@@ -12,7 +12,7 @@ function UserInfo(props) {
 
     return (
         <Layout dashBoard>
-            <h1 style={{fontSize: 30}}>{t('User Information')}</h1>
+            <h1 style={{fontSize: 30}}>{t('User information')}</h1>
             <Divider />
         </Layout>
     );

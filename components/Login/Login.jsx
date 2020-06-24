@@ -1,7 +1,7 @@
 // Libraries
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Form, Input, Button, Divider, Row, Col} from 'antd';
+import {Form, Input, Button, Divider, Row, Col, notification} from 'antd';
 import {withRouter} from 'next/router';
 import {useTranslation} from 'react-i18next';
 import {connect} from 'react-redux';
@@ -70,7 +70,17 @@ function Login(props) {
                         userLogin: user
                     });
 
+                    notification.success({
+                        message: t('Login Success'),
+                        description: t('Welcome to vmotel-search!')
+                    });
+
                     props.router.push('/');
+                } else {
+                    notification.error({
+                        message: t('Login Failed'),
+                        description: t('Your password or account is wrong, please try again!')
+                    });
                 }
             }
 

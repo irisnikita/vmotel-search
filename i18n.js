@@ -93,7 +93,14 @@ const resources = {
             'End date': 'Ngày kết thúc',
             'Actions': 'Hành động',
             'Package': 'Gói tin',
-            'Manage posts': 'Quản lý tin'
+            'Manage posts': 'Quản lý tin',
+            'Stopped': 'Tạm dừng',
+            'Preview post': 'Xem bài',
+            'Log out': 'Đăng xuất',
+            'Add post': 'Đăng tin',
+            'Your post had been hided': 'Bài của bạn đã bị ẩn',
+            'Please show post to get this link': 'Hãy ấn nút hiện bài để có thể truy cập vào link trên',
+            'User information': 'Thông tin cá nhân'
         }
     }
 };
