@@ -4,6 +4,12 @@ import {appConfig} from '../../constant';
 export function create(params) {
     return services.create({...params, API: appConfig.API_VMOTEL + '/post/create'});
 }
+export function updateStatus(params) {
+    return services.update({...params, API: appConfig.API_VMOTEL + '/post/update'});
+}
+export function updatePost(params) {
+    return services.update({...params, API: appConfig.API_VMOTEL + '/post/update-post'});
+}
 export function getList(params) {
     return services.getList({...params, API: appConfig.API_VMOTEL + '/post/get-list'});
 }

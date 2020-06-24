@@ -21,6 +21,18 @@ function Upload(props) {
     const [images, setImages] = useState([]);
     const {t} = useTranslation();
 
+    useEffect(() => {
+        if(props.defaultImages && props.defaultImages.length > 0) {
+            console.log(props.defaultImages)
+
+            const newImages = props.defaultImages.map(image => ({
+                src: image
+            }))
+
+            setImages(newImages)
+        }
+    }, [props.defaultImages])
+
     const onChangeUpload = async (event) => {
         event.preventDefault();
 
@@ -48,16 +60,16 @@ function Upload(props) {
         setImages(newImages);
     };
 
-    useEffect(() => {
-        console.log(images);
-    }, [images]);
-
     const onClickDelete = (index) => {
         const newImages = [...images];
 
         newImages.splice(index, 1);
 
         setImages(newImages)
+
+        if(props.callback) {
+            props.callback(newImages)
+        }
     }
 
     return (
@@ -95,6 +107,10 @@ function Upload(props) {
 Upload.propTypes = {
 
 };
+
+Upload.defaultProps = {
+    defaultImages: []
+}
 
 export default Upload;
 

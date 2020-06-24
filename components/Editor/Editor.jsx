@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './styles.module.scss';
+import _ from 'lodash';
 
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
@@ -10,6 +11,14 @@ class Editor extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
     
+    componentDidUpdate(prevProps, prevState) {
+        if (!_.isEqual(prevProps.value, this.props.value)) {
+            this.setState({
+                editorHtml: this.props.value
+            });
+        }
+    }
+
     handleChange (html) {
         this.setState({editorHtml: html});
         this.props.callback(html);

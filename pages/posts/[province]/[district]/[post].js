@@ -179,7 +179,7 @@ function Post(props) {
             case 'normal':
                 return <Title level={3} style={{ color: '#08979c' }}>{postInfo.title}</Title>
             case 'vip':
-                return <Title level={3} style={{ color: '#eb2f96' }}>{postInfo.title}</Title>
+                return <Title level={3} style={{ color: '#9e1068', fontWeight: 500 }}>{postInfo.title}</Title>
             default:
                 break;
         }
