@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Divider, Row, Col, Table, Badge, Dropdown, Menu, Button, Descriptions, notification, Modal, Spin} from 'antd';
 import numeral from 'numeral';
 import moment from 'moment';
+import {useRouter} from 'next/router';
 import {useTranslation} from 'react-i18next';
 
 // Components
@@ -14,15 +15,15 @@ import * as postServices from '../../services/post/index';
 import {connect} from 'react-redux';
 
 // Icons
-import {EditOutlined, EyeInvisibleOutlined,ExclamationCircleOutlined, UpCircleOutlined, DeleteOutlined, UnorderedListOutlined,  FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, LeftOutlined, UserOutlined, PhoneOutlined} from '@ant-design/icons';
+import {EditOutlined, EyeInvisibleOutlined,ExclamationCircleOutlined, UpCircleOutlined, EyeOutlined, DeleteOutlined, UnorderedListOutlined,  FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, LeftOutlined, UserOutlined, PhoneOutlined} from '@ant-design/icons';
 
 const {confirm} = Modal;
 
 function ManagePosts(props) {
     // props
     const {userId} = props;
-
     const {t} = useTranslation();
+    const router = useRouter();
     const [posts, setPosts] = useState([]);
     const [isLoading, setLoading] = useState(false);
 
@@ -51,7 +52,10 @@ function ManagePosts(props) {
                         level: post.option.level.id,
                         title: post.title
                     },
-                    actions: post._id
+                    actions: {
+                        id: post._id,
+                        status: post.status
+                    }
                 }));
 
                 setPosts(newPosts);
@@ -118,16 +122,16 @@ function ManagePosts(props) {
             dataIndex: 'actions',
             align: 'center',
             key: 'actions',
-            render: (id) => {
+            render: ({id, status}) => {
                 return (
                     <Dropdown 
                         trigger={['click']}
                         overlayStyle={{width: 120}}
                         overlay={
                             <Menu>
-                                <Menu.Item><EditOutlined /> {t('Edit')}</Menu.Item>
-                                <Menu.Item><EyeInvisibleOutlined /> {t('Hide')}</Menu.Item>
-                                <Menu.Item><UpCircleOutlined />{t('Upgrade')}</Menu.Item>
+                                <Menu.Item onClick={() => router.push('/posts/sua-tin/[id]', `/posts/sua-tin/${id}`)}><EditOutlined /> {t('Edit')}</Menu.Item>
+                                <Menu.Item onClick={() => onClickShowHide({id, status})}>{!status ? <><EyeOutlined /> {t('Show')}</> : <><EyeInvisibleOutlined /> {t('Hide')}</>}</Menu.Item>
+                                <Menu.Item ><UpCircleOutlined />{t('Upgrade')}</Menu.Item>
                                 <Menu.Item style={{color: '#f5222d'}} onClick={() => onClickDelete(id)}><DeleteOutlined />{t('Delete')}</Menu.Item>
                             </Menu>
                         }
@@ -138,6 +142,51 @@ function ManagePosts(props) {
             }
         }
     ];
+
+    const onClickShowHide = ({id, status}) => {
+        if (status) {
+            confirm({
+                title: t('Do you want to hide this post ?'),
+                icon: <ExclamationCircleOutlined />, 
+                content: t('If you hide this post, post will hide, and you can show again, don\'t need to create new!'),
+                onOk() {
+                    showHidePost({id, status});
+                },
+                onCancel() {
+
+                }
+            });
+        } else {
+            showHidePost({id, status});
+        }
+    };
+
+    const showHidePost = async ({id, status}) => {
+        setLoading(true);
+
+        const showHide = await postServices.updateStatus({
+            id,
+            status: !status
+        });
+
+        if (showHide) {
+            if (showHide.data && showHide.data.data) {
+                notification.success({
+                    message: status ? t('Hide post') : t('Show post'),
+                    description: status ? t('Hide post success!') : t('Show post success!')
+                });
+
+                getPosts();
+            } else {
+                notification.error({
+                    message: status ? t('Hide post') : t('Show post'),
+                    description: status ? t('Hide post error!') : t('Show post error!')
+                });
+            }
+        }
+
+        setLoading(false);
+    };
 
     const onClickDelete = async (id) => {
         confirm({
