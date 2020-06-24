@@ -82,7 +82,14 @@
 .list-menu-btn {
     border: 1px solid #f0f0f0;
     border-bottom: none;
-    padding: 10px 0px;
+    padding: 10px 10px 10px 0px;
+}
+
+.link {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .info-user {

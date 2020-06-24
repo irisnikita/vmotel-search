@@ -112,9 +112,6 @@ function Layout(props) {
             <Head>
                 <title>{title}</title>
                 <link rel="icon" href="/favicon.ico" />
-                <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js" />
-                <script charSet="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/go.min.js" />
-                <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 <meta property='og:image' content={props.image} />
                 <meta property='og:title' content={props.title} />

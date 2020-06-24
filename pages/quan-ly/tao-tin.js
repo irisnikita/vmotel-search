@@ -57,7 +57,7 @@ function CreatePost(props) {
     useEffect(() => {
         getLocal();
 
-        getBlocks();
+        // getBlocks();
     }, []);
 
     useEffect(() => {
@@ -97,10 +97,10 @@ function CreatePost(props) {
         }
     }, [filter.district]);
 
-    useEffect(() => {
-        getDataRooms();
+    // useEffect(() => {
+    //     getDataRooms();
         
-    }, [blockSelected]);
+    // }, [blockSelected]);
 
     const getLocal = async () => {
         const getLocal = await import('../../Docs/json/local.json');
@@ -143,26 +143,26 @@ function CreatePost(props) {
         setIsLoading(false);
     };
 
-    const getBlocks = async () => {
-        const getBlocks = await blockServices.getList();
+    // const getBlocks = async () => {
+    //     const getBlocks = await blockServices.getList();
 
-        if (getBlocks) {
-            if (getBlocks.data && getBlocks.data.data) {
-                const {blocks = []} = getBlocks.data.data;
+    //     if (getBlocks) {
+    //         if (getBlocks.data && getBlocks.data.data) {
+    //             const {blocks = []} = getBlocks.data.data;
 
-                setBlocks(blocks);
+    //             setBlocks(blocks);
 
-                if (blocks.length > 0) {
-                    const newBlock = {
-                        id: blocks[0].id,
-                        nameBlock: blocks[0].nameBlock
-                    };
+    //             if (blocks.length > 0) {
+    //                 const newBlock = {
+    //                     id: blocks[0].id,
+    //                     nameBlock: blocks[0].nameBlock
+    //                 };
     
-                    setBlockSelected(newBlock);
-                }
-            }
-        }
-    };
+    //                 setBlockSelected(newBlock);
+    //             }
+    //         }
+    //     }
+    // };
 
     const onChangeOptionTypes = (value) => {
         const newOptionType = appConfig.optionTypes.find(type => type.id === value);
@@ -293,10 +293,7 @@ function CreatePost(props) {
         const newForm = {
             ...value,
             filter,
-            contact: props.userLogin,
-            infoBlock: {
-                block: blockSelected
-            },
+            contact: props.userLogin.id,
             option: optionSelected,
             startTime: moment().format(),
             endTime: endDate(),
@@ -447,7 +444,17 @@ function CreatePost(props) {
                             <Form.Item
                                 label={<strong>{t('Title')}</strong>}
                                 name='title'
-                                rules={[{required: true, message: t('Please input the title!')}]}
+                                rules={[
+                                    {required: true, message: t('Please input the title!')},
+                                    () => ({
+                                        validator(rule, value) {
+                                            if (!value || value.length >= 50 && value.length <= 225) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(t('Title must be more than 50 and less than 255 characters'));
+                                        }
+                                    })
+                                ]}
                             >
                                 <Input 
                                     placeholder={t('Input the title')}
@@ -477,6 +484,8 @@ function CreatePost(props) {
                             >
                                 <InputNumber 
                                     style={{width: 200}} 
+                                    min={0}
+                                    max={50000000}
                                     formatter={value => `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     parser={value => value.replace(/₫\s?|(,*)/g, '')}
                                 />
@@ -488,7 +497,7 @@ function CreatePost(props) {
                             >
                                 <InputNumber 
                                     min={1}
-                                    max={1000}
+                                    max={500}
                                     placeholder={t('Input the area')}
                                     style={{width: 200}}
                                 />
@@ -534,8 +543,8 @@ function CreatePost(props) {
                                     </Select>
                                 </div>
                             </div>
-                            <div style={{fontSize: 25, color: '#434343', marginBottom: 20}}>{t('Block')}</div>
-                            <div style={{marginBottom: 20}}>
+                            {/* <div style={{fontSize: 25, color: '#434343', marginBottom: 20}}>{t('Block')}</div> */}
+                            {/* <div style={{marginBottom: 20}}>
                                 {
                                     blocks && blocks.length > 0 ? <Select 
                                         style={{width: 200}} 
@@ -551,7 +560,7 @@ function CreatePost(props) {
                                 <Row gutter={[16, 16]} style={{marginTop: 10}}>
                                     {showRenderRooms()}
                                 </Row>
-                            </div>
+                            </div> */}
                             <Form.Item>
                                 <Button style={{width: '100%'}} type='primary' htmlType='submit'>{t('Pay and submit')} {`(${numeral(optionSelected.typeFee.fee[optionSelected.level.id] * optionSelected.rangeTime).format('0,0')})`}</Button>
                             </Form.Item>

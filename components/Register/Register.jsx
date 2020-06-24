@@ -9,7 +9,7 @@ import axios from 'axios';
 import provinces from '../../Docs/json/provincial.json';
 
 // Services
-import * as userServices from '../../services/User/register/index';
+import * as userServices from '../../services/User/index';
 
 // Facebook Login
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
@@ -67,7 +67,7 @@ function Login(props) {
         if (value) {
             setIsShowLoading(true);
 
-            const register = await userServices.create(value);
+            const register = await userServices.register(value);
 
             if (register) {
                 if (register.data && register.data.data) {
@@ -79,7 +79,7 @@ function Login(props) {
                     if (props.callback) {
                         props.callback({userRegister: value});
                     }
-                } else if (register.data.message && register.data.message.code === 'ER_DUP_ENTRY') {
+                } else if (register.data.message) {
                     notification.error({
                         message: t('Register fail!'),
                         description: t(config.UNIQUE)

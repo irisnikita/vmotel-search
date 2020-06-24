@@ -49,7 +49,8 @@ function UpdatePost(props) {
     const [filter, setfilter] = useState({
         province: '',
         district: '',
-        street: ''
+        street: '',
+        optionType: {}
     });
     const [blocks, setBlocks] = useState([]);
     const [typeFees, setTypeFees] = useState([
@@ -61,6 +62,7 @@ function UpdatePost(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [rooms, setRooms] = useState([]);
     const [images, setImages] = useState([]);
+    const [isMount, setMount] = useState(false);
 
     const layout = {
         labelCol: { span: 24 },
@@ -70,16 +72,14 @@ function UpdatePost(props) {
     useEffect(() => {
         getLocal();
 
-        getBlocks();
+        // getBlocks();
     }, []);
 
-    console.log(props)
 
     useEffect(() => {
         if (!_.isEmpty(postInfo)) {
-            setfilter(postInfo.filter)
 
-            setBlockSelected(postInfo.infoBlock.block)
+            // setBlockSelected(postInfo.infoBlock.block)
 
             setImages(postInfo.images)
 
@@ -92,10 +92,10 @@ function UpdatePost(props) {
                 description: postInfo.description
             })
         }
-    }, [postInfo])
+    }, [postInfo])    
 
     useEffect(() => {
-
+       
         const province = provinces.find(province => province.code === filter.province.code);
 
         if (province) {
@@ -103,24 +103,55 @@ function UpdatePost(props) {
 
             setDistricts(newDistricts);
 
+            const newDistrict = {
+                id: newDistricts[0].id,
+                name: newDistricts[0].name
+            };
+
+            if (!isMount) {
+                setfilter({
+                    ...filter,
+                    district: postInfo.filter.district
+                });
+            } else {
+                setfilter({
+                    ...filter,
+                    district: newDistrict
+                })
+            }
         }
     }, [filter.province]);
 
     useEffect(() => {
-
+       
         const district = districts.find(district => district.name === filter.district.name);
 
         if (district) {
             const newStreets = district.streets;
 
             setStreets(newStreets);
+
+            if (!isMount) {
+                setfilter({
+                    ...filter,
+                    street: postInfo.filter.street
+                });
+
+                setMount(true)
+            } else {
+                setfilter({
+                    ...filter,
+                    street: newStreets[0]
+                });
+            }
+            
         }
     }, [filter.district]);
 
-    useEffect(() => {
-        getDataRooms();
+    // useEffect(() => {
+    //     getDataRooms();
 
-    }, [blockSelected]);
+    // }, [blockSelected]);
 
     const getLocal = async () => {
         const getLocal = await import('../../../Docs/json/local.json');
@@ -131,53 +162,53 @@ function UpdatePost(props) {
             setProvinces(newProvinces);
 
             setfilter({
-                ...postInfo.filter,
+                ...filter,
                 province: postInfo.filter.province
             })
 
         }
     };
 
-    const getDataRooms = async () => {
-        setIsLoading(true);
+    // const getDataRooms = async () => {
+    //     setIsLoading(true);
 
-        const getRooms = await roomServices.getList({
-            status: -1,
-            idBlock: blockSelected.id,
-            type: 'query'
-        });
+    //     const getRooms = await roomServices.getList({
+    //         status: -1,
+    //         idBlock: blockSelected.id,
+    //         type: 'query'
+    //     });
 
-        if (getRooms) {
-            if (getRooms.data && getRooms.data.data) {
-                const { rooms = [] } = getRooms.data.data;
+    //     if (getRooms) {
+    //         if (getRooms.data && getRooms.data.data) {
+    //             const { rooms = [] } = getRooms.data.data;
 
-                setRooms(rooms);
-            }
-        }
+    //             setRooms(rooms);
+    //         }
+    //     }
 
-        setIsLoading(false);
-    };
+    //     setIsLoading(false);
+    // };
 
-    const getBlocks = async () => {
-        const getBlocks = await blockServices.getList();
+    // const getBlocks = async () => {
+    //     const getBlocks = await blockServices.getList();
 
-        if (getBlocks) {
-            if (getBlocks.data && getBlocks.data.data) {
-                const { blocks = [] } = getBlocks.data.data;
+    //     if (getBlocks) {
+    //         if (getBlocks.data && getBlocks.data.data) {
+    //             const { blocks = [] } = getBlocks.data.data;
 
-                setBlocks(blocks);
+    //             setBlocks(blocks);
 
-                if (blocks.length > 0) {
-                    const newBlock = {
-                        id: blocks[0].id,
-                        nameBlock: blocks[0].nameBlock
-                    };
+    //             if (blocks.length > 0) {
+    //                 const newBlock = {
+    //                     id: blocks[0].id,
+    //                     nameBlock: blocks[0].nameBlock
+    //                 };
 
-                    setBlockSelected(postInfo.infoBlock.block || newBlock);
-                }
-            }
-        }
-    };
+    //                 setBlockSelected(postInfo.infoBlock.block || newBlock);
+    //             }
+    //         }
+    //     }
+    // };
 
     const onChangeOptionTypes = (value) => {
         const newOptionType = appConfig.optionTypes.find(type => type.id === value);
@@ -188,14 +219,8 @@ function UpdatePost(props) {
         });
     };
 
-    console.log('filter', filter)
-
     const onChangeProvinces = (value) => {
         let newProvince = provinces.find(province => province.code === value);
-
-        const newDistricts = newProvince.districts;
-
-        const newStreets = newDistricts[0].streets;
 
         newProvince = {
             id: newProvince.id,
@@ -203,23 +228,14 @@ function UpdatePost(props) {
             name: newProvince.name
         };
 
-        const newDistrict = {
-            id: newDistricts[0].id,
-            name: newDistricts[0].name
-        };
-
         setfilter({
             ...filter,
-            province: newProvince,
-            district: newDistrict,
-            street: newStreets[0]
+            province: newProvince
         });
     };
 
     const onChangeDistrict = (value) => {
         let newDistrict = districts.find(district => district.name === value);
-
-        const newStreets = newDistrict.streets;
 
         newDistrict = {
             id: newDistrict.id,
@@ -228,8 +244,7 @@ function UpdatePost(props) {
 
         setfilter({
             ...filter,
-            district: newDistrict,
-            street: newStreets[0]
+            district: newDistrict
         });
     };
 
@@ -300,13 +315,11 @@ function UpdatePost(props) {
             }
         }
 
-        console.log('newImages', newImages);
-
         const newForm = {
             ...value,
-            filter,
-            infoBlock: {
-                block: blockSelected
+            filter: {
+                ...filter,
+                optionType: _.isEmpty(filter.optionType) ? postInfo.filter.optionType : filter.optionType
             },
             timeUpdate: moment().format(),
             images: newImages
@@ -365,7 +378,7 @@ function UpdatePost(props) {
                                     showSearch
                                     style={{ width: '100%' }}
                                     value={filter.province.code}
-                                    onChange={() => onChangeProvinces}
+                                    onChange={(value) => onChangeProvinces(value)}
                                     filterOption={(input, option) =>
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
@@ -383,7 +396,7 @@ function UpdatePost(props) {
                                     showSearch
                                     style={{ width: '100%' }}
                                     value={filter.district.name}
-                                    onChange={() => onChangeDistrict}
+                                    onChange={(value) => onChangeDistrict(value)}
                                     filterOption={(input, option) =>
                                         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                     }
@@ -404,7 +417,7 @@ function UpdatePost(props) {
                                     }
                                     style={{ width: '100%' }}
                                     value={filter.street.id}
-                                    onChange={() => onChangeStrict}
+                                    onChange={(value) => onChangeStrict(value)}
                                 >
                                     {streets && streets.length > 0 && streets.map(street => {
                                         return <Select.Option key={street.id} value={street.id}>{`${street.prefix || ''} ${t(street.name)}`}</Select.Option>;
@@ -484,14 +497,14 @@ function UpdatePost(props) {
                             >
                                 <InputNumber
                                     min={1}
-                                    max={1000}
+                                    max={500}
                                     placeholder={t('Input the area')}
                                     style={{ width: 200 }}
                                 />
                             </Form.Item>
                             <div style={{ fontSize: 25, color: '#434343', marginBottom: 20 }}>{t('Images')}</div>
                             <Upload callback={callbackUpload} defaultImages={postInfo.images} />
-                            <div style={{ fontSize: 25, color: '#434343', marginBottom: 20 }}>{t('Block')}</div>
+                            {/* <div style={{ fontSize: 25, color: '#434343', marginBottom: 20 }}>{t('Block')}</div>
                             <div style={{ marginBottom: 20 }}>
                                 {
                                     blocks && blocks.length > 0 ? <Select
@@ -508,7 +521,7 @@ function UpdatePost(props) {
                                 <Row gutter={[16, 16]} style={{ marginTop: 10 }}>
                                     {showRenderRooms()}
                                 </Row>
-                            </div>
+                            </div> */}
                             <Form.Item>
                                 <Button style={{ width: '100%' }} type='primary' htmlType='submit'>{t('Update')}</Button>
                             </Form.Item>

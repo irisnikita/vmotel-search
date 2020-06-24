@@ -1,7 +1,7 @@
 // Libraries
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Divider, Row, Col, Table, Badge, Dropdown, Menu, Button, Descriptions, notification, Modal, Spin} from 'antd';
+import {Divider, Row, Col, Table, Badge, Dropdown, Menu, Button, Descriptions, notification, Modal, Spin, Tooltip} from 'antd';
 import numeral from 'numeral';
 import moment from 'moment';
 import {useRouter} from 'next/router';
@@ -31,6 +31,17 @@ function ManagePosts(props) {
         getPosts();
     }, []);
 
+    const convertChar = (string) => {
+        string = string.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D')
+            .replace(/[^\w\s]/g, '')
+            .replace(/\s/g, '-').toLowerCase();
+    
+        return string;
+    };
+
     const getPosts = async () => {
         setLoading(true);
 
@@ -50,7 +61,11 @@ function ManagePosts(props) {
                     typePost: post.filter.optionType.value,
                     title: {
                         level: post.option.level.id,
-                        title: post.title
+                        title: post.title,
+                        status: post.status,
+                        id: post._id,
+                        province: post.filter.province.name,
+                        district: post.filter.district.name
                     },
                     actions: {
                         id: post._id,
@@ -76,14 +91,14 @@ function ManagePosts(props) {
             dataIndex: 'title',
             width: 300,
             key: 'title',
-            render: ({level, title}) => {
-                switch (level) {
+            render: (props) => {
+                switch (props.level) {
                     case 'hot':
-                        return <div className='box-2' style={{color: '#ff7676'}}>{title}</div>;
+                        return <Tooltip title={t("Preview post")} placement="topLeft" mouseEnterDelay={0.2} color='cyan' ><div onClick={() => onClickTitle(props)} className='box-2 link' style={{color: '#ff7676'}}>{props.title}</div></Tooltip>;
                     case 'normal':
-                        return <div className='box-2' style={{color: '#08979c'}}>{title}</div>;
+                        return <Tooltip title={t("Preview post")} placement="topLeft" mouseEnterDelay={0.2} color='cyan' ><div onClick={() => onClickTitle(props)}  className='box-2 link' style={{color: '#08979c'}}>{props.title}</div></Tooltip>;
                     case 'vip':
-                        return <div className='box-2' style={{color: '#9e1068', fontWeight: 500}}>{title}</div>;
+                        return <Tooltip title={t("Preview post")} placement="topLeft" mouseEnterDelay={0.2} color='cyan' ><div onClick={() => onClickTitle(props)}  className='box-2 link' style={{color: '#9e1068', fontWeight: 500}}>{props.title}</div></Tooltip>;
                     default:
                         break;
                 }
@@ -142,6 +157,21 @@ function ManagePosts(props) {
             }
         }
     ];
+
+    const onClickTitle = ({id, status, province, district, title}) => {
+        if(status) {
+            const newTitle = convertChar(title) + `"${id}"`;
+            const newProvince = convertChar(province)
+            const newDistrict = convertChar(district)
+
+            router.push('/posts/[province]/[district]/[post]', `/posts/${newProvince}/${newDistrict}/${newTitle}`)
+        } else {
+            notification.error({
+                message: t('Your post had been hided'),
+                description: t('Please show post to get this link')
+            })
+        }
+    }
 
     const onClickShowHide = ({id, status}) => {
         if (status) {
