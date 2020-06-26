@@ -286,7 +286,7 @@ function ManagePosts(props) {
                     expandable={{
                         expandedRowRender: postInfo => (
                             <Descriptions >
-                                <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address}</Descriptions.Item>
+                                <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address.addressTitle}</Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('Type of post')}</strong>} span={1}>{postInfo.typePost}</Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('Code')}</strong>} span={2}>{postInfo._id}</Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('Province')}</strong>}>{postInfo.filter.province.name}</Descriptions.Item>

@@ -4,6 +4,7 @@ import {useTranslation} from 'react-i18next';
 import numeral from 'numeral';
 import {Divider, Row, Col, Select, Typography, Input, Button, Form, InputNumber, Spin, notification} from 'antd';
 import _ from 'lodash';
+import axios from 'axios';
 import moment from 'moment';
 
 import {appConfig} from '../../constant';
@@ -13,9 +14,9 @@ import Layout from '../../components/Layout/Layout';
 // Components
 import Editor from '../../components/Editor/Editor';
 import Upload from '../../components/Upload/Upload';
+import GoogleMap from '../../components/GoogleMap/GoogleMap';
 
 // Services
-import * as blockServices from '../../services/block/index';
 import * as roomServices from '../../services/room/index';
 import * as uploadServices from '../../services/Upload/index';
 import * as postServices from '../../services/post/index';
@@ -28,12 +29,23 @@ function CreatePost(props) {
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [streets, setStreets] = useState([]);
+    const [wards, setWards] = useState([]);
     const [filter, setfilter] = useState({
         province: '',
         district: '',
-        street: ''
+        street: '',
+        ward: ''
     });
     const [blocks, setBlocks] = useState([]);
+    const [address, setAddress] = useState({
+        number: '',
+        addressTitle: '',
+        location: {
+            lat: 10.8225079,
+            lng: 106.68809549999999
+        }
+    });
+    const [addressNumber, setAddressNumber] = useState('');
     const [typeFees, setTypeFees] = useState([
         {id: 'days', label: 'Days', fee: {normal: 2000, hot: 10000, vip: 50000}, value: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70], prefix: 'day'} ,
         {id: 'weeks', label: 'Weeks', fee: {normal: 10000, hot: 60000, vip: 300000}, value: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], prefix: 'week'},
@@ -87,12 +99,17 @@ function CreatePost(props) {
 
         if (district) {
             const newStreets = district.streets;
+            
+            const newWards = district.wards;
 
             setStreets(newStreets);
+            
+            setWards(newWards);
 
             setfilter({
                 ...filter,
-                street: newStreets[0]
+                street: newStreets[0],
+                ward: newWards[0]
             });
         }
     }, [filter.district]);
@@ -101,6 +118,35 @@ function CreatePost(props) {
     //     getDataRooms();
         
     // }, [blockSelected]);
+
+    useEffect(() => {
+        if (filter.province.name && filter.street.name && filter.district.name && filter.ward.name) {
+            getGoeCode();
+        }
+    }, [filter, addressNumber]);
+
+    const getGoeCode =  async () => {
+        const value = `${addressNumber} ${filter.street.prefix} ${filter.street.name}, ${filter.ward.prefix} ${filter.ward.name}, ${filter.district.name}, ${filter.province.name}`;
+
+        const getGoeCode = await axios({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCfzCvAvH3FV0Rk1K7Y3yzo4QjCklT9mSU',
+            method: 'GET',
+            params: {address: value}
+
+        });
+
+        if (getGoeCode) {
+            if (getGoeCode.data && getGoeCode.data.status === 'OK') {
+
+                setAddress({
+                    number: addressNumber,
+                    addressTitle: value,
+                    location: getGoeCode.data.results[0].geometry.location
+                });
+            }
+        }
+
+    };
 
     const getLocal = async () => {
         const getLocal = await import('../../Docs/json/local.json');
@@ -186,6 +232,17 @@ function CreatePost(props) {
             ...filter,
             province: newProvince
         });
+    };
+    
+    const onChangeWard = (value) => {
+        let newWard = wards.find(ward => ward.id === value);
+
+        if (newWard) {
+            setfilter({
+                ...filter,
+                ward: newWard
+            });
+        }
     };
 
     const onChangeDistrict = (value) => {
@@ -294,6 +351,7 @@ function CreatePost(props) {
             ...value,
             filter,
             contact: props.userLogin.id,
+            address: address,
             option: optionSelected,
             startTime: moment().format(),
             endTime: endDate(),
@@ -348,6 +406,12 @@ function CreatePost(props) {
         setImages(images);
     };
 
+    const onChangeStreet = (event) => {
+        const {value} = event.target;
+        
+        setAddressNumber(value);
+    };
+
     return (
         <Layout dashBoard>
             <Spin spinning={isLoading}>
@@ -359,7 +423,7 @@ function CreatePost(props) {
                 </div>
                 <div className='d-flex center filter-custom' style={{width: '100%', position: 'relative', top: 0, margin: '20px 0px'}}>
                     <Row className='inner-filter' gutter={[16, 16]}>
-                        <Col xs={{span: 24}} md={{span: 8}}>
+                        <Col xs={{span: 24}} md={{span: 6}}>
                             <div className='d-flex row left'>
                                 <strong>{t('Provinces')}:</strong>
                                 <Select
@@ -377,7 +441,7 @@ function CreatePost(props) {
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{span: 24}} md={{span: 8}}>
+                        <Col xs={{span: 24}} md={{span: 6}}>
                             <div className='d-flex row left'>
                                 <strong>{t('District')}:</strong>
                                 <Select 
@@ -395,7 +459,25 @@ function CreatePost(props) {
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{span: 24}} md={{span: 8}}>
+                        <Col xs={{span: 24}} md={{span: 6}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Ward')}:</strong>
+                                <Select 
+                                    showSearch
+                                    filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    style={{width: '100%'}}
+                                    value={filter.ward.id}
+                                    onChange={onChangeWard}
+                                >
+                                    {wards && wards.length > 0 && wards.map(ward => {
+                                        return <Select.Option key={ward.id} value={ward.id}>{`${ward.prefix || ''} ${t(ward.name)}`}</Select.Option>;
+                                    })}
+                                </Select>
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 6}}>
                             <div className='d-flex row left'>
                                 <strong>{t('Street')}:</strong>
                                 <Select 
@@ -413,19 +495,25 @@ function CreatePost(props) {
                                 </Select>
                             </div>
                         </Col>
+                        <Col xs={{span: 24}} md={{span: 6}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Number')}:</strong>
+                                <Input placeholder={t('Please input your number address')} onChange={onChangeStreet} value={addressNumber} />
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 18}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Address detail')}:</strong>
+                                <Input disabled placeholder={t('Input address')} value={address.addressTitle} style={{width: '100%'}} />
+                            </div>
+                        </Col>
                     </Row>
                 </div>
                 <Row style={{width: '100%'}}>
                     <Col xs={{span: 24}} md={{span: 14}}>
                         <Form {...layout} onFinish={onFinishForm} form={form} name='form-information'>
                             <div style={{fontSize: 25, color: '#434343', marginBottom: 20}}>{t('Information')}</div>
-                            <Form.Item
-                                label={<strong>{t('Address detail')}</strong>}
-                                name='address'
-                                rules={[{required: true, message: t('Please input address detail!')}]}
-                            >
-                                <Input placeholder={t('Input address')} style={{width: '100%'}} />
-                            </Form.Item>
+                            
                             <Form.Item
                                 label={<strong>{t('Type post')}</strong>}
                                 name='typePost'
@@ -566,7 +654,17 @@ function CreatePost(props) {
                             </Form.Item>
                         </Form>
                     </Col>
-                    <Col xs={{span: 24}} md={{span: 10}} />
+                    <Col xs={{span: 24}} md={{span: 10}} style={{paddingLeft: '20px'}}>
+                        <GoogleMap center={address.location} />
+                        <div className={'notice-post'}>
+                            <div style={{fontSize: 25, color: '#434343', marginBottom: 10}}>{t('Notice when add new post')}</div>
+                            <p>Nội dung phải viết bằng tiếng Việt có dấu
+Tiêu đề tin không dài quá 100 kí tự
+Các bạn nên điền đầy đủ thông tin vào các mục để tin đăng có hiệu quả hơn.
+Để tăng độ tin cậy và tin rao được nhiều người quan tâm hơn, hãy sửa vị trí tin rao của bạn trên bản đồ bằng cách kéo icon tới đúng vị trí của tin rao.
+Tin đăng có hình ảnh rõ ràng sẽ được xem và gọi gấp nhiều lần so với tin rao không có ảnh. Hãy đăng ảnh để được giao dịch nhanh chóng!</p>
+                        </div>
+                    </Col>
                 </Row>
             </Spin>
         </Layout>
