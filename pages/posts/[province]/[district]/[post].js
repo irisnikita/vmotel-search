@@ -223,17 +223,19 @@ function Post(props) {
     return (
         <Layout {...meta}>
             <Row style={{ padding: 20 }}>
-                <div style={{ width: '100%' }}>{showRenderTitle()}</div>
+                <div style={{ width: '100%' }} id='info'>{showRenderTitle()}</div>
                 <Col xs={{ span: 24 }} md={{ span: 16 }}>
-                    <div className='d-flex list-menu-btn space-between' >
-                        <div className='d-flex'>
-                            <Button type='link' style={{ fontWeight: 500 }}>{t('GENERAL INFO')}</Button>
-                            <Button type='link' style={{ fontWeight: 500 }}>{t('DETAILS')}</Button>
-                            <Button type='link' style={{ fontWeight: 500 }}>{t('MAP')}</Button>
-                            <Button type='link' style={{ fontWeight: 500 }}>{t('IMAGES')}</Button>
-                        </div>
-                        {postInfo.contact._id === props.userLogin.id ? <Button icon={<EditOutlined />} onClick={onClickEdit}>{t('Edit')}</Button> : null}
-                    </div>
+                    <Row className='d-flex list-menu-btn space-between'>
+                        <Col className='d-flex'>
+                            <a href='#info'><Button type='link' style={{ fontWeight: 500 }}>{t('GENERAL INFO')}</Button></a>
+                            <a href='#details'><Button type='link' style={{ fontWeight: 500 }}>{t('DETAILS')}</Button></a>
+                            <a href='#map'><Button type='link' style={{ fontWeight: 500 }}>{t('MAP')}</Button></a>
+                            <a href='#images'><Button type='link' style={{ fontWeight: 500 }}>{t('IMAGES')}</Button></a>
+                        </Col>
+                        <Col>
+                            {postInfo.contact._id === props.userLogin.id ? <Button icon={<EditOutlined />} onClick={onClickEdit} style={{marginLeft: 15}}>{t('Edit')}</Button> : null}
+                        </Col>
+                    </Row>
                     <Descriptions bordered>
                         <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address && postInfo.address.addressTitle}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('Type of post')}</strong>} span={1}>{postInfo.filter && postInfo.filter.optionType.value}</Descriptions.Item>
@@ -248,7 +250,7 @@ function Post(props) {
                         <Descriptions.Item label={<strong>{t('Date Submitted')}</strong>}>{moment(postInfo.startTime).format('DD/MM/YYYY HH:mm')}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('End date')}</strong>}>{moment(postInfo.endTime || new Date()).format('DD/MM/YYYY HH:mm')}</Descriptions.Item>
                     </Descriptions>
-                    <div className='description-post'>
+                    <div className='description-post' id='details'>
                         <Title level={4}>{t('Description')}</Title>
                         <div dangerouslySetInnerHTML={{ __html: postInfo.description }}></div>
                         <Divider dashed></Divider>
@@ -258,8 +260,8 @@ function Post(props) {
                             <Tag color="volcano">{postInfo.filter.street.name}</Tag>
                         </div>
                     </div>
-                    <div style={{ marginBottom: 30 }}>
-                        <Title level={4}>{t('Images')}</Title>
+                    <div style={{ marginBottom: 30 }} id='images'>
+                        <Title level={4} >{t('Images')}</Title>
                         <Slider {...settings}>
                             {
                                 postInfo.images && postInfo.images.length > 0 ?
@@ -276,7 +278,7 @@ function Post(props) {
                             postInfo.images && postInfo.images.length <= 0 ? <div className='image-default' style={{ backgroundImage: 'url(/images/background-login.jpg)' }}><div style={{ height: 'max-content' }}>No Images</div></div> : null
                         }
                     </div>
-                    <Title level={4}>{t('Map')}</Title>
+                    <Title level={4} id='map'>{t('Map')}</Title>
                     <GoogleMap center={postInfo.address.location}/>
                     <Title style={{marginTop: 20}} level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
                     <Row gutter={[16, 16]}>
