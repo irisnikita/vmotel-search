@@ -424,14 +424,14 @@ function Home(props) {
             const cols = [1,2,3,4,5,6,7,8,9,10,11,12];
 
             return cols.map(col => {
-                return <Col key={col} xs={{span: 24}} md={{span: 8}}>
+                return <Col key={col} xs={{span: 24}} md={{span: 6}}>
                     <Card style={{width: '100%'}} loading={isLoading} />
                 </Col>;
             }); 
         } else {
             return normalPosts && normalPosts.length > 0 ? normalPosts.map(motel => {
                 return (
-                    <Col key={motel._id} xs={{span: 24}} md={{span: 8}}>
+                    <Col key={motel._id} xs={{span: 24}} md={{span: 6}}>
                         <NormalCard room={motel} />
                     </Col>
                 );

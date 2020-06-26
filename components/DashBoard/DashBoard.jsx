@@ -42,7 +42,7 @@ function DashBoard(props) {
         localStorage.removeItem('userInfo');
 
         props.userLogin({
-            user: {}
+            userLogin: {}
         });
     };
 

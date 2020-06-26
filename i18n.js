@@ -104,7 +104,23 @@ const resources = {
             'No data': 'Không có dữ liệu',
             'Add FeedBack Success': 'Đăng phản hồi thành công',
             'Terrible': 'Khủng khiếp', 'Bad': 'Tệ', 'Normal': 'Bình thường', 'Good': 'Tốt', 'Wonderful': 'Tuyệt vời',
-            'Notice when add new post': 'Chú ý khi đăng bài'
+            'Notice when add new post': 'Chú ý khi đăng bài',
+            'GENERAL INFO': 'TIN CHUNG',
+            'DETAILS': 'CHI TIẾT',
+            'MAP': 'BẢN ĐỒ',
+            'IMAGES': 'HÌNH ẢNH',
+            'User name': 'Tên người đăng',
+            'Email': 'Địa chỉ email',
+            'Description': 'Nội dung',
+            'Place your description': 'Nhập nội dung',
+            'Submit': 'Đăng',
+            'Hot': 'Tin nổi bật',
+            'Vip': 'Tin vip',
+            'Number': 'Số nhà',
+            'Ward': 'Phường',
+            'Contact': 'Liên hệ',
+            'Post new': 'Đăng bài',
+            'Edit': 'Chỉnh sửa'
         }
     }
 };
