@@ -568,7 +568,7 @@ function Home(props) {
                         <SketchOutlined style={{fontSize: 30, color: '#ff7676'}} />
                     </div>
                 </Row>
-                <Row style={{width: '100%', margin: '20px 0px'}} gutter={[16,16]}>
+                <Row style={{width: '100%'}} gutter={[16,16]}>
                     {hotPosts && hotPosts.length > 0 ? hotPosts.map(post => {
                         return (
                             <Col key={post._id} xs={{span: 24}} md={{span: 12}}>
@@ -577,7 +577,7 @@ function Home(props) {
                         );
                     }) : null}
                 </Row>
-                <Row style={{width: '100%'}}>
+                <Row style={{width: '100%', marginTop: 20}}>
                     <Col xs={{span: 24}} md={{span: 24}}>
                         <div className='d-flex' style={{marginBottom: '20px'}}>
                             <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
