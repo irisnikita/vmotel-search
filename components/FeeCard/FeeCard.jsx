@@ -70,7 +70,7 @@ function FeeCard(props) {
                         <strong>{t('price')}:</strong> &nbsp;
                         <span style={{fontWeight: 500, color: '#f54ea2'}}>{numeral(price).format('0,0')}/{t('month')}</span>
                     </div>
-                    <div className='d-flex'>
+                    <div className='d-flex' style={{display: 'inline-block'}}>
                         <strong>{t('address')}:</strong> &nbsp;
                         <span style={{fontWeight: 500}}>{address.addressTitle}</span>
                     </div>
@@ -80,9 +80,6 @@ function FeeCard(props) {
                     </div>
                     <div className='d-flex'>
                         <a style={{color: '#531dab', fontWeight: 600}} className={styles['link-address']}><EnvironmentOutlined /> {`${province.name}, ${district.name}`}</a>
-                    </div>
-                    <div className={styles['description']}>
-                        <div dangerouslySetInnerHTML={{__html: description}}></div>
                     </div>
                 </div>
             </Col>

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
+import {useRouter} from 'next/router';
 import numeral from 'numeral';
 import {Divider, Row, Col, Select, Typography, Input, Button, Form, InputNumber, Spin, notification} from 'antd';
 import _ from 'lodash';
@@ -60,6 +61,7 @@ function CreatePost(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [rooms, setRooms] = useState([]);
     const [images, setImages] = useState([]);
+    const router = useRouter();
 
     const layout = {
         labelCol: {span: 24},
@@ -390,6 +392,8 @@ function CreatePost(props) {
                     message: t('Success'),
                     description: t('You have create post success, please turn back home to see your post')
                 });
+
+                router.push('/quan-ly/quan-ly-tin');
             }
         }
 

@@ -5,14 +5,17 @@ import _ from 'lodash';
 import {useTranslation} from 'react-i18next';
 import {Layout, Menu, Breadcrumb, Slider, Avatar, Row, Col, Button} from 'antd';
 
-import {UserOutlined, LaptopOutlined, NotificationOutlined, ImportOutlined, PlusOutlined} from '@ant-design/icons';
+import {ImportOutlined, PlusOutlined} from '@ant-design/icons';
+import {connect} from 'react-redux';
+
+import {userLogin} from '../../Redux/actions/layout';
 
 const {SubMenu} = Menu;
 
 const {Header, Content, Sider} = Layout;
 
 function DashBoard(props) {
-    const {userLogin = {}} = props;
+    const {user = {}} = props;
     const router = useRouter();
     const {t} = useTranslation();
     const [path, setPath] = useState('/');
@@ -29,23 +32,37 @@ function DashBoard(props) {
 
     }, [router.pathname]);
 
+    const onClickAdd = () => {
+        router.push('/quan-ly/tao-tin');
+    };
+
+    const onClickLogout = () => {
+        router.push('/');
+
+        localStorage.removeItem('userInfo');
+
+        props.userLogin({
+            user: {}
+        });
+    };
+
     return (
         <Layout style={{maxHeight: '90vh', overflow: 'hidden'}}>
             <Sider width={250} style={{height: '90vh', overflow: 'hidden', backgroundColor: '#fff'}}>
                 <div style={{padding: '10px'}}>
                     <div className='d-flex center'>
-                        <Avatar src={userLogin.avatar} size={64} />
+                        <Avatar src={user.avatar} size={64} />
                     </div>
                     <div className='d-flex row'>
-                        <div style={{color: '#08979c', fontWeight: 500, fontSize: 17}}>{userLogin.fullName}</div>
-                        <div><strong>{t('Email')}:</strong> {userLogin.email}</div>
-                        <div><strong>{t('Phone')}:</strong> {userLogin.phoneNumber}</div>
+                        <div style={{color: '#08979c', fontWeight: 500, fontSize: 17}}>{user.fullName}</div>
+                        <div><strong>{t('Email')}:</strong> {user.email}</div>
+                        <div><strong>{t('Phone')}:</strong> {user.phoneNumber}</div>
                         <Row className='d-flex space-between' gutter={[0, 10]} style={{width: '100%', marginTop: 20}}>
                             <Col span={24}>
-                                <Button icon={<PlusOutlined />} style={{width: '100%'}} type='primary'shape='round'>{t('Add post')}</Button>
+                                <Button onClick={onClickAdd} icon={<PlusOutlined />} style={{width: '100%'}} type='primary'shape='round'>{t('Add post')}</Button>
                             </Col>
                             <Col span={24}>
-                                <Button icon={<ImportOutlined />} shape='round' style={{width: '100%'}} danger>{t('Log out')}</Button>
+                                <Button onClick={onClickLogout} icon={<ImportOutlined />} shape='round' style={{width: '100%'}} danger>{t('Log out')}</Button>
                             </Col>
                         </Row>
                     </div>
@@ -87,8 +104,12 @@ function DashBoard(props) {
 }
 
 DashBoard.propTypes = {
-
+    
 };
 
-export default DashBoard;
+const mapDispatchToProps =  {
+    userLogin
+};
+
+export default connect(null, mapDispatchToProps)(DashBoard);
 

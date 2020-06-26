@@ -100,7 +100,11 @@ const resources = {
             'Add post': 'Đăng tin',
             'Your post had been hided': 'Bài của bạn đã bị ẩn',
             'Please show post to get this link': 'Hãy ấn nút hiện bài để có thể truy cập vào link trên',
-            'User information': 'Thông tin cá nhân'
+            'User information': 'Thông tin cá nhân',
+            'No data': 'Không có dữ liệu',
+            'Add FeedBack Success': 'Đăng phản hồi thành công',
+            'Terrible': 'Khủng khiếp', 'Bad': 'Tệ', 'Normal': 'Bình thường', 'Good': 'Tốt', 'Wonderful': 'Tuyệt vời',
+            'Notice when add new post': 'Chú ý khi đăng bài'
         }
     }
 };

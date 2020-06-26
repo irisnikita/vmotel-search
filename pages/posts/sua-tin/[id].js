@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import {useRouter} from 'next/router';
 import numeral from 'numeral';
 import { Divider, Row, Col, Select, Typography, Input, Button, Form, InputNumber, Spin, notification } from 'antd';
 import _ from 'lodash';
@@ -42,7 +43,8 @@ export async function getServerSideProps(props) {
 function UpdatePost(props) {
     // Props
     const { postInfo = {} } = props;
-
+    
+    const router = useRouter();
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const [provinces, setProvinces] = useState([]);
@@ -416,6 +418,8 @@ function UpdatePost(props) {
                     message: t('Success'),
                     description: t('You have update post success, please turn back home to see your post')
                 });
+
+                router.push('/quan-ly/quan-ly-tin')
             }
         }
 
