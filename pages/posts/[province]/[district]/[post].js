@@ -19,6 +19,7 @@ import NormalCard from '../../../../components/NormalCard/NormalCard';
 // Icons
 import { FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, EditOutlined, LeftOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
+import GoogleMap from '../../../../components/GoogleMap/GoogleMap';
 
 const { Title } = Typography;
 
@@ -34,6 +35,8 @@ export async function getServerSideProps(props) {
     // Pass post data to the page via props
     return { props: { postInfo: post } }
 }
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 function Post(props) {
     const { postInfo = {} } = props;
@@ -191,8 +194,8 @@ function Post(props) {
                         {postInfo.contact._id === props.userLogin.id ? <Button icon={<EditOutlined />} onClick={onClickEdit}>{t('Edit')}</Button> : null}
                     </div>
                     <Descriptions bordered>
-                        <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address}</Descriptions.Item>
-                        <Descriptions.Item label={<strong>{t('Type of post')}</strong>} span={1}>{postInfo.typePost}</Descriptions.Item>
+                        <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address.addressTitle}</Descriptions.Item>
+                        <Descriptions.Item label={<strong>{t('Type of post')}</strong>} span={1}>{postInfo.filter.optionType.value}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('Code')}</strong>} span={2}>{postInfo._id}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('Province')}</strong>}>{postInfo.filter.province.name}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('District')}</strong>}>{postInfo.filter.district.name}</Descriptions.Item>
@@ -232,6 +235,8 @@ function Post(props) {
                             postInfo.images && postInfo.images.length <= 0 ? <div className='image-default' style={{ backgroundImage: 'url(/images/background-login.jpg)' }}><div style={{ height: 'max-content' }}>No Images</div></div> : null
                         }
                     </div>
+                    <Title level={4}>{t('Map')}</Title>
+                    <GoogleMap center={postInfo.address.location}/>
                     <Title level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
                     <Row gutter={[16, 16]}>
                         {showRenderNormalPosts()}

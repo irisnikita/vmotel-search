@@ -61,7 +61,7 @@ function NormalCard(props) {
                 </div>
                 <div className='d-flex'>
                     <strong>{t('address')}:</strong> &nbsp;
-                    <div className={styles['address']} style={{fontWeight: 500}}>{room.address}</div>
+                    <div className={styles['address']} style={{fontWeight: 500}}>{room.address.addressTitle}</div>
                 </div>
                 <div className='d-flex'>
                     <strong>{t('area')}:</strong> &nbsp;

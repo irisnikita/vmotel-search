@@ -5,6 +5,7 @@ import numeral from 'numeral';
 import { Divider, Row, Col, Select, Typography, Input, Button, Form, InputNumber, Spin, notification } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
+import axios from 'axios';
 
 import { appConfig } from '../../../constant';
 
@@ -12,6 +13,7 @@ import Layout from '../../../components/Layout/Layout';
 
 // Components
 import Editor from '../../../components/Editor/Editor';
+import GoogleMap from '../../../components/GoogleMap/GoogleMap';
 import Upload from '../../../components/Upload/Upload';
 
 // Services
@@ -46,12 +48,23 @@ function UpdatePost(props) {
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [streets, setStreets] = useState([]);
+    const [wards, setWards] = useState([]);
     const [filter, setfilter] = useState({
-        province: '',
-        district: '',
-        street: '',
+        province: {},
+        district: {},
+        ward: {},
+        street: {},
         optionType: {}
     });
+    const [address, setAddress] = useState({
+        number: '',
+        addressTitle: '',
+        location: {
+            lat: 10.8225079,
+            lng: 106.68809549999999
+        }
+    });
+    const [addressNumber, setAddressNumber] = useState('');
     const [blocks, setBlocks] = useState([]);
     const [typeFees, setTypeFees] = useState([
         { id: 'days', label: 'Days', fee: { normal: 2000, hot: 10000, vip: 50000 }, value: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70], prefix: 'day' },
@@ -71,15 +84,57 @@ function UpdatePost(props) {
 
     useEffect(() => {
         getLocal();
-
-        // getBlocks();
     }, []);
 
+
+    // useEffect(() => {
+    //         setAddressTitle(`${addressNumber} ${filter.street.prefix} ${filter.street.name}, ${filter.ward.prefix} ${filter.ward.name}, ${filter.district.name}, ${filter.province.name}`)
+    // }, [filter, addressNumber]);
+
+    // useEffect(() => {
+    //     getGoeCode();
+
+    // }, [addressTitle])
+
+    const getGoeCode =  async () => {
+        const addressTitle = `${addressNumber} ${filter.street.prefix} ${filter.street.name}, ${filter.ward.prefix} ${filter.ward.name}, ${filter.district.name}, ${filter.province.name}`;
+
+        const getGoeCode = await axios({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCfzCvAvH3FV0Rk1K7Y3yzo4QjCklT9mSU',
+            method: 'GET',
+            params: {address: addressTitle}
+
+        });
+
+        if (getGoeCode) {
+            if (getGoeCode.data && getGoeCode.data.status === 'OK') {
+
+                setAddress({
+                    number: addressNumber,
+                    addressTitle: addressTitle,
+                    location: getGoeCode.data.results[0].geometry.location
+                });
+            }
+        }
+
+    };
+
+    useEffect(() => {
+
+        if(filter.province.name && filter.street.name && filter.district.name && filter.ward.name) {
+            getGoeCode();
+        }
+
+    }, [filter.province, filter.street, filter.ward, filter.district, addressNumber])
 
     useEffect(() => {
         if (!_.isEmpty(postInfo)) {
 
             // setBlockSelected(postInfo.infoBlock.block)
+
+            setAddress(postInfo.address)
+
+            setAddressNumber(postInfo.address.number)
 
             setImages(postInfo.images)
 
@@ -129,22 +184,27 @@ function UpdatePost(props) {
         if (district) {
             const newStreets = district.streets;
 
+            const newWards = district.wards;
+
+            setWards(newWards);
+
             setStreets(newStreets);
 
             if (!isMount) {
                 setfilter({
                     ...filter,
-                    street: postInfo.filter.street
+                    street: postInfo.filter.street,
+                    ward: postInfo.filter.ward
                 });
 
                 setMount(true)
             } else {
                 setfilter({
                     ...filter,
-                    street: newStreets[0]
+                    street: newStreets[0],
+                    ward: newWards[0]
                 });
             }
-            
         }
     }, [filter.district]);
 
@@ -321,6 +381,7 @@ function UpdatePost(props) {
                 ...filter,
                 optionType: _.isEmpty(filter.optionType) ? postInfo.filter.optionType : filter.optionType
             },
+            address,
             timeUpdate: moment().format(),
             images: newImages
         };
@@ -328,6 +389,17 @@ function UpdatePost(props) {
         setIsLoading(false);
 
         updatePost(newForm);
+    };
+
+    const onChangeWard = (value) => {
+        let newWard = wards.find(ward => ward.id === value);
+
+        if (newWard) {
+            setfilter({
+                ...filter,
+                ward: newWard
+            });
+        }
     };
 
     const updatePost = async (post) => {
@@ -360,6 +432,12 @@ function UpdatePost(props) {
         setImages(images);
     };
 
+    const onChangeStreet = (event) => {
+        const {value} = event.target;
+        
+        setAddressNumber(value);
+    };
+
     return (
         <Layout dashBoard>
             <Spin spinning={isLoading}>
@@ -371,7 +449,7 @@ function UpdatePost(props) {
                 </div>
                 <div className='d-flex center filter-custom' style={{ width: '100%', position: 'relative', top: 0, margin: '20px 0px' }}>
                     <Row className='inner-filter' gutter={[16, 16]}>
-                        <Col xs={{ span: 24 }} md={{ span: 8 }}>
+                        <Col xs={{ span: 24 }} md={{ span: 6 }}>
                             <div className='d-flex row left'>
                                 <strong>{t('Provinces')}:</strong>
                                 <Select
@@ -389,7 +467,7 @@ function UpdatePost(props) {
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{ span: 24 }} md={{ span: 8 }}>
+                        <Col xs={{ span: 24 }} md={{ span: 6 }}>
                             <div className='d-flex row left'>
                                 <strong>{t('District')}:</strong>
                                 <Select
@@ -407,7 +485,7 @@ function UpdatePost(props) {
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{ span: 24 }} md={{ span: 8 }}>
+                        <Col xs={{ span: 24 }} md={{ span: 6 }}>
                             <div className='d-flex row left'>
                                 <strong>{t('Street')}:</strong>
                                 <Select
@@ -425,19 +503,42 @@ function UpdatePost(props) {
                                 </Select>
                             </div>
                         </Col>
+                        <Col xs={{span: 24}} md={{span: 6}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Ward')}:</strong>
+                                <Select 
+                                    showSearch
+                                    filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    style={{width: '100%'}}
+                                    value={filter.ward.id}
+                                    onChange={onChangeWard}
+                                >
+                                    {wards && wards.length > 0 && wards.map(ward => {
+                                        return <Select.Option key={ward.id} value={ward.id}>{`${ward.prefix || ''} ${t(ward.name)}`}</Select.Option>;
+                                    })}
+                                </Select>
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 6}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Number')}:</strong>
+                                <Input placeholder={t('Please input your number address')} onChange={onChangeStreet} value={addressNumber} />
+                            </div>
+                        </Col>
+                        <Col xs={{span: 24}} md={{span: 18}}>
+                            <div className='d-flex row left'>
+                                <strong>{t('Address detail')}:</strong>
+                                <Input disabled placeholder={t('Input address')} value={address.addressTitle} style={{width: '100%'}} />
+                            </div>
+                        </Col>
                     </Row>
                 </div>
                 <Row style={{ width: '100%' }}>
                     <Col xs={{ span: 24 }} md={{ span: 14 }}>
                         <Form {...layout} onFinish={onFinishForm} form={form} name='form-information'>
                             <div style={{ fontSize: 25, color: '#434343', marginBottom: 20 }}>{t('Information')}</div>
-                            <Form.Item
-                                label={<strong>{t('Address detail')}</strong>}
-                                name='address'
-                                rules={[{ required: true, message: t('Please input address detail!') }]}
-                            >
-                                <Input placeholder={t('Input address')} style={{ width: '100%' }} />
-                            </Form.Item>
                             <Form.Item
                                 label={<strong>{t('Type post')}</strong>}
                                 name='typePost'
@@ -527,7 +628,9 @@ function UpdatePost(props) {
                             </Form.Item>
                         </Form>
                     </Col>
-                    <Col xs={{ span: 24 }} md={{ span: 10 }} />
+                    <Col xs={{ span: 24 }} md={{ span: 10 }}>
+                        <GoogleMap center={address.location}/>
+                    </Col>
                 </Row>
             </Spin>
         </Layout>

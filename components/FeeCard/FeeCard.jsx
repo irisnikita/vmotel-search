@@ -72,7 +72,7 @@ function FeeCard(props) {
                     </div>
                     <div className='d-flex'>
                         <strong>{t('address')}:</strong> &nbsp;
-                        <span style={{fontWeight: 500}}>{address}</span>
+                        <span style={{fontWeight: 500}}>{address.addressTitle}</span>
                     </div>
                     <div className='d-flex'>
                         <strong>{t('area')}:</strong> &nbsp;
