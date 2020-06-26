@@ -105,6 +105,7 @@ function Home(props) {
 
     const [normalPosts, setNormalPosts] = useState([]);
     const [hotPosts, setHotPosts] = useState([]);
+    const [vipPosts, setVipPosts] = useState([]);
 
     const settings = {
         infinite: true,
@@ -134,6 +135,8 @@ function Home(props) {
         getLocal();
 
         getHotPosts();
+
+        getVipPosts();
     }, []);
 
     useEffect(() => {
@@ -253,6 +256,21 @@ function Home(props) {
                 const {posts} = getHotPosts.data.data;
 
                 setHotPosts(posts || []);
+            }
+        }
+    };
+
+    const getVipPosts = async () => {
+        const getHotPosts = await postServices.getList({
+            limit: 10,
+            levelId: 'vip'
+        });
+
+        if (getHotPosts) {
+            if (getHotPosts.data && getHotPosts.data.data) {
+                const {posts} = getHotPosts.data.data;
+
+                setVipPosts(posts || []);
             }
         }
     };
@@ -472,8 +490,8 @@ function Home(props) {
                     <Col xs={{span: 24}} md={{span: 14}}>
                         <div className='d-flex center slick-custom' style={{height: '100%'}}>
                             <Slider {...settings} className='react-slick'>
-                                {rooms.length > 0 && rooms.map(room => (
-                                    <div key={room.id} className='item-slick'>
+                                {vipPosts.length > 0 && vipPosts.map(room => (
+                                    <div key={room._id} className='item-slick'>
                                         <CustomCard
                                             room={room}
                                         />
@@ -482,7 +500,6 @@ function Home(props) {
                             </Slider>
                         </div>
                     </Col>
-                
                 </Row>
                 <div className='d-flex center filter-custom' style={{width: '100%', marginTop: '20px'}}>
                     <Row className='inner-filter' gutter={[16, 16]}>
@@ -561,7 +578,7 @@ function Home(props) {
                     }) : null}
                 </Row>
                 <Row style={{width: '100%'}}>
-                    <Col xs={{span: 24}} md={{span: 16}}>
+                    <Col xs={{span: 24}} md={{span: 24}}>
                         <div className='d-flex' style={{marginBottom: '20px'}}>
                             <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
                             <FileDoneOutlined style={{fontSize: 30, color: '#08979c'}} />
@@ -573,12 +590,12 @@ function Home(props) {
                             <Pagination total={total} onChange={onChangePagination} showSizeChanger defaultCurrent={1} pageSize={filter.limit} onShowSizeChange={onShowSizeChange} />
                         </div>
                     </Col>
-                    <Col xs={{span: 24}} md={{span: 8}}>
+                    {/* <Col xs={{span: 24}} md={{span: 8}}>
                         <div className='d-flex' style={{marginBottom: '20px'}}>
                             <strong style={{color: '#f5222d', fontSize: '25px'}}>{t('DANH MỤC')} - </strong>&nbsp;
                             <UnorderedListOutlined style={{fontSize: 30, color: '#f5222d'}} />
                         </div>
-                    </Col>
+                    </Col> */}
                 </Row>
             </Row>
         </Layout >

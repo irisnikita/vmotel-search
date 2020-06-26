@@ -180,7 +180,7 @@ function Layout(props) {
                 } 
                
                 {props.dashBoard ? 
-                    <DashBoard userLogin={props.user}>{children}</DashBoard> :  <Content className={styles['content']}>
+                    <DashBoard user={props.user}>{children}</DashBoard> :  <Content className={styles['content']}>
                         {children}
                     </Content>}
             </AntdLayout>

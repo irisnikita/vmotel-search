@@ -102,8 +102,15 @@
     border: 1px solid rgb(230, 230, 230);
     margin-left: 10px;
     padding: 10px;
-    position: sticky;
-    top: 70px;
+}
+
+.comment-box {
+    margin-top: 10px;
+    border: 1px solid rgb(230, 230, 230);
+    margin-left: 10px;
+    padding: 10px;
+    max-height: 500px;
+    overflow: auto;
 }
 
 @media only screen and (max-width: 500px) { 
@@ -112,6 +119,12 @@
     }
     .wrapper-image {
         height: 250px !important;
+    }
+    .comment-box {
+        margin-left: 0px !important;
+    }
+    .info-user {
+      margin-left: 0px !important;
     }
 }
 

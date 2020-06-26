@@ -11,10 +11,13 @@ import { Row, Col, Descriptions, Button, Badge, Typography, Divider, Tag, Empty,
 // Services
 import * as postServices from '../../../../services/post/index';
 import * as userServices from '../../../../services/User/index';
+import * as commentServices from '../../../../services/comment/index';
 
 // Components
 import Layout from '../../../../components/Layout/Layout';
 import NormalCard from '../../../../components/NormalCard/NormalCard';
+import CommentBox from '../../../../components/CommentBox/CommentBox';
+import CommentItem from '../../../../components/CommentItem/CommentItem';
 
 // Icons
 import { FileDoneOutlined, SketchOutlined, CrownOutlined, RightOutlined, EditOutlined, LeftOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
@@ -26,17 +29,20 @@ const { Title } = Typography;
 // This also gets called at build time
 export async function getServerSideProps(props) {
     const { params = {} } = props;
+    let post = {};
 
     const id = params.post.match(/"([^"]*)"/g)[0].replace(/"/g, '');
+    console.log(id)
 
     const res = await fetch(`${appConfig.API_VMOTEL}/post/get-post/${id}`)
     const data = await res.json();
-    const { post = {} } = data.data;
+
+    if(data.data) {
+        post = data.data.post;
+    }
     // Pass post data to the page via props
     return { props: { postInfo: post } }
 }
-
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 function Post(props) {
     const { postInfo = {} } = props;
@@ -46,12 +52,31 @@ function Post(props) {
         title: postInfo.title + `,${postInfo.filter.province.name}, ${postInfo.filter.district.name}`
     }
     const [postRelatives, setPostRelatives] = useState([]);
+    const [comments, setComments] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         getPostsRelative()
     }, [])
+
+    useEffect(() => {
+        getComments();
+    }, [postInfo])
+
+    const getComments = async () => {
+        const getComments = await commentServices.getList({
+            postId: postInfo._id
+        })
+
+        if(getComments) {
+            if(getComments.data && getComments.data.data) {
+                const {comments = []} = getComments.data.data;
+
+                setComments(comments)
+            }
+        }
+    }
 
     const getPostsRelative = async () => {
         setLoading(true);
@@ -117,7 +142,7 @@ function Post(props) {
                             <NormalCard room={motel} />
                         </Col>
                     );
-            }) : <Empty style={{ width: '100%', height: 200, marginTop: 20 }} />;
+            }) : <Empty style={{ width: '100%', height: 300, marginTop: 20 }} description={t('No data')}/>;
         }
     };
 
@@ -179,6 +204,22 @@ function Post(props) {
         router.push('/posts/sua-tin/[id]', `/posts/sua-tin/${postInfo._id}`)
     }
 
+    const showRenderComments = () => {
+        return comments.length > 0 ? comments.map(comment => {
+            const newComment = {
+                contact: comment.contactId ? comment.contactId : comment.contact,
+                rate: comment.rate,
+                description: comment.description,
+                dateCreate: comment.dateCreate
+            }
+            return <CommentItem comment={newComment} key={comment._id}/>
+        }) : <Empty style={{ width: '100%', height: 300, marginTop: 20 }} description={t('No data')}/>
+    }
+
+    const callbackCommentBox = () => {
+        getComments();
+    }
+
     return (
         <Layout {...meta}>
             <Row style={{ padding: 20 }}>
@@ -194,12 +235,12 @@ function Post(props) {
                         {postInfo.contact._id === props.userLogin.id ? <Button icon={<EditOutlined />} onClick={onClickEdit}>{t('Edit')}</Button> : null}
                     </div>
                     <Descriptions bordered>
-                        <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address.addressTitle}</Descriptions.Item>
-                        <Descriptions.Item label={<strong>{t('Type of post')}</strong>} span={1}>{postInfo.filter.optionType.value}</Descriptions.Item>
+                        <Descriptions.Item label={<strong>{t('Address')}</strong>} span={3}>{postInfo.address && postInfo.address.addressTitle}</Descriptions.Item>
+                        <Descriptions.Item label={<strong>{t('Type of post')}</strong>} span={1}>{postInfo.filter && postInfo.filter.optionType.value}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('Code')}</strong>} span={2}>{postInfo._id}</Descriptions.Item>
-                        <Descriptions.Item label={<strong>{t('Province')}</strong>}>{postInfo.filter.province.name}</Descriptions.Item>
-                        <Descriptions.Item label={<strong>{t('District')}</strong>}>{postInfo.filter.district.name}</Descriptions.Item>
-                        <Descriptions.Item label={<strong>{t('Street')}</strong>}>{postInfo.filter.street.name}</Descriptions.Item>
+                        <Descriptions.Item label={<strong>{t('Province')}</strong>}>{postInfo.filter && postInfo.filter.province.name}</Descriptions.Item>
+                        <Descriptions.Item label={<strong>{t('District')}</strong>}>{postInfo.filter && postInfo.filter.district.name}</Descriptions.Item>
+                        <Descriptions.Item label={<strong>{t('Street')}</strong>}>{postInfo.filter && postInfo.filter.street.name}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('Area')}</strong>}>{postInfo.area}m<sup>2</sup></Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('Price')}</strong>}>{numeral(postInfo.price).format('0,0')}/{t('month')}</Descriptions.Item>
                         <Descriptions.Item label={<strong>{t('Status')}</strong>}> <Badge status="processing" text={t('Running')} /></Descriptions.Item>
@@ -237,26 +278,34 @@ function Post(props) {
                     </div>
                     <Title level={4}>{t('Map')}</Title>
                     <GoogleMap center={postInfo.address.location}/>
-                    <Title level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
+                    <Title style={{marginTop: 20}} level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
                     <Row gutter={[16, 16]}>
                         {showRenderNormalPosts()}
                     </Row>
                 </Col>
                 <Col xs={{ span: 24 }} md={{ span: 8 }}>
+                   <div style={{position: 'sticky', top: 70}}>
                     <div className='info-user'>
-                        <Row>
-                            <Col span={5}>
-                                <Avatar size={70} icon={<UserOutlined />} src={postInfo.contact.avatar} />
-                            </Col>
-                            <Col span={19}>
-                                <h1>{postInfo.contact.fullName}</h1>
-                                <p>{postInfo.contact.email}</p>
-                            </Col>
-                        </Row>
-                        <Button type='primary' onClick={() => onClickPhone(postInfo.contact.phoneNumber)} style={{ width: '100%' }} icon={<PhoneOutlined style={{ fontSize: 15 }} />}>
-                            <a href={`tel:${postInfo.contact.phoneNumber}`} style={{ color: '#fff', marginLeft: 5, fontSize: 15 }}>{postInfo.contact.phoneNumber}</a>
-                        </Button>
-                    </div>
+                            <Row>
+                                <Col span={5}>
+                                    <Avatar size={70} icon={<UserOutlined />} src={postInfo.contact.avatar} />
+                                </Col>
+                                <Col span={19}>
+                                    <h1>{postInfo.contact.fullName}</h1>
+                                    <p>{postInfo.contact.email}</p>
+                                </Col>
+                            </Row>
+                            <Button type='primary' onClick={() => onClickPhone(postInfo.contact.phoneNumber)} style={{ width: '100%' }} icon={<PhoneOutlined style={{ fontSize: 15 }} />}>
+                                <a href={`tel:${postInfo.contact.phoneNumber}`} style={{ color: '#fff', marginLeft: 5, fontSize: 15 }}>{postInfo.contact.phoneNumber}</a>
+                            </Button>
+                        </div>
+                        <div className='comment-box'>
+                            <Title level={4}>{t('Feedback')}</Title>
+                            <CommentBox postId={postInfo._id} callback={callbackCommentBox}/>
+                            {showRenderComments()}
+                            <div style={{height: 50}}></div>
+                        </div>
+                   </div>
                 </Col>
             </Row>
         </Layout>
