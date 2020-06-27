@@ -1,6 +1,6 @@
 export const appConfig = {
-    API: 'https://morning-peak-18529.herokuapp.com',
-    API_VMOTEL: 'https://fast-peak-93911.herokuapp.com',
+    API: 'https://api-v1.vmotel.me/',
+    API_VMOTEL: 'https://api-v2.vmotel.me',
     API_PLACE_GOOGLE: 'https://maps.googleapis.com/maps/api/place/textsearch/json',
     API_UPLOAD: 'https://api.imgbb.com/1/upload?key=fb8a3978bba3f76129ef55ed7f87843e',
     ACCESS_TOKEN_SECERET: 'access-token-secret-nltruongvi',
