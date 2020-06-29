@@ -4,5 +4,5 @@ services:
     build: ./
   nginx: 
     build: ./nginx
-    prots: 
+    ports: 
         - 80:80
