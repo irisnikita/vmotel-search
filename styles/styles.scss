@@ -15,9 +15,21 @@
     }
 }
 
+.inner-body {
+
+}
+
 .box-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.box-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -126,6 +138,9 @@
     .info-user {
       margin-left: 0px !important;
     }
+    .inner-body {
+        height: 170px !important;
+    } 
 }
 
 @media only screen and (max-width: 800px) {

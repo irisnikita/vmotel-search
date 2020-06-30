@@ -46,7 +46,7 @@ function FeeCard(props) {
     }, [post])
 
     return (
-        <Row className={styles['fee-card']}>
+        <Row className={styles['fee-card']} gutter={[0,0]}>
             <Col xs={{span: 24}} md={{span: 8}}>
                 <Link href='/posts/[province]/[district]/[post]' as={`/posts/${params.province}/${params.district}/${params.title}`}>
                     <a>
@@ -70,7 +70,7 @@ function FeeCard(props) {
                         <strong>{t('price')}:</strong> &nbsp;
                         <span style={{fontWeight: 500, color: '#f54ea2'}}>{numeral(price).format('0,0')}/{t('month')}</span>
                     </div>
-                    <div className='d-flex' style={{display: 'inline-block'}}>
+                    <div className='box-3' >
                         <strong>{t('address')}:</strong> &nbsp;
                         <span style={{fontWeight: 500}}>{address.addressTitle}</span>
                     </div>

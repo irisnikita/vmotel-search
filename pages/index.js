@@ -431,7 +431,7 @@ function Home(props) {
         } else {
             return normalPosts && normalPosts.length > 0 ? normalPosts.map(motel => {
                 return (
-                    <Col key={motel._id} xs={{span: 24}} md={{span: 6}}>
+                    <Col key={motel._id} xs={{span: 12}} md={{span: 6}}>
                         <NormalCard room={motel} />
                     </Col>
                 );
@@ -572,7 +572,7 @@ function Home(props) {
                     <Row  gutter={[16,16]}>
                         {hotPosts && hotPosts.length > 0 ? hotPosts.map(post => {
                             return (
-                                <Col key={post._id} xs={{span: 24}} md={{span: 12}}>
+                                <Col key={post._id} xs={{span: 12}} md={{span: 12}}>
                                     <FeeCard post={post} />
                                 </Col>
                             );
