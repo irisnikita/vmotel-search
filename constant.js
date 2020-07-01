@@ -1,6 +1,6 @@
 export const appConfig = {
-    API: 'https://api-v1.vmotel.me/',
-    API_VMOTEL: 'https://api-v2.vmotel.me',
+    API: 'https://api-gateway.vmotel.me/manager-service',
+    API_VMOTEL: 'https://api-gateway.vmotel.me/recommend-service',
     API_PLACE_GOOGLE: 'https://maps.googleapis.com/maps/api/place/textsearch/json',
     API_UPLOAD: 'https://api.imgbb.com/1/upload?key=fb8a3978bba3f76129ef55ed7f87843e',
     ACCESS_TOKEN_SECERET: 'access-token-secret-nltruongvi',
