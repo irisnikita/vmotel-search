@@ -17,7 +17,7 @@ function GoogleMap(props) {
         <div style={{height: '300px', width: '100%'}}>
             <GoogleMapReact
                 bootstrapURLKeys={{
-                    key: 'AIzaSyCfzCvAvH3FV0Rk1K7Y3yzo4QjCklT9mSU',
+                    key: 'AIzaSyDjwG0kIIoevXXDp3GMdIw-UwUDvKpfwsA',
                     language: 'vi',
                     region: 'vi'
                 }}
