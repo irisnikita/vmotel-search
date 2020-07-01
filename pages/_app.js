@@ -38,7 +38,7 @@ export default function App({Component, pageProps}) {
             <I18nextProvider i18n={i18n} >
                 <Head>
                     <link rel="stylesheet" type="text/css" href="/nprogress.css" />
-                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfzCvAvH3FV0Rk1K7Y3yzo4QjCklT9mSU&libraries=geometry,places" />
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwG0kIIoevXXDp3GMdIw-UwUDvKpfwsA&libraries=geometry,places" />
                 </Head>
                 <Component {...pageProps} />
             </I18nextProvider>
