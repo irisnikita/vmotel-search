@@ -458,7 +458,7 @@ function Home(props) {
                                 <Row>
                                     <Col xs={{span: 18}} md={{span: 18}}>
                                         <strong>Phòng đẹp, sạch sẽ</strong>
-                                        <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái.</p>
+                                        <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái, đầy đủ tiện nghi.</p>
                                     </Col>
                                     <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
                                     <Col xs={{span: 4}} md={{span: 5}}>
