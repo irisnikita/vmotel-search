@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import { appConfig } from '../../../../constant';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
