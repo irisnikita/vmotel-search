@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .d-flex {
     display: flex;
     align-items: center;
@@ -13,10 +17,12 @@
             align-items: flex-start;
         }
     }
-}
-
-.inner-body {
-
+    &.column {
+        flex-direction: column;
+        &.left {
+            align-items: flex-start;
+        }
+    }
 }
 
 .box-2 {

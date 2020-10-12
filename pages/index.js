@@ -55,52 +55,6 @@ function Home(props) {
     const [total, setTotal] = useState(20);
     const [isMount, setMount] = useState(false);
     const {t} = useTranslation();
-    const [rooms, setRooms] = useState([
-        {
-            id: 1,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: 'Hồ Chí Minh',
-            district: 'Quận 1',
-            square: 20,
-            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        },
-        {
-            id: 2,
-            price: 2500000,
-            title: 'Phòng cho thuê chính chủ 985/24 Âu Cơ, Quận Tân Phú',
-            province: 'Hồ Chí Minh',
-            district: 'Quận Tân Phú',
-            square: 20,
-            address: '985/24 Âu Cơ, phường Tân Sơn Nhì, quận Tân Phú, TP.HCM',
-            description: 'Phòng mới xây sạch sẽ, đẹp, thoáng mát, có bếp riêng, thang máy, lối vào cửa tự do, bảo vệ 24/24.',
-            images: ['/images/rooms/phong-tro-4.jpg', '/images/rooms/phong-tro-5.jpg', '/images/rooms/phong-tro-6.jpg']
-        },
-        {
-            id: 3,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: 'Hồ Chí Minh',
-            district: 'Quận 1',
-            square: 20,
-            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        },
-        {
-            id: 4,
-            price: 3000000,
-            title: 'Phòng trọ nguyên căn, mới xây, đầy đủ tiện nghi',
-            province: 'Hồ Chí Minh',
-            district: 'Quận 1',
-            square: 20,
-            address: '66/9 Bình lợi, P.13, Quận.Bình Thạnh',
-            description: 'Phòng trọ lớn, sạch sẽ có chỗ để xe an toàn, an ninh cao, mới xây, gần chợ khu trung tâm giải trí',
-            images: ['/images/rooms/phong-tro-1.jpg', '/images/rooms/phong-tro-2.jpg', '/images/rooms/phong-tro-3.jpg']
-        }
-    ]);
     const [isLoading, setLoading] = useState(false);
 
     const [normalPosts, setNormalPosts] = useState([]);
@@ -424,14 +378,14 @@ function Home(props) {
             const cols = [1,2,3,4,5,6,7,8,9,10,11,12];
 
             return cols.map(col => {
-                return <Col key={col} xs={{span: 24}} md={{span: 6}}>
+                return <Col key={col} xs={{span: 24}} md={{span: 8}}>
                     <Card style={{width: '100%'}} loading={isLoading} />
                 </Col>;
             }); 
         } else {
             return normalPosts && normalPosts.length > 0 ? normalPosts.map(motel => {
                 return (
-                    <Col key={motel._id} xs={{span: 12}} md={{span: 6}}>
+                    <Col key={motel._id} xs={{span: 12}} md={{span: 8}}>
                         <NormalCard room={motel} />
                     </Col>
                 );
@@ -579,8 +533,8 @@ function Home(props) {
                         }) : null}
                     </Row>
                 </div>
-                <Row style={{width: '100%', marginTop: 20}}>
-                    <Col xs={{span: 24}} md={{span: 24}}>
+                <Row style={{width: '100%', marginTop: 20}} gutter={[10, 10]}>
+                    <Col xs={{span: 24}} md={{span: 15}}>
                         <div className='d-flex' style={{marginBottom: '20px'}}>
                             <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
                             <FileDoneOutlined style={{fontSize: 30, color: '#08979c'}} />
@@ -592,12 +546,12 @@ function Home(props) {
                             <Pagination total={total} onChange={onChangePagination} showSizeChanger defaultCurrent={1} pageSize={filter.limit} onShowSizeChange={onShowSizeChange} />
                         </div>
                     </Col>
-                    {/* <Col xs={{span: 24}} md={{span: 8}}>
+                    <Col xs={{span: 24}} md={{span: 9}}>
                         <div className='d-flex' style={{marginBottom: '20px'}}>
                             <strong style={{color: '#f5222d', fontSize: '25px'}}>{t('DANH MỤC')} - </strong>&nbsp;
                             <UnorderedListOutlined style={{fontSize: 30, color: '#f5222d'}} />
                         </div>
-                    </Col> */}
+                    </Col>
                 </Row>
             </Row>
         </Layout >

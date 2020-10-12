@@ -117,7 +117,7 @@ function Layout(props) {
                 <meta property='og:title' content={props.title} />
                 <meta property='og:description' content={props.content} />
             </Head>
-            <AntdLayout>
+            <AntdLayout style={{overflow: 'hidden', position: 'relative'}}>
                 {props.isLoginPage ? null :  <Header className={`${styles['default-header']} d-flex space-between`}>
                     <div className='d-flex'>
                         <Space>
