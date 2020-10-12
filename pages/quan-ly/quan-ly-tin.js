@@ -294,7 +294,7 @@ function ManagePosts(props) {
                                 <Descriptions.Item label={<strong>{t('Street')}</strong>}>{postInfo.filter.street.name}</Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('Area')}</strong>}>{postInfo.area}m<sup>2</sup></Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('Price')}</strong>}>{numeral(postInfo.price).format('0,0')}/{t('month')}</Descriptions.Item>
-                                <Descriptions.Item label={<strong>{t('Status')}</strong>}> <Badge status="processing" text={t('Running')} /></Descriptions.Item>
+                                <Descriptions.Item label={<strong>{t('Status')}</strong>}> <Badge status={postInfo.status ? 'processing' : 'error'} text={t(postInfo.status ? 'Running' : 'Stopped')} /></Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('Package')}</strong>}>{showRenderPackage(postInfo.title.level)}</Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('Date Submitted')}</strong>}>{moment(postInfo.startTime).format('DD/MM/YYYY HH:mm')}</Descriptions.Item>
                                 <Descriptions.Item label={<strong>{t('End date')}</strong>}>{moment(postInfo.endTime || new Date()).format('DD/MM/YYYY HH:mm')}</Descriptions.Item>

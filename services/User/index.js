@@ -7,6 +7,12 @@ export function create(params) {
 export function register(params) {
     return services.create({...params,API: appConfig.API_VMOTEL + '/user/register'});
 }
+export function getTransactions(params) {
+    return services.getList({...params,API: appConfig.API_VMOTEL + '/user/transactions'});
+}
+export function update(params) {
+    return services.update({...params,API: appConfig.API_VMOTEL + '/user/update'});
+}
 export function validate(params) {
     return services.create({...params,API: appConfig.API_VMOTEL + '/user/validate'});
 }

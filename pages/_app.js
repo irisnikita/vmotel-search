@@ -15,6 +15,9 @@ import {Provider} from 'react-redux';
 import store from '../Redux/store';
 import NProgress from 'nprogress';
 
+// App config
+import {appConfig} from '../constant';
+
 NProgress.configure({showSpinner: false});
 Router.events.on('routeChangeStart', () => {
     NProgress.start();
@@ -38,7 +41,6 @@ export default function App({Component, pageProps}) {
             <I18nextProvider i18n={i18n} >
                 <Head>
                     <link rel="stylesheet" type="text/css" href="/nprogress.css" />
-                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwG0kIIoevXXDp3GMdIw-UwUDvKpfwsA&libraries=geometry,places" />
                 </Head>
                 <Component {...pageProps} />
             </I18nextProvider>
