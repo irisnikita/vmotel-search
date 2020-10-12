@@ -10,6 +10,9 @@ import {connect} from 'react-redux';
 
 import {userLogin} from '../../Redux/actions/layout';
 
+// Styles 
+import styles from './styles.module.scss';
+
 const {SubMenu} = Menu;
 
 const {Header, Content, Sider} = Layout;
@@ -22,7 +25,8 @@ function DashBoard(props) {
 
     const userMenus = [
         {id: 'quan-ly-tin', value: 'Manage posts', icon: 'icon-library_books'},
-        {id: 'thong-tin-ca-nhan', value: 'User information', icon: 'icon-person'}
+        {id: 'thong-tin-ca-nhan', value: 'User information', icon: 'icon-person'},
+        {id: 'nap-tien', value: 'Pay in', icon: 'icon-attach_money'}
     ];
 
     useEffect(() => {
@@ -55,11 +59,11 @@ function DashBoard(props) {
                     </div>
                     <div className='d-flex row'>
                         <div style={{color: '#08979c', fontWeight: 500, fontSize: 17}}>{user.fullName}</div>
-                        <div><strong>{t('Email')}:</strong> {user.email}</div>
-                        <div><strong>{t('Phone')}:</strong> {user.phoneNumber}</div>
+                        <div className={styles['now-wrap']}><strong>{t('Email')}:</strong> {user.email}</div>
+                        <div className={styles['now-wrap']}><strong>{t('Phone')}:</strong> {user.phoneNumber}</div>
                         <Row className='d-flex space-between' gutter={[0, 10]} style={{width: '100%', marginTop: 20}}>
                             <Col span={24}>
-                                <Button onClick={onClickAdd} icon={<PlusOutlined />} style={{width: '100%'}} type='primary'shape='round'>{t('Add post')}</Button>
+                                <Button onClick={onClickAdd} icon={<PlusOutlined />} style={{width: '100%'}} type='primary' shape='round'>{t('Add post')}</Button>
                             </Col>
                             <Col span={24}>
                                 <Button onClick={onClickLogout} icon={<ImportOutlined />} shape='round' style={{width: '100%'}} danger>{t('Log out')}</Button>

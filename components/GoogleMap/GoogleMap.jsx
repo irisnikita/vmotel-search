@@ -1,12 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
 
-// Icons
-
+// Icon
 import {EnvironmentOutlined} from '@ant-design/icons';
 
-const AnyReactComponent = ({text}) => <div><EnvironmentOutlined style={{fontSize: 30, color: '#f5222d'}} /></div>;
+// Utils
+import {appConfig} from '../../constant';
+
+const AnyReactComponent = ({}) => <div><EnvironmentOutlined style={{fontSize: 30, color: '#f5222d'}} /></div>;
 
 const handleApiLoaded = (map, maps) => {
     // use map and maps objects
@@ -17,7 +18,7 @@ function GoogleMap(props) {
         <div style={{height: '300px', width: '100%'}}>
             <GoogleMapReact
                 bootstrapURLKeys={{
-                    key: 'AIzaSyCfzCvAvH3FV0Rk1K7Y3yzo4QjCklT9mSU',
+                    key: appConfig.API_GOOGLE_KEY,
                     language: 'vi',
                     region: 'vi'
                 }}

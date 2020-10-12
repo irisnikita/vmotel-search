@@ -88,21 +88,11 @@ function UpdatePost(props) {
         getLocal();
     }, []);
 
-
-    // useEffect(() => {
-    //         setAddressTitle(`${addressNumber} ${filter.street.prefix} ${filter.street.name}, ${filter.ward.prefix} ${filter.ward.name}, ${filter.district.name}, ${filter.province.name}`)
-    // }, [filter, addressNumber]);
-
-    // useEffect(() => {
-    //     getGoeCode();
-
-    // }, [addressTitle])
-
     const getGoeCode =  async () => {
         const addressTitle = `${addressNumber} ${filter.street.prefix} ${filter.street.name}, ${filter.ward.prefix} ${filter.ward.name}, ${filter.district.name}, ${filter.province.name}`;
 
         const getGoeCode = await axios({
-            url: 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCfzCvAvH3FV0Rk1K7Y3yzo4QjCklT9mSU',
+            url: `https://maps.googleapis.com/maps/api/geocode/json?key=${appConfig.API_GOOGLE_KEY}`,
             method: 'GET',
             params: {address: addressTitle}
 
