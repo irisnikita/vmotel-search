@@ -425,7 +425,6 @@ function Home(props) {
                     dataSearch.push(searchValue)
                 })
             })
-            console.log('onClickButton -> getLocal', dataSearch);
         }
     };
 
@@ -584,14 +583,13 @@ function Home(props) {
                         </div>
                     </Col>
                     <Col xs={{ span: 24 }} md={{ span: 9 }}>
-                        <div className='d-flex' style={{ marginBottom: '20px' }}>
+                        <div className='d-flex' style={{ margin: '0px 0px 20px 15px' }}>
                             <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('DANH MỤC')} - </strong>&nbsp;
                             <UnorderedListOutlined style={{ fontSize: 30, color: '#f5222d' }} />
                         </div>
                         <Category />
-                        <div className='d-flex' style={{ marginBottom: '20px' }}>
-                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('TIN MỚI ĐĂNG')} - </strong>&nbsp;
-                            <UnorderedListOutlined style={{ fontSize: 30, color: '#f5222d' }} />
+                        <div className='d-flex' style={{ margin: '10px 0px 0px 15px' }}>
+                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('TIN MỚI ĐĂNG')} </strong>&nbsp;
                         </div>
                         <NewPost />
                     </Col>

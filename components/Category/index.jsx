@@ -1,31 +1,51 @@
 // Libraries
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { List, Typography, Divider, Space } from 'antd';
+import { useRouter } from 'next/router'
 
 import styles from './styles.module.scss'
 
-const data = [
-    'Cho thuê phòng trọ, nhà trọ',
-    'Cho thuê phòng trọ, nhà trọ Hồ Chí Minh',
-    'Cho thuê phòng trọ, nhà trọ Hà Nội',
-    'Cho thuê nhà nguyên căn',
-    'Cho thuê nhà nguyên căn Hồ Chí Minh',
-    'Cho thuê nhà nguyên căn Hà Nội',
-    'Cho thuê căn hộ',
-    'Cho thuê căn hộ Hồ Chí Minh',
-    'Cho thuê căn hộ Hà Nội',
-];
+// Services
+import * as postServices from '../../services/post'
+
 const { Link, Text } = Typography;
 
 export default function Category() {
+    const [data, setData] = useState([])
+
+    const router = useRouter();
+
+    useEffect(() => {
+        getCategory();
+    }, [])
+
+    const getCategory = async () => {
+        const category = await postServices.getCategory();
+
+        if (category) {
+
+            const { data = [] } = category.data;
+
+            setData(data)
+        }
+    }
+
+    const onClickLink = (item) => {
+        if (item.district === '') {
+            router.push('/posts/[province]', `/posts/${item.province}`)
+        } else {
+            router.push('/posts/[province]/[district]', `/posts/${item.province}/${item.district}`)
+        }
+    }
+
     return (
         <List
             size="small"
             dataSource={data}
             renderItem={item => (
                 <List.Item>
-                    <Link href="https://fb.com" target="_blank" style={{ color: "black" }}>
-                        <span className={styles['link']}> &#9679; {item}</span>
+                    <Link style={{ color: "black" }}>
+                        <span className={styles['link']} onClick={() => onClickLink(item)}> &#9679; {item.value}</span>
                     </Link>
                 </List.Item>
             )}

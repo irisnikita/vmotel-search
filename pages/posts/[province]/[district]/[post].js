@@ -31,12 +31,11 @@ export async function getServerSideProps(props) {
     let post = {};
 
     const id = params.post.match(/"([^"]*)"/g)[0].replace(/"/g, '');
-    console.log(id)
 
     const res = await fetch(`${appConfig.API_VMOTEL}/post/get-post/${id}`)
     const data = await res.json();
 
-    if(data.data) {
+    if (data.data) {
         post = data.data.post;
     }
     // Pass post data to the page via props
@@ -68,9 +67,9 @@ function Post(props) {
             postId: postInfo._id
         })
 
-        if(getComments) {
-            if(getComments.data && getComments.data.data) {
-                const {comments = []} = getComments.data.data;
+        if (getComments) {
+            if (getComments.data && getComments.data.data) {
+                const { comments = [] } = getComments.data.data;
 
                 setComments(comments)
             }
@@ -141,7 +140,7 @@ function Post(props) {
                             <NormalCard room={motel} />
                         </Col>
                     );
-            }) : <Empty style={{ width: '100%', height: 300, marginTop: 20 }} description={t('No data')}/>;
+            }) : <Empty style={{ width: '100%', height: 300, marginTop: 20 }} description={t('No data')} />;
         }
     };
 
@@ -211,8 +210,8 @@ function Post(props) {
                 description: comment.description,
                 dateCreate: comment.dateCreate
             }
-            return <CommentItem comment={newComment} key={comment._id}/>
-        }) : <Empty style={{ width: '100%', height: 300, marginTop: 20 }} description={t('No data')}/>
+            return <CommentItem comment={newComment} key={comment._id} />
+        }) : <Empty style={{ width: '100%', height: 300, marginTop: 20 }} description={t('No data')} />
     }
 
     const callbackCommentBox = () => {
@@ -232,7 +231,7 @@ function Post(props) {
                             <a href='#images'><Button type='link' style={{ fontWeight: 500 }}>{t('IMAGES')}</Button></a>
                         </Col>
                         <Col>
-                            {postInfo.contact._id === props.userLogin.id ? <Button icon={<EditOutlined />} onClick={onClickEdit} style={{marginLeft: 15}}>{t('Edit')}</Button> : null}
+                            {postInfo.contact._id === props.userLogin.id ? <Button icon={<EditOutlined />} onClick={onClickEdit} style={{ marginLeft: 15 }}>{t('Edit')}</Button> : null}
                         </Col>
                     </Row>
                     <Descriptions bordered>
@@ -278,15 +277,15 @@ function Post(props) {
                         }
                     </div>
                     <Title level={4} id='map'>{t('Map')}</Title>
-                    <GoogleMap center={postInfo.address.location}/>
-                    <Title style={{marginTop: 20}} level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
+                    <GoogleMap center={postInfo.address.location} />
+                    <Title style={{ marginTop: 20 }} level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
                     <Row gutter={[16, 16]}>
                         {showRenderNormalPosts()}
                     </Row>
                 </Col>
                 <Col xs={{ span: 24 }} md={{ span: 8 }}>
-                   <div style={{position: 'sticky', top: 70}}>
-                    <div className='info-user'>
+                    <div style={{ position: 'sticky', top: 70 }}>
+                        <div className='info-user'>
                             <Row>
                                 <Col span={5}>
                                     <Avatar size={70} icon={<UserOutlined />} src={postInfo.contact.avatar} />
@@ -302,11 +301,11 @@ function Post(props) {
                         </div>
                         <div className='comment-box'>
                             <Title level={4}>{t('Feedback')}</Title>
-                            <CommentBox postId={postInfo._id} callback={callbackCommentBox}/>
+                            <CommentBox postId={postInfo._id} callback={callbackCommentBox} />
                             {showRenderComments()}
-                            <div style={{height: 50}}></div>
+                            <div style={{ height: 50 }}></div>
                         </div>
-                   </div>
+                    </div>
                 </Col>
             </Row>
         </Layout>

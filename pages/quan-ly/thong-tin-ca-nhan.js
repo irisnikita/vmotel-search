@@ -1,18 +1,18 @@
 // Libraries
-import React, {useEffect, useState} from 'react';
-import {Divider, Row, Col, Avatar, Badge, Typography, Form, Input, Button, Modal} from 'antd';
-import {connect} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Divider, Row, Col, Avatar, Badge, Typography, Form, Input, Button, Modal } from 'antd';
+import { connect } from 'react-redux';
 import _ from 'lodash';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 // Services
 import * as userServices from '../../services/User/index';
 
 // Icons
-import {UserOutlined, EditOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import { UserOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 // Actions
-import {userLogin} from '../../Redux/actions/layout';
+import { userLogin } from '../../Redux/actions/layout';
 
 // Components
 import Layout from '../../components/Layout/Layout';
@@ -21,20 +21,19 @@ import Layout from '../../components/Layout/Layout';
 import styles from './styles.module.scss';
 
 function UserInfo(props) {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     // State
     const [form] = Form.useForm();
     const [userInfo, setUserInfo] = useState([
-        {key: 'id', label: 'Id', value: '', placeholder: 'Input your id', disabled: true, required: false},
-        {key: 'phoneNumber', label: 'Phone Number', value: '', placeholder: 'Input your phone number', disabled: true, required: false},
-        {key: 'userName', label: 'User Name', value: '',placeholder: 'Input your user name', disabled: true, required: false},
-        {key: 'fullName', label: 'Name', value: '', placeholder: 'Input your name', disabled: false, required: true},
-        {key: 'email', label: 'Email', value: '', placeholder: 'Input your email', disabled: false, required: true}
+        { key: 'id', label: 'Id', value: '', placeholder: 'Input your id', disabled: true, required: false },
+        { key: 'phoneNumber', label: 'Phone Number', value: '', placeholder: 'Input your phone number', disabled: true, required: false },
+        { key: 'userName', label: 'User Name', value: '', placeholder: 'Input your user name', disabled: true, required: false },
+        { key: 'fullName', label: 'Name', value: '', placeholder: 'Input your name', disabled: false, required: true },
+        { key: 'email', label: 'Email', value: '', placeholder: 'Input your email', disabled: false, required: true }
     ]);
 
     // Props
-    const {user} = props;
-    console.log("UserInfo -> user", user)
+    const { user } = props;
 
     useEffect(() => {
         form.setFieldsValue({
@@ -48,15 +47,15 @@ function UserInfo(props) {
 
     const showRenderField = () => {
         return userInfo.map(info => {
-            return <Col key={info.key} xs={{span: 24}} md={{span: 12}}>
+            return <Col key={info.key} xs={{ span: 24 }} md={{ span: 12 }}>
                 <Form.Item
                     name={info.key}
                     label={<strong>{t(info.label)}</strong>}
                     rules={[
-                        {required: info.required, message: t(`${info.label} is required`)}
+                        { required: info.required, message: t(`${info.label} is required`) }
                     ]}
                 >
-                    <Input placeholder={info.placeholder}  disabled={info.disabled} />
+                    <Input placeholder={info.placeholder} disabled={info.disabled} />
                 </Form.Item>
             </Col>;
         });
@@ -65,7 +64,6 @@ function UserInfo(props) {
     const updateUser = async (user) => {
         const newUser = await userServices.update(user);
 
-        console.log(newUser);
     };
 
     const onFinishForm = (value) => {
@@ -74,8 +72,6 @@ function UserInfo(props) {
             icon: <ExclamationCircleOutlined />,
             content: t('When you click Yes, your information will change'),
             onOk() {
-                console.log('hello');
-        console.log("onFinishForm -> value", value)
 
                 updateUser(value);
             },
@@ -87,10 +83,10 @@ function UserInfo(props) {
 
     return (
         <Layout dashBoard>
-            <h1 style={{fontSize: 30}}>{t('User information')}</h1>
+            <h1 style={{ fontSize: 30 }}>{t('User information')}</h1>
             <Divider />
             <Row>
-                <Col xs={{span: 24}} md={{span: 6}}>
+                <Col xs={{ span: 24 }} md={{ span: 6 }}>
                     <div className='d-flex column center'>
                         <Badge offset={[-10, 110]} count={<div className={styles['btn-edit']}><EditOutlined /></div>}>
                             <Avatar className={styles['avatar-user']} src={user.avatar} size={150} icon={<UserOutlined />} />
@@ -98,17 +94,17 @@ function UserInfo(props) {
                         <Typography.Title level={4}>{t('User Avatar')}</Typography.Title>
                     </div>
                 </Col>
-                <Col xs={{span: 24}} md={{span: 18}}>
+                <Col xs={{ span: 24 }} md={{ span: 18 }}>
                     <Form
                         form={form}
                         name="user-form"
                         onFinish={onFinishForm}
-                        labelCol={{span: 24}}
+                        labelCol={{ span: 24 }}
                     >
                         <Row gutter={24}>
                             {showRenderField()}
                         </Row>
-                        <Form.Item labelCol={{span: 0}}>
+                        <Form.Item labelCol={{ span: 0 }}>
                             <Button icon={<EditOutlined />} type='primary' htmlType='submit'>{t('Edit')}</Button>
                         </Form.Item>
                     </Form>
