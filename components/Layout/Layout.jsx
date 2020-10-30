@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Layout as AntdLayout, Menu, Input, Space, Button, Row, Col, Avatar, Dropdown, Select } from 'antd';
-import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import {useRouter} from 'next/router';
+import {Layout as AntdLayout, Menu, Input, Space, Button, Row, Col, Avatar, Dropdown, Select} from 'antd';
+import {useTranslation} from 'react-i18next';
+import {connect} from 'react-redux';
 import _ from 'lodash';
+import Highlighter from 'react-highlight-words';
 
 // Actions
-import { userLogin } from '../../Redux/actions/layout';
+import {userLogin} from '../../Redux/actions/layout';
 
 // Components
 import DashBoard from '../DashBoard/DashBoard';
@@ -21,15 +22,17 @@ import * as userServices from '../../services/User/index';
 import * as postServices from '../../services/post/index';
 
 // Utils
-import { appConfig } from '../../constant';
+import {appConfig} from '../../constant';
 
 // Icons
-import { PlusOutlined, UserOutlined } from '@ant-design/icons';
+import {PlusOutlined, UserOutlined} from '@ant-design/icons';
 
-const { Header, Content } = AntdLayout;
+const {Header, Content} = AntdLayout;
+
+let timeout = null;
 
 function Layout(props) {
-    const { t, i18n } = useTranslation();
+    const {t, i18n} = useTranslation();
     const defaultTitle = 'Tìm nhà trọ, khu trọ, giá rẻ, đẹp, gần trung tâm';
     const {children = '', title = defaultTitle} = props;
     const flags = [{id: 'vi', label: 'vietnamese'}, {id: 'en', label: 'english'}];
@@ -38,7 +41,6 @@ function Layout(props) {
     const [listSearch, setListSearch] = useState([]);
 
     const router = useRouter();
-    let timeout = null;
 
     useEffect(() => {
         if (process.browser) {
@@ -63,7 +65,7 @@ function Layout(props) {
 
         if (validate) {
             if (validate.data && validate.data.data) {
-                const { user } = validate.data.data;
+                const {user} = validate.data.data;
 
                 props.userLogin({
                     userLogin: user
@@ -112,12 +114,32 @@ function Layout(props) {
         }
     };
 
+    const onClickSearchMatch = (item) => {
+        if (item.district === '') {
+            router.push('/posts/[province]', `/posts/${item.province}`);
+        } else {
+            router.push('/posts/[province]/[district]', `/posts/${item.province}/${item.district}`);
+        }
+    };
+
     const menuSearch = () => {
+        const searchSplit = valueSearch.split(' ');
+
         return (
             <Menu>
-                <Menu.Item>hello</Menu.Item>
-                <Menu.Item>2</Menu.Item>
-                <Menu.Item>3</Menu.Item>
+                <Menu.Item>{t('Search key with')} {`"${valueSearch}"`}</Menu.Item>
+                {listSearch.map(item => {
+                    return (
+                        <Menu.Item key={item._id} onClick={() => onClickSearchMatch(item)}>
+                            <Highlighter
+                                highlightStyle={{fontWeight: 'bold'}}
+                                searchWords={searchSplit}
+                                autoEscape={true}
+                                textToHighlight={item.value}
+                            />
+                        </Menu.Item>
+                    );
+                })}
             </Menu>
         );
     };
@@ -128,7 +150,9 @@ function Layout(props) {
         });
 
         if (listSearch) {
-            console.log('getListSearch -> listSearch', listSearch);
+            const {data = []} = listSearch.data;
+
+            setListSearch(data);
             
         }
     };
@@ -136,13 +160,15 @@ function Layout(props) {
     const onChangeSearch = (e) => {
         const {value = ''} = e.target;
 
-        if (timeout) {
+        setValueSearch(value);
+
+        if (timeout !== null) {
             clearTimeout(timeout);
         }
 
-        setTimeout(() => {
+        timeout = setTimeout(() => {
             getListSearch(value);
-        }, 300);
+        }, 500);
 
     };
 
@@ -161,7 +187,7 @@ function Layout(props) {
                     <div className='d-flex'>
                         <Space>
                             <Link href='/'>
-                                <img style={{ cursor: 'pointer' }} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
+                                <img style={{cursor: 'pointer'}} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
                             </Link>
                             <Dropdown overlay={menuSearch} trigger={['click']}>
                                 <Input.Search onChange={onChangeSearch} className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
@@ -200,7 +226,7 @@ function Layout(props) {
                                 const isSelected = flag.id === lang.id;
 
                                 return (
-                                    <Menu.Item style={{ backgroundColor: isSelected ? '#87e8de' : '#fff' }} key={flag.id} onClick={() => onClickFlag(flag)}>
+                                    <Menu.Item style={{backgroundColor: isSelected ? '#87e8de' : '#fff'}} key={flag.id} onClick={() => onClickFlag(flag)}>
                                         <Space>
                                             <img src={`/images/flags/${flag.id}.svg`} width={20} alt={flag.id} />
                                             <div>{t(flag.label)}</div>
