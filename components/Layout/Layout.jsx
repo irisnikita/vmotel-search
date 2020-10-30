@@ -18,6 +18,7 @@ import styles from './styles.module.scss';
 
 // Services
 import * as userServices from '../../services/User/index';
+import * as postServices from '../../services/post/index';
 
 // Utils
 import { appConfig } from '../../constant';
@@ -30,10 +31,14 @@ const { Header, Content } = AntdLayout;
 function Layout(props) {
     const { t, i18n } = useTranslation();
     const defaultTitle = 'Tìm nhà trọ, khu trọ, giá rẻ, đẹp, gần trung tâm';
-    const { children = '', title = defaultTitle } = props;
-    const flags = [{ id: 'vi', label: 'vietnamese' }, { id: 'en', label: 'english' }];
-    const [lang, setLang] = useState({ id: 'vi', label: 'vietnamese' });
+    const {children = '', title = defaultTitle} = props;
+    const flags = [{id: 'vi', label: 'vietnamese'}, {id: 'en', label: 'english'}];
+    const [lang, setLang] = useState({id: 'vi', label: 'vietnamese'});
+    const [valueSearch, setValueSearch] = useState('');
+    const [listSearch, setListSearch] = useState([]);
+
     const router = useRouter();
+    let timeout = null;
 
     useEffect(() => {
         if (process.browser) {
@@ -107,6 +112,40 @@ function Layout(props) {
         }
     };
 
+    const menuSearch = () => {
+        return (
+            <Menu>
+                <Menu.Item>hello</Menu.Item>
+                <Menu.Item>2</Menu.Item>
+                <Menu.Item>3</Menu.Item>
+            </Menu>
+        );
+    };
+
+    const getListSearch = async (value) => {
+        const listSearch = await postServices.searchPost({
+            valueSearch: value
+        });
+
+        if (listSearch) {
+            console.log('getListSearch -> listSearch', listSearch);
+            
+        }
+    };
+
+    const onChangeSearch = (e) => {
+        const {value = ''} = e.target;
+
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+
+        setTimeout(() => {
+            getListSearch(value);
+        }, 300);
+
+    };
+
     return (
         <div>
             <Head>
@@ -117,14 +156,16 @@ function Layout(props) {
                 <meta property='og:title' content={props.title} />
                 <meta property='og:description' content={props.content} />
             </Head>
-            <AntdLayout>
-                {props.isLoginPage ? null :  <Header className={`${styles['default-header']} d-flex space-between`}>
+            <AntdLayout style={{position: 'relative'}}>
+                {props.isLoginPage ? null : <Header className={`${styles['default-header']} d-flex space-between`}>
                     <div className='d-flex'>
                         <Space>
                             <Link href='/'>
                                 <img style={{ cursor: 'pointer' }} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
                             </Link>
-                            <Input.Search className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
+                            <Dropdown overlay={menuSearch} trigger={['click']}>
+                                <Input.Search onChange={onChangeSearch} className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
+                            </Dropdown>
                         </Space>
                     </div>
                     <div className='d-flex right-menu'>
@@ -147,8 +188,8 @@ function Layout(props) {
                                     }
                                     trigger={['click']}
                                 >
-                                    <div style={{ cursor: 'pointer' }}>
-                                        <Avatar src={props.user.avatar} icon={<UserOutlined />} size={32} style={{ marginRight: 10 }} />
+                                    <div style={{cursor: 'pointer'}}>
+                                        <Avatar src={props.user.avatar} icon={<UserOutlined />} size={32} style={{marginRight: 10}} />
                                         <strong className='mr-10'>{props.user.fullName}</strong>
                                     </div>
                                 </Dropdown>

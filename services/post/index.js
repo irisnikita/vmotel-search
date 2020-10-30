@@ -7,6 +7,9 @@ export function create(params) {
 export function updateStatus(params) {
     return services.update({...params, API: appConfig.API_VMOTEL + '/post/update'});
 }
+export function searchPost(params) {
+    return services.getList({...params, API: appConfig.API_VMOTEL + '/post/search-post'});
+}
 export function updatePost(params) {
     return services.update({...params, API: appConfig.API_VMOTEL + '/post/update-post'});
 }
