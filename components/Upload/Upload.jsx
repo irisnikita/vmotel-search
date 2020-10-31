@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Row, Col} from 'antd';
-import {useTranslation} from 'react-i18next';
+import { Row, Col } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 import styles from './styles.module.scss';
 
-import {ToTopOutlined, DeleteOutlined} from '@ant-design/icons';
+import { ToTopOutlined, DeleteOutlined } from '@ant-design/icons';
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -19,11 +19,10 @@ function getBase64(file) {
 
 function Upload(props) {
     const [images, setImages] = useState([]);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     useEffect(() => {
-        if(props.defaultImages && props.defaultImages.length > 0) {
-            console.log(props.defaultImages)
+        if (props.defaultImages && props.defaultImages.length > 0) {
 
             const newImages = props.defaultImages.map(image => ({
                 src: image
@@ -36,7 +35,7 @@ function Upload(props) {
     const onChangeUpload = async (event) => {
         event.preventDefault();
 
-        const {files} = event.target;
+        const { files } = event.target;
 
         let newImages = [...images];
 
@@ -53,7 +52,7 @@ function Upload(props) {
             });
         }
 
-        if(props.callback) {
+        if (props.callback) {
             props.callback(newImages)
         }
 
@@ -67,7 +66,7 @@ function Upload(props) {
 
         setImages(newImages)
 
-        if(props.callback) {
+        if (props.callback) {
             props.callback(newImages)
         }
     }
@@ -81,17 +80,17 @@ function Upload(props) {
                 </div>
                 <input type='file' id='file' name='image' multiple onChange={onChangeUpload} />
             </div>
-            <Row gutter={[16, 16]} style={{marginTop: 20}}>
+            <Row gutter={[16, 16]} style={{ marginTop: 20 }}>
                 {
                     images && images.length > 0 ? images.map((image, index) => {
                         return (
                             <Col key={index} span={8}>
-                                <div 
-                                    className={styles['image-item']} 
-                                    style={{backgroundImage: `url(${image.src})`}}
+                                <div
+                                    className={styles['image-item']}
+                                    style={{ backgroundImage: `url(${image.src})` }}
                                 >
                                     <div className={styles['delete-wrapper']} onClick={() => onClickDelete(index)}>
-                                    <DeleteOutlined /> &nbsp;
+                                        <DeleteOutlined /> &nbsp;
                                     <div>{t('Delete image')}</div>
                                     </div>
                                 </div>

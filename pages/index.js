@@ -1,13 +1,13 @@
 // Libraries
-import React, {useEffect, useState} from 'react';
-import {withRouter} from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'next/router';
 import Link from 'next/link';
 import Slider from 'react-slick';
 import remark from 'remark';
 import axios from 'axios';
 import html from 'remark-html';
-import {Row, Col, Button, Divider, Select, Pagination, Card, Empty} from 'antd';
-import {useTranslation} from 'react-i18next';
+import { Row, Col, Button, Divider, Select, Pagination, Card, Empty } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 // Components
 import Layout from '../components/Layout/Layout';
@@ -15,16 +15,18 @@ import CustomCard from '../components/Card/Card';
 import SliderCus from '../components/SliderCus/SliderCus';
 import FeeCard from '../components/FeeCard/FeeCard';
 import NormalCard from '../components/NormalCard/NormalCard';
+import Category from '../components/Category';
+import NewPost from '../components/NewPost';
 
 // Utils
-import {getListMarkDowns} from '../utils';
-import {appConfig} from '../constant';
+import { getListMarkDowns } from '../utils';
+import { appConfig } from '../constant';
 
 // Services
 import * as postServices from '../services/post/index';
 
 // Icons
-import {SearchOutlined, FileDoneOutlined, UnorderedListOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined} from '@ant-design/icons';
+import { SearchOutlined, FileDoneOutlined, UnorderedListOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined } from '@ant-design/icons';
 
 export async function getStaticProps() {
     const allMarkDown = getListMarkDowns();
@@ -39,9 +41,9 @@ export async function getStaticProps() {
 
 function Home(props) {
     const [introduces, setIntroduces] = useState([]);
-    const [provinces, setProvinces] = useState([{id: 0, code: 'ALL', name: 'all'}]);
-    const [districts, setDistricts] = useState([{id: 'all', name: 'all'}]);
-    const [streets, setStreets] = useState([{id: 'all', name: 'all'}]);
+    const [provinces, setProvinces] = useState([{ id: 0, code: 'ALL', name: 'all' }]);
+    const [districts, setDistricts] = useState([{ id: 'all', name: 'all' }]);
+    const [streets, setStreets] = useState([{ id: 'all', name: 'all' }]);
     const [filter, setfilter] = useState({
         optionType: 'all',
         province: 'ALL',
@@ -54,7 +56,7 @@ function Home(props) {
     });
     const [total, setTotal] = useState(20);
     const [isMount, setMount] = useState(false);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [isLoading, setLoading] = useState(false);
 
     const [normalPosts, setNormalPosts] = useState([]);
@@ -102,7 +104,7 @@ function Home(props) {
             const province = provinces.find(province => province.code === filter.province);
 
             if (province) {
-                const newDistricts = [{id: 'all', name: 'all'}].concat(province.districts);
+                const newDistricts = [{ id: 'all', name: 'all' }].concat(province.districts);
 
                 setDistricts(newDistricts);
             }
@@ -127,12 +129,12 @@ function Home(props) {
 
     useEffect(() => {
         if (filter.district === 'all') {
-            setStreets([{id: 'all', name: 'all'}]);
+            setStreets([{ id: 'all', name: 'all' }]);
         } else {
             const district = districts.find(district => district.name === filter.district);
 
             if (district) {
-                const newStreets = [{id: 'all', name: 'all'}].concat(district.streets);
+                const newStreets = [{ id: 'all', name: 'all' }].concat(district.streets);
 
                 setStreets(newStreets);
             }
@@ -195,7 +197,7 @@ function Home(props) {
             .replace(/Đ/g, 'D')
             .replace(/[^\w\s]/g, '')
             .replace(/\s/g, '-');
-    
+
         return string;
     };
 
@@ -207,7 +209,7 @@ function Home(props) {
 
         if (getHotPosts) {
             if (getHotPosts.data && getHotPosts.data.data) {
-                const {posts} = getHotPosts.data.data;
+                const { posts } = getHotPosts.data.data;
 
                 setHotPosts(posts || []);
             }
@@ -222,7 +224,7 @@ function Home(props) {
 
         if (getHotPosts) {
             if (getHotPosts.data && getHotPosts.data.data) {
-                const {posts} = getHotPosts.data.data;
+                const { posts } = getHotPosts.data.data;
 
                 setVipPosts(posts || []);
             }
@@ -248,17 +250,17 @@ function Home(props) {
 
         if (getPostNormal) {
             if (getPostNormal.data && getPostNormal.data.data) {
-                const {posts, total} = getPostNormal.data.data;
+                const { posts, total } = getPostNormal.data.data;
 
                 setNormalPosts(posts || []);
-               
+
                 setTotal(total);
             }
         }
 
         setLoading(false);
     };
-   
+
     const getMarkDown = async () => {
         let newIntroduces = [];
 
@@ -375,74 +377,108 @@ function Home(props) {
 
     const showRenderNormalPosts = () => {
         if (isLoading) {
-            const cols = [1,2,3,4,5,6,7,8,9,10,11,12];
+            const cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
             return cols.map(col => {
-                return <Col key={col} xs={{span: 24}} md={{span: 8}}>
-                    <Card style={{width: '100%'}} loading={isLoading} />
+                return <Col key={col} xs={{ span: 24 }} md={{ span: 8 }}>
+                    <Card style={{ width: '100%' }} loading={isLoading} />
                 </Col>;
-            }); 
+            });
         } else {
             return normalPosts && normalPosts.length > 0 ? normalPosts.map(motel => {
                 return (
-                    <Col key={motel._id} xs={{span: 12}} md={{span: 8}}>
+                    <Col key={motel._id} xs={{ span: 12 }} md={{ span: 8 }}>
                         <NormalCard room={motel} />
                     </Col>
                 );
-            }) : <Empty style={{width: '100%', height: '200px'}} />;
+            }) : <Empty style={{ width: '100%', height: '200px' }} />;
+        }
+    };
+
+    const onClickButton = async () => {
+        const getLocal = await import('../Docs/json/local.json');
+
+        let dataSearch = [];
+
+        if (getLocal) {
+
+            getLocal.default.map(local => {
+
+                const searchValue = {
+                    id: local.code,
+                    value: `Cho thuê phòng trọ căn hộ ${local.name}`,
+                    province: convertChar(local.name).toLowerCase(),
+                    district: ''
+                }
+
+                dataSearch.push(searchValue)
+
+                local.districts.map(district => {
+
+                    const searchValue = {
+                        id: local.code + district.id,
+                        value: `Cho thuê phòng trọ căn hộ ${district.name} ${local.name}`,
+                        province: convertChar(local.name).toLowerCase(),
+                        district: convertChar(district.name).toLowerCase()
+                    }
+
+                    dataSearch.push(searchValue)
+                })
+            })
         }
     };
 
     return (
         <Layout>
+            {/* <Button onClick={onClickButton}>hello</Button> */}
             <Row className='wrapper-index'>
-                <Row style={{width: '100%'}}>
-                    <Col xs={{span: 24}} md={{span: 10}}>
+                <Row style={{ width: '100%' }}>
+                    <Col xs={{ span: 24 }} md={{ span: 10 }}>
                         <div className='d-flex'>
-                            <div style={{fontSize: 60, fontWeight: 600}} className='logo-title'>Vmotel-Search </div>
-                            <CheckCircleOutlined style={{fontSize: 30, position: 'relative', left: '-5px', top: '-10px', color: '#5cdbd3'}} />
+                            <div style={{ fontSize: 60, fontWeight: 600 }} className='logo-title'>Vmotel-Search </div>
+                            <CheckCircleOutlined style={{ fontSize: 30, position: 'relative', left: '-5px', top: '-10px', color: '#5cdbd3' }} />
                         </div>
-                        <div style={{fontSize: 20, fontWeight: 500}}>{t('Website to search motel, apartment')}</div>
-                        <section style={{marginTop: 10, maxWidth: 400}}>
+                        <div style={{ fontSize: 20, fontWeight: 500 }}>{t('Website to search motel, apartment')}</div>
+                        <section style={{ marginTop: 10, maxWidth: 400 }}>
                             <p>{t('introduce')}</p>
                         </section>
-                        <Button type='ghost' style={{border: '1px solid #13c2c2', color: '#13c2c2'}} shape='round' icon={<SearchOutlined />}>{t('search-room')}</Button>
-                        <Row gutter={[16, 16]} style={{marginTop: 20, width: '90%', fontSize: 12}}>
-                            <Col xs={{span: 24}} md={{span: 24}}>
+                        <Button type='ghost' style={{ border: '1px solid #13c2c2', color: '#13c2c2' }} shape='round' icon={<SearchOutlined />}>{t('search-room')}</Button>
+                        <Row gutter={[16, 16]} style={{ marginTop: 20, width: '90%', fontSize: 12 }}>
+                            <Col xs={{ span: 24 }} md={{ span: 24 }}>
                                 <Row>
-                                    <Col xs={{span: 18}} md={{span: 18}}>
+                                    <Col xs={{ span: 18 }} md={{ span: 18 }}>
                                         <strong>Phòng đẹp, sạch sẽ</strong>
                                         <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái, đầy đủ tiện nghi.</p>
                                     </Col>
-                                    <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                    <Col xs={{span: 4}} md={{span: 5}}>
-                                        <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
-                                            <img src='/images/bed.svg' style={{width: 50}} />
+                                    <Divider type='vertical' style={{ height: 'unset', borderLeft: '2px solid #f0f0f0' }} />
+                                    <Col xs={{ span: 4 }} md={{ span: 5 }}>
+                                        <div className={'d-flex center'} style={{ height: '100%', width: '100%', borderRight: '1px solid f0f0f0' }}>
+                                            <img src='/images/bed.svg' style={{ width: 50 }} />
                                         </div>
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col xs={{span: 24}} md={{span: 24}}>
+                            <Col xs={{ span: 24 }} md={{ span: 24 }}>
                                 <Row>
-                                    <Col xs={{span: 18}} md={{span: 18}}>
+                                    <Col xs={{ span: 18 }} md={{ span: 18 }}>
                                         <strong>Chi phí hợp lý, giá rẻ</strong>
                                         <p>Đối với những sinh viên lên thành phố học, kinh tế hạn hẹp, Vmotel sẽ tìm cho bạn những căn phòng vừa hợp túi tiền</p>
                                     </Col>
-                                    <Divider type='vertical' style={{height: 'unset', borderLeft: '2px solid #f0f0f0'}} />
-                                    <Col sxs={{span: 4}} md={{span: 5}}>
-                                        <div className={'d-flex center'} style={{height: '100%', width: '100%', borderRight: '1px solid f0f0f0'}}>
-                                            <img src='/images/money.svg' style={{width: 50}} />
+                                    <Divider type='vertical' style={{ height: 'unset', borderLeft: '2px solid #f0f0f0' }} />
+                                    <Col sxs={{ span: 4 }} md={{ span: 5 }}>
+                                        <div className={'d-flex center'} style={{ height: '100%', width: '100%', borderRight: '1px solid f0f0f0' }}>
+                                            <img src='/images/money.svg' style={{ width: 50 }} />
                                         </div>
                                     </Col>
                                 </Row>
                             </Col>
-                            <div className='d-flex center' style={{width: '100%'}}>
+                            <div className='d-flex center' style={{ width: '100%' }}>
                                 <Button type='link' icon={<DownOutlined />}>Xem thêm</Button>
                             </div>
                         </Row>
                     </Col>
-                    <Col xs={{span: 24}} md={{span: 14}}>
-                        <div className='d-flex center slick-custom' style={{height: '100%'}}>
+                    <Col xs={{ span: 24 }} md={{ span: 14 }}>
+                        <div className='d-flex center slick-custom' style={{ height: '100%' }}>
                             <Slider {...settings} className='react-slick'>
                                 {vipPosts.length > 0 && vipPosts.map(room => (
                                     <div key={room._id} className='item-slick'>
@@ -455,23 +491,23 @@ function Home(props) {
                         </div>
                     </Col>
                 </Row>
-                <div className='d-flex center filter-custom' style={{width: '100%', marginTop: '20px'}}>
+                <div className='d-flex center filter-custom' style={{ width: '100%', marginTop: '20px' }}>
                     <Row className='inner-filter' gutter={[16, 16]}>
-                        <Col xs={{span: 24}} md={{span: 4}}>
+                        <Col xs={{ span: 24 }} md={{ span: 4 }}>
                             <div className='d-flex row left'>
                                 <strong>{t('Select post')}:</strong>
-                                <Select style={{width: '100%'}} value={filter.optionType} onChange={onChangeOptionTypes}>
+                                <Select style={{ width: '100%' }} value={filter.optionType} onChange={onChangeOptionTypes}>
                                     {appConfig.optionTypes && appConfig.optionTypes.length > 0 && appConfig.optionTypes.map(option => {
                                         return <Select.Option key={option.id} value={option.id}>{t(option.value)}</Select.Option>;
                                     })}
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{span: 24}} md={{span: 4}}>
+                        <Col xs={{ span: 24 }} md={{ span: 4 }}>
                             <div className='d-flex row left'>
                                 <strong>{t('Provinces')}:</strong>
                                 <Select
-                                    style={{width: '100%'}}
+                                    style={{ width: '100%' }}
                                     value={filter.province}
                                     onChange={onChangeProvinces}
                                     placeholder={'hello'}
@@ -482,75 +518,80 @@ function Home(props) {
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{span: 24}} md={{span: 4}}>
+                        <Col xs={{ span: 24 }} md={{ span: 4 }}>
                             <div className='d-flex row left'>
                                 <strong>{t('District')}:</strong>
-                                <Select style={{width: '100%'}} value={filter.district} onChange={onChangeDistrict}>
+                                <Select style={{ width: '100%' }} value={filter.district} onChange={onChangeDistrict}>
                                     {districts && districts.length > 0 && districts.map(district => {
                                         return <Select.Option key={district.name} value={district.name}>{t(district.name)}</Select.Option>;
                                     })}
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{span: 24}} md={{span: 4}}>
+                        <Col xs={{ span: 24 }} md={{ span: 4 }}>
                             <div className='d-flex row left'>
                                 <strong>{t('Street')}:</strong>
-                                <Select style={{width: '100%'}} value={filter.street} onChange={onChangeStrict}>
+                                <Select style={{ width: '100%' }} value={filter.street} onChange={onChangeStrict}>
                                     {streets && streets.length > 0 && streets.map(street => {
                                         return <Select.Option key={street.id} value={street.id}>{`${street.prefix || ''} ${t(street.name)}`}</Select.Option>;
                                     })}
                                 </Select>
                             </div>
                         </Col>
-                        <Col xs={{span: 24}} md={{span: 4}}>
+                        <Col xs={{ span: 24 }} md={{ span: 4 }}>
                             <SliderCus width='100%' defaultValue={filter.prices} wrapperTitle='price' title='Select prices' callback={callbackSliderPrice} />
                         </Col>
-                        <Col xs={{span: 24}} md={{span: 4}}>
+                        <Col xs={{ span: 24 }} md={{ span: 4 }}>
                             <SliderCus width='100%' defaultValue={filter.areas} wrapperTitle='area' type='area' min={0} max={50} step={1} title='Select area' callback={callbackSliderArea} />
                         </Col>
                     </Row>
-                
+
                 </div>
-                <Row style={{width: '100%', margin: '20px 0px'}}>
+                <Row style={{ width: '100%', margin: '20px 0px' }}>
                     <div className='d-flex row left'>
                         {showRenderSologan()}
                     </div>
                 </Row>
-                <Row style={{width: '100%', margin: '20px 0px'}}>
+                <Row style={{ width: '100%', margin: '20px 0px' }}>
                     <div className='d-flex'>
                         <strong className='gradient-text'>{t('TIN NỔI BẬT')} - </strong>&nbsp;
-                        <SketchOutlined style={{fontSize: 30, color: '#ff7676'}} />
+                        <SketchOutlined style={{ fontSize: 30, color: '#ff7676' }} />
                     </div>
                 </Row>
-                <div style={{position: 'relative', width: '100%'}}>
-                    <Row  gutter={[16,16]}>
+                <div style={{ position: 'relative', width: '100%' }}>
+                    <Row gutter={[16, 16]}>
                         {hotPosts && hotPosts.length > 0 ? hotPosts.map(post => {
                             return (
-                                <Col key={post._id} xs={{span: 12}} md={{span: 12}}>
+                                <Col key={post._id} xs={{ span: 12 }} md={{ span: 12 }}>
                                     <FeeCard post={post} />
                                 </Col>
                             );
                         }) : null}
                     </Row>
                 </div>
-                <Row style={{width: '100%', marginTop: 20}} gutter={[10, 10]}>
-                    <Col xs={{span: 24}} md={{span: 15}}>
-                        <div className='d-flex' style={{marginBottom: '20px'}}>
-                            <strong style={{color: '#08979c', fontSize: '25px'}}>{t('TIN MỚI')} - </strong>&nbsp;
-                            <FileDoneOutlined style={{fontSize: 30, color: '#08979c'}} />
+                <Row style={{ width: '100%', marginTop: 20 }} gutter={[10, 10]}>
+                    <Col xs={{ span: 24 }} md={{ span: 15 }}>
+                        <div className='d-flex' style={{ marginBottom: '20px' }}>
+                            <strong style={{ color: '#08979c', fontSize: '25px' }}>{t('TIN MỚI')} - </strong>&nbsp;
+                            <FileDoneOutlined style={{ fontSize: 30, color: '#08979c' }} />
                         </div>
                         <Row gutter={[16, 16]}>
                             {showRenderNormalPosts()}
                         </Row>
-                        <div className='d-flex center' style={{width: '100%'}}>
+                        <div className='d-flex center' style={{ width: '100%' }}>
                             <Pagination total={total} onChange={onChangePagination} showSizeChanger defaultCurrent={1} pageSize={filter.limit} onShowSizeChange={onShowSizeChange} />
                         </div>
                     </Col>
-                    <Col xs={{span: 24}} md={{span: 9}}>
-                        <div className='d-flex' style={{marginBottom: '20px'}}>
-                            <strong style={{color: '#f5222d', fontSize: '25px'}}>{t('DANH MỤC')} - </strong>&nbsp;
-                            <UnorderedListOutlined style={{fontSize: 30, color: '#f5222d'}} />
+                    <Col xs={{ span: 24 }} md={{ span: 9 }}>
+                        <div className='d-flex' style={{ margin: '0px 0px 20px 15px' }}>
+                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('DANH MỤC')} - </strong>&nbsp;
+                            <UnorderedListOutlined style={{ fontSize: 30, color: '#f5222d' }} />
                         </div>
+                        <Category />
+                        <div className='d-flex' style={{ margin: '10px 0px 0px 15px' }}>
+                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('TIN MỚI ĐĂNG')} </strong>&nbsp;
+                        </div>
+                        <NewPost />
                     </Col>
                 </Row>
             </Row>

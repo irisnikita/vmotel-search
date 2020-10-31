@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Layout as AntdLayout, Menu, Input, Space, Button, Row, Col, Avatar, Dropdown, Select } from 'antd';
-import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import {useRouter} from 'next/router';
+import {Layout as AntdLayout, Menu, Input, Space, Button, Row, Col, Avatar, Dropdown, Select} from 'antd';
+import {useTranslation} from 'react-i18next';
+import {connect} from 'react-redux';
 import _ from 'lodash';
+import Highlighter from 'react-highlight-words';
 
 // Actions
-import { userLogin } from '../../Redux/actions/layout';
+import {userLogin} from '../../Redux/actions/layout';
 
 // Components
 import DashBoard from '../DashBoard/DashBoard';
@@ -18,21 +19,27 @@ import styles from './styles.module.scss';
 
 // Services
 import * as userServices from '../../services/User/index';
+import * as postServices from '../../services/post/index';
 
 // Utils
-import { appConfig } from '../../constant';
+import {appConfig} from '../../constant';
 
 // Icons
-import { PlusOutlined, UserOutlined } from '@ant-design/icons';
+import {PlusOutlined, UserOutlined} from '@ant-design/icons';
 
-const { Header, Content } = AntdLayout;
+const {Header, Content} = AntdLayout;
+
+let timeout = null;
 
 function Layout(props) {
-    const { t, i18n } = useTranslation();
+    const {t, i18n} = useTranslation();
     const defaultTitle = 'Tìm nhà trọ, khu trọ, giá rẻ, đẹp, gần trung tâm';
-    const { children = '', title = defaultTitle } = props;
-    const flags = [{ id: 'vi', label: 'vietnamese' }, { id: 'en', label: 'english' }];
-    const [lang, setLang] = useState({ id: 'vi', label: 'vietnamese' });
+    const {children = '', title = defaultTitle} = props;
+    const flags = [{id: 'vi', label: 'vietnamese'}, {id: 'en', label: 'english'}];
+    const [lang, setLang] = useState({id: 'vi', label: 'vietnamese'});
+    const [valueSearch, setValueSearch] = useState('');
+    const [listSearch, setListSearch] = useState([]);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -58,7 +65,7 @@ function Layout(props) {
 
         if (validate) {
             if (validate.data && validate.data.data) {
-                const { user } = validate.data.data;
+                const {user} = validate.data.data;
 
                 props.userLogin({
                     userLogin: user
@@ -107,6 +114,64 @@ function Layout(props) {
         }
     };
 
+    const onClickSearchMatch = (item) => {
+        if (item.district === '') {
+            router.push('/posts/[province]', `/posts/${item.province}`);
+        } else {
+            router.push('/posts/[province]/[district]', `/posts/${item.province}/${item.district}`);
+        }
+    };
+
+    const menuSearch = () => {
+        const searchSplit = valueSearch.split(' ');
+
+        return (
+            <Menu>
+                <Menu.Item>{t('Search key with')} {`"${valueSearch}"`}</Menu.Item>
+                {listSearch.map(item => {
+                    return (
+                        <Menu.Item key={item._id} onClick={() => onClickSearchMatch(item)}>
+                            <Highlighter
+                                highlightStyle={{fontWeight: 'bold'}}
+                                searchWords={searchSplit}
+                                autoEscape={true}
+                                textToHighlight={item.value}
+                            />
+                        </Menu.Item>
+                    );
+                })}
+            </Menu>
+        );
+    };
+
+    const getListSearch = async (value) => {
+        const listSearch = await postServices.searchPost({
+            valueSearch: value
+        });
+
+        if (listSearch) {
+            const {data = []} = listSearch.data;
+
+            setListSearch(data);
+            
+        }
+    };
+
+    const onChangeSearch = (e) => {
+        const {value = ''} = e.target;
+
+        setValueSearch(value);
+
+        if (timeout !== null) {
+            clearTimeout(timeout);
+        }
+
+        timeout = setTimeout(() => {
+            getListSearch(value);
+        }, 500);
+
+    };
+
     return (
         <div>
             <Head>
@@ -117,14 +182,16 @@ function Layout(props) {
                 <meta property='og:title' content={props.title} />
                 <meta property='og:description' content={props.content} />
             </Head>
-            <AntdLayout style={{ position: 'relative' }}>
+            <AntdLayout style={{position: 'relative'}}>
                 {props.isLoginPage ? null : <Header className={`${styles['default-header']} d-flex space-between`}>
                     <div className='d-flex'>
                         <Space>
                             <Link href='/'>
-                                <img style={{ cursor: 'pointer' }} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
+                                <img style={{cursor: 'pointer'}} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
                             </Link>
-                            <Input.Search className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
+                            <Dropdown overlay={menuSearch} trigger={['click']}>
+                                <Input.Search onChange={onChangeSearch} className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
+                            </Dropdown>
                         </Space>
                     </div>
                     <div className='d-flex right-menu'>
@@ -147,8 +214,8 @@ function Layout(props) {
                                     }
                                     trigger={['click']}
                                 >
-                                    <div style={{ cursor: 'pointer' }}>
-                                        <Avatar src={props.user.avatar} icon={<UserOutlined />} size={32} style={{ marginRight: 10 }} />
+                                    <div style={{cursor: 'pointer'}}>
+                                        <Avatar src={props.user.avatar} icon={<UserOutlined />} size={32} style={{marginRight: 10}} />
                                         <strong className='mr-10'>{props.user.fullName}</strong>
                                     </div>
                                 </Dropdown>
@@ -159,7 +226,7 @@ function Layout(props) {
                                 const isSelected = flag.id === lang.id;
 
                                 return (
-                                    <Menu.Item style={{ backgroundColor: isSelected ? '#87e8de' : '#fff' }} key={flag.id} onClick={() => onClickFlag(flag)}>
+                                    <Menu.Item style={{backgroundColor: isSelected ? '#87e8de' : '#fff'}} key={flag.id} onClick={() => onClickFlag(flag)}>
                                         <Space>
                                             <img src={`/images/flags/${flag.id}.svg`} width={20} alt={flag.id} />
                                             <div>{t(flag.label)}</div>

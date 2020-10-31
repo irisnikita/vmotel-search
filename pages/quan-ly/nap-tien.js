@@ -1,6 +1,6 @@
-import React , {useEffect, useState} from 'react';
-import {Divider, Drawer, Radio, InputNumber, Row, Col, Avatar, Badge, Typography, Form, Input, Button, Modal} from 'antd';
-import {useTranslation} from 'react-i18next';
+import React, { useEffect, useState } from 'react';
+import { Divider, Drawer, Radio, InputNumber, Row, Col, Avatar, Badge, Typography, Form, Input, Button, Modal } from 'antd';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import numeral from 'numeral';
 import CryptoJs from 'crypto-js'
@@ -12,27 +12,27 @@ import styles from './styles.module.scss';
 import Layout from '../../components/Layout/Layout';
 
 // Actions
-import {userLogin} from '../../Redux/actions/layout';
+import { userLogin } from '../../Redux/actions/layout';
 
 // Services
 import * as userServices from '../../services/User/index';
 
 // Constant
-import {appConfig} from '../../constant';
+import { appConfig } from '../../constant';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 const payments = [
-    {key: 'momo', label: 'Momo', logo: '/images/logo-payment/momo.png'}
+    { key: 'momo', label: 'Momo', logo: '/images/logo-payment/momo.png' }
 ];
 
 const fees = [
-    {key: '50000', value: 50000},
-    {key: '100000', value: 100000},
-    {key: '200000', value: 200000},
-    {key: '500000', value: 500000},
-    {key: '1000000', value: 1000000},
-    {key: '2000000', value: 2000000}
+    { key: '50000', value: 50000 },
+    { key: '100000', value: 100000 },
+    { key: '200000', value: 200000 },
+    { key: '500000', value: 500000 },
+    { key: '1000000', value: 1000000 },
+    { key: '2000000', value: 2000000 }
 ];
 
 function PayIn(props) {
@@ -61,9 +61,9 @@ function PayIn(props) {
         })
     }, [infoPayment.feeSelected])
 
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
-    const onClickPayment = (payment)=> {
+    const onClickPayment = (payment) => {
         setPaymentSelected(payment);
         setOpenDrawer(true);
     };
@@ -73,7 +73,7 @@ function PayIn(props) {
     };
 
     const onChangeSelectedFee = (event) => {
-        const {value} = event.target;
+        const { value } = event.target;
 
         setInfoPayment({
             ...infoPayment,
@@ -123,9 +123,9 @@ function PayIn(props) {
                 visible={isOpenDrawer}
                 getContainer={false}
                 width={400}
-                style={{position: 'absolute'}}
+                style={{ position: 'absolute' }}
             >
-                <div style={{margin: '5px 0px', fontWeight: 'bold'}}>{t('Chose the fee you want to pay')}</div>
+                <div style={{ margin: '5px 0px', fontWeight: 'bold' }}>{t('Chose the fee you want to pay')}</div>
                 <Radio.Group value={infoPayment.feeSelected} onChange={onChangeSelectedFee}>
                     {fees.map(fee => {
                         return (
@@ -133,23 +133,23 @@ function PayIn(props) {
                         );
                     })}
                 </Radio.Group>
-                <div style={{margin: '5px 0px', fontWeight: 'bold'}}>{t('Or input your fee you want to pay')}</div>
+                <div style={{ margin: '5px 0px', fontWeight: 'bold' }}>{t('Or input your fee you want to pay')}</div>
                 <InputNumber
-                    style={{width: 200}}
+                    style={{ width: 200 }}
                     value={infoPayment.feeSelected}
                     formatter={value => `₫ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    onChange={(value) => {setInfoPayment({...infoPayment, feeSelected: value})}}
+                    onChange={(value) => { setInfoPayment({ ...infoPayment, feeSelected: value }) }}
                     parser={value => value.replace(/₫\s?|(,*)/g, '')}
                 />
                 <br />
-                <Button style={{width: '100%', marginTop: 20}} type='primary' onClick={onClickPayIn}>{t('Pay')}</Button>
+                <Button style={{ width: '100%', marginTop: 20 }} type='primary' onClick={onClickPayIn}>{t('Pay')}</Button>
                 <ul className={styles['list-warning']}>
                     <li>Lưu ý quan trọng: Trong quá trình thanh toán, bạn vui lòng KHÔNG ĐÓNG TRÌNH DUYỆT.</li>
 
                     <li> Nếu gặp khó khăn trong quá trình thanh toán, xin liên hệ 0917686101 để chúng tôi hỗ trợ bạn.</li>
                 </ul>
             </Drawer>
-            <h1 style={{fontSize: 30}}>{t('Pay in')}</h1>
+            <h1 style={{ fontSize: 30 }}>{t('Pay in')}</h1>
             <Divider />
             {
                 payments.map(payment => {
