@@ -27,6 +27,7 @@ import * as postServices from '../services/post/index';
 
 // Icons
 import { SearchOutlined, FileDoneOutlined, UnorderedListOutlined, CheckCircleOutlined, DownOutlined, SketchOutlined } from '@ant-design/icons';
+import News from '../components/News';
 
 export async function getStaticProps() {
     const allMarkDown = getListMarkDowns();
@@ -592,6 +593,15 @@ function Home(props) {
                             <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('TIN MỚI ĐĂNG')} </strong>&nbsp;
                         </div>
                         <NewPost />
+                        <div style={{ margin: '10px 0px 0px 15px' }}>
+                            <Row justify="space-between" style={{ alignItems: 'center' }}>
+                                <Col><strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('TIN TỨC MỚI')} </strong></Col>
+                                <Col>
+                                    {('Xem tất cả')}
+                                </Col>
+                            </Row>
+                            <News />
+                        </div>
                     </Col>
                 </Row>
             </Row>
