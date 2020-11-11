@@ -25,7 +25,7 @@ import * as postServices from '../../services/post/index';
 import {appConfig} from '../../constant';
 
 // Icons
-import {PlusOutlined, UserOutlined} from '@ant-design/icons';
+import {PlusOutlined, UserOutlined, SearchOutlined} from '@ant-design/icons';
 
 const {Header, Content} = AntdLayout;
 
@@ -122,12 +122,18 @@ function Layout(props) {
         }
     };
 
+    const onClickSearchWithKey = ()  => {
+        if (valueSearch !== '') {
+            router.push(`/posts/tim-kiem?search=${valueSearch}`);
+        }
+    };
+    
     const menuSearch = () => {
         const searchSplit = valueSearch.split(' ');
 
         return (
             <Menu>
-                <Menu.Item>{t('Search key with')} {`"${valueSearch}"`}</Menu.Item>
+                <Menu.Item onClick={onClickSearchWithKey}>{t('Search key with')} {`"${valueSearch}"`}</Menu.Item>
                 {listSearch.map(item => {
                     return (
                         <Menu.Item key={item._id} onClick={() => onClickSearchMatch(item)}>
@@ -153,7 +159,7 @@ function Layout(props) {
             const {data = []} = listSearch.data;
 
             setListSearch(data);
-            
+
         }
     };
 
@@ -185,14 +191,12 @@ function Layout(props) {
             <AntdLayout style={{position: 'relative'}}>
                 {props.isLoginPage ? null : <Header className={`${styles['default-header']} d-flex space-between`}>
                     <div className='d-flex'>
-                        <Space>
-                            <Link href='/'>
-                                <img style={{cursor: 'pointer'}} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
-                            </Link>
-                            <Dropdown overlay={menuSearch} trigger={['click']}>
-                                <Input.Search onChange={onChangeSearch} className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
-                            </Dropdown>
-                        </Space>
+                        <Link href='/'>
+                            <img style={{cursor: 'pointer'}} src="/images/vmotel-logo.png" alt="tim-nha-tro" width={64} />
+                        </Link> &nbsp;
+                        <Dropdown overlay={menuSearch} trigger={['click']}>
+                            <Input suffix={<SearchOutlined />} bordered onChange={onChangeSearch} className={`${styles['input-search']} input-focus`} placeholder={t('place-to-search')} />
+                        </Dropdown>
                     </div>
                     <div className='d-flex right-menu'>
                         {
