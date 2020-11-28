@@ -278,7 +278,7 @@ function Post(props) {
                     </div>
                     <Title level={4} id='map'>{t('Map')}</Title>
                     <GoogleMap center={postInfo.address.location} />
-                    <Title style={{ marginTop: 20 }} level={4}>{t('Cho thuê phòng trọ, căn hộ')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
+                    <Title style={{ marginTop: 20 }} level={4}>{t('Motel room, apartment for rent')}, {postInfo.filter.province.name}, {postInfo.filter.district.name}</Title>
                     <Row gutter={[16, 16]}>
                         {showRenderNormalPosts()}
                     </Row>

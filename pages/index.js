@@ -291,13 +291,14 @@ function Home(props) {
 
         if (newProvince && district && street) {
             switch (filter.province) {
-                case 'all':
+
+                case 'ALL':
                     switch (filter.district) {
                         case 'all':
                             return (
                                 <>
-                                    <h1>{t('Cho thuê phòng trọ số 1, giá rẻ, tiện nghi, an toàn, uy tín Việt Nam')} {filter.street !== 'all' && ` Đường ${street.name}`}</h1>
-                                    <p>Bạn sợ lừa đảo, an ninh không an toàn, giá bị hớ, với Vmotel bạn có thể an tâm khi chọn phòng.</p>
+                                    <h1>{t('Motel room for rent the best, cheap, convenient, safe, prestige Vietnam')} {filter.street !== 'all' && ` Đường ${street.name}`}</h1>
+                                    <p>{t('You are afraid of scams, unsafe security, wrong prices, with Vmotel you can feel secure when choosing a room.')}</p>
                                 </>
                             );
 
@@ -312,8 +313,8 @@ function Home(props) {
                 default:
                     return (
                         <>
-                            <h1>{t(`Cho thuê phòng trọ ${t(newProvince.name)}, ${district.name !== 'all' ? `Quận ${district.name}` : ''}, giá rẻ, tiện nghi, an toàn, uy tín Việt Nam`)}{filter.street !== 'all' && ` Đường ${street.name}`}</h1>
-                            <p>Bạn sợ lừa đảo, an ninh không an toàn, giá bị hớ, với Vmotel bạn có thể an tâm khi chọn phòng.</p>
+                            <h1>{`${t('Motel room for rent')} ${t(newProvince.name)}, ${district.name !== 'all' ? `Quận ${district.name},` : ''} ${t('cheap, convenient, safe, prestige Vietnam')}`}{filter.street !== 'all' && ` Đường ${street.name}`}</h1>
+                            <p>{t('You are afraid of scams, unsafe security, wrong prices, with Vmotel you can feel secure when choosing a room.')}</p>
                         </>
                     );
             }
@@ -381,14 +382,14 @@ function Home(props) {
             const cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
             return cols.map(col => {
-                return <Col key={col} xs={{ span: 24 }} md={{ span: 8 }}>
+                return <Col key={col} xs={{ span: 24 }} md={{ span: 8 }} xl={{ span: 6 }}>
                     <Card style={{ width: '100%' }} loading={isLoading} />
                 </Col>;
             });
         } else {
             return normalPosts && normalPosts.length > 0 ? normalPosts.map(motel => {
                 return (
-                    <Col key={motel._id} xs={{ span: 12 }} md={{ span: 8 }}>
+                    <Col key={motel._id} xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
                         <NormalCard room={motel} />
                     </Col>
                 );
@@ -448,8 +449,8 @@ function Home(props) {
                             <Col xs={{ span: 24 }} md={{ span: 24 }}>
                                 <Row>
                                     <Col xs={{ span: 18 }} md={{ span: 18 }}>
-                                        <strong>Phòng đẹp, sạch sẽ</strong>
-                                        <p>Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái, đầy đủ tiện nghi.</p>
+                                        <strong>{t('Nice room, clean')}</strong>
+                                        <p>{t('Vmotel will give priority to proposing rooms with beautiful spaces, cool, comfortable, full facilities.')}</p>
                                     </Col>
                                     <Divider type='vertical' style={{ height: 'unset', borderLeft: '2px solid #f0f0f0' }} />
                                     <Col xs={{ span: 4 }} md={{ span: 5 }}>
@@ -462,8 +463,8 @@ function Home(props) {
                             <Col xs={{ span: 24 }} md={{ span: 24 }}>
                                 <Row>
                                     <Col xs={{ span: 18 }} md={{ span: 18 }}>
-                                        <strong>Chi phí hợp lý, giá rẻ</strong>
-                                        <p>Đối với những sinh viên lên thành phố học, kinh tế hạn hẹp, Vmotel sẽ tìm cho bạn những căn phòng vừa hợp túi tiền</p>
+                                        <strong>{t('Affordability, cheap')}</strong>
+                                        <p>{t('For students going to the city to study, have limited economy, Vmotel will find you affordable rooms')}</p>
                                     </Col>
                                     <Divider type='vertical' style={{ height: 'unset', borderLeft: '2px solid #f0f0f0' }} />
                                     <Col sxs={{ span: 4 }} md={{ span: 5 }}>
@@ -474,7 +475,7 @@ function Home(props) {
                                 </Row>
                             </Col>
                             <div className='d-flex center' style={{ width: '100%' }}>
-                                <Button type='link' icon={<DownOutlined />}>Xem thêm</Button>
+                                <Button type='link' icon={<DownOutlined />} t>See more</Button>
                             </div>
                         </Row>
                     </Col>
@@ -555,7 +556,7 @@ function Home(props) {
                 </Row>
                 <Row style={{ width: '100%', margin: '20px 0px' }}>
                     <div className='d-flex'>
-                        <strong className='gradient-text'>{t('TIN NỔI BẬT')} - </strong>&nbsp;
+                        <strong className='gradient-text'>{t('HOT')} - </strong>&nbsp;
                         <SketchOutlined style={{ fontSize: 30, color: '#ff7676' }} />
                     </div>
                 </Row>
@@ -571,9 +572,9 @@ function Home(props) {
                     </Row>
                 </div>
                 <Row style={{ width: '100%', marginTop: 20 }} gutter={[10, 10]}>
-                    <Col xs={{ span: 24 }} md={{ span: 15 }}>
+                    <Col xs={{ span: 24 }} md={{ span: 15 }} xl={{ span: 17 }}>
                         <div className='d-flex' style={{ marginBottom: '20px' }}>
-                            <strong style={{ color: '#08979c', fontSize: '25px' }}>{t('TIN MỚI')} - </strong>&nbsp;
+                            <strong style={{ color: '#08979c', fontSize: '25px' }}>{t('NEW POST')} - </strong>&nbsp;
                             <FileDoneOutlined style={{ fontSize: 30, color: '#08979c' }} />
                         </div>
                         <Row gutter={[16, 16]}>
@@ -583,21 +584,21 @@ function Home(props) {
                             <Pagination total={total} onChange={onChangePagination} showSizeChanger defaultCurrent={1} pageSize={filter.limit} onShowSizeChange={onShowSizeChange} />
                         </div>
                     </Col>
-                    <Col xs={{ span: 24 }} md={{ span: 9 }}>
+                    <Col xs={{ span: 24 }} md={{ span: 9 }} xl={{ span: 7 }}>
                         <div className='d-flex' style={{ margin: '0px 0px 20px 15px' }}>
-                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('DANH MỤC')} - </strong>&nbsp;
+                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('CATEGORY')} - </strong>&nbsp;
                             <UnorderedListOutlined style={{ fontSize: 30, color: '#f5222d' }} />
                         </div>
                         <Category />
                         <div className='d-flex' style={{ margin: '10px 0px 0px 15px' }}>
-                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('TIN MỚI ĐĂNG')} </strong>&nbsp;
+                            <strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('NEW POST')} </strong>&nbsp;
                         </div>
                         <NewPost />
                         <div style={{ margin: '10px 0px 0px 15px' }}>
                             <Row justify="space-between" style={{ alignItems: 'center' }}>
-                                <Col><strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('TIN TỨC MỚI')} </strong></Col>
+                                <Col><strong style={{ color: '#f5222d', fontSize: '25px' }}>{t('NEWS')} </strong></Col>
                                 <Col>
-                                    {('Xem tất cả')}
+                                    {t('See all')}
                                 </Col>
                             </Row>
                             <News />

@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import {initReactI18next} from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 
 // the translations
 // (tip move them in a JSON file and import them)
@@ -114,8 +114,27 @@ const resources = {
             'Description': 'Nội dung',
             'Place your description': 'Nhập nội dung',
             'Submit': 'Đăng',
-            'Hot': 'Tin nổi bật',
             'Vip': 'Tin vip',
+            'NEWS': "TIN MỚI",
+            'NEW POST': "TIN MỚI ĐĂNG",
+            'CATEGORY': "DANH MỤC",
+            'See all': "Xem tất cả",
+            'See more': "Xem thêm",
+            'Nice room, clean': "Phòng đẹp, sạch sẽ",
+            'Vmotel will give priority to proposing rooms with beautiful spaces, cool, comfortable, full facilities.': "Vmotel sẽ ưu tiên đề xuất những căn phòng mang lại không gian đẹp, thoáng mát, thoải mái, đầy đủ tiện nghi.",
+            'Affordability, cheap': "Chi phí hợp lý, giá rẻ",
+            'For students going to the city to study, have limited economy, Vmotel will find you affordable rooms': "Đối với những sinh viên lên thành phố học, kinh tế hạn hẹp, Vmotel sẽ tìm cho bạn những căn phòng vừa hợp túi tiền",
+            'Motel room for rent': 'Cho thuê phòng trọ',
+            'cheap, convenient, safe, prestige Vietnam': 'giá rẻ, tiện nghi, an toàn, uy tín Việt Nam',
+            'Motel room for rent the best, cheap, convenient, safe, prestige Vietnam': 'Cho thuê phòng trọ số 1, giá rẻ, tiện nghi, an toàn, uy tín Việt Nam',
+            'You are afraid of scams, unsafe security, wrong prices, with Vmotel you can feel secure when choosing a room.': 'Bạn sợ lừa đảo, an ninh không an toàn, giá bị hớ,s với Vmotel bạn có thể an tâm khi chọn phòng.',
+            'Hot': 'Tin nổi bật',
+            'HOT': 'TIN NỔI BẬT',
+            'Map': 'Bản đồ',
+            'Motel room, apartment for rent': 'Cho thuê phòng trọ, căn hộ',
+            'Phone Number': 'Số điện thoại',
+            'User Name': 'Tên tài khoản',
+            'Name': 'Họ và tên',
             'Number': 'Số nhà',
             'Ward': 'Phường',
             'Contact': 'Liên hệ',
@@ -125,7 +144,7 @@ const resources = {
     }
 };
 
-function getLocalStorage () {
+function getLocalStorage() {
     let defaultLang = 'vi';
 
     if (process.browser) {
