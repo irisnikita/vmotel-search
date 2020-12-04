@@ -4,6 +4,8 @@ import Slider from "react-slick";
 import {useRouter} from 'next/router';
 import numeral from 'numeral';
 import {useTranslation} from 'react-i18next';
+import htmlToFormattedText from 'html-to-formatted-text'
+
 
 import styles from './styles.module.scss';
 
@@ -78,7 +80,7 @@ export default function CustomCard(props) {
                 <Card.Meta
                     style={{fontSize: 12}}
                     title={title}
-                    description={convert(description)}
+                    description={htmlToFormattedText(description)}
                 />
                 <br/>
                 <Row style={{fontSize: 13}}>
