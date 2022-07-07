@@ -23,7 +23,7 @@
     "immer": "^6.0.9",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "next": "9.4.4",
     "next-i18next": "^4.4.2",
     "nprogress": "^0.2.0",
